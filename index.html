@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Карповка — оптимальный вариант главной страницы</title>
+    <meta
+      name="description"
+      content="Оптимальный вариант главной страницы парк-отеля Карповка: природа, проживание, SPA-центр, сезонная рыбалка, события и бронирование."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-home" viewBox="0 0 24 24">
+        <path d="m3 10 9-7 9 7" />
+        <path d="M5 10v10h14V10" />
+        <path d="M9 20v-6h6v6" />
+      </symbol>
+      <symbol id="icon-waves" viewBox="0 0 24 24">
+        <path d="M2 8c2 0 2-1.5 4-1.5S8 8 10 8s2-1.5 4-1.5S16 8 18 8s2-1.5 4-1.5" />
+        <path d="M2 14c2 0 2-1.5 4-1.5s2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5" />
+        <path d="M2 20c2 0 2-1.5 4-1.5s2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5" />
+      </symbol>
+      <symbol id="icon-utensils" viewBox="0 0 24 24">
+        <path d="M4 3v8" />
+        <path d="M8 3v8" />
+        <path d="M6 3v18" />
+        <path d="M12 3v18" />
+        <path d="M12 3c4 0 6 2.4 6 6v12" />
+      </symbol>
+      <symbol id="icon-tent" viewBox="0 0 24 24">
+        <path d="M3 20h18L12 4 3 20Z" />
+        <path d="m12 4 4 16" />
+        <path d="m12 4-4 16" />
+      </symbol>
+      <symbol id="icon-fish" viewBox="0 0 24 24">
+        <path d="M6.5 12c1.8-4 6.4-6 11-3l4-3v12l-4-3c-4.6 3-9.2 1-11-3Z" />
+        <path d="M2 12h5" />
+        <circle cx="15" cy="11" r="1" />
+      </symbol>
+      <symbol id="icon-car" viewBox="0 0 24 24">
+        <path d="M5 17h14l-1.4-6.2A3 3 0 0 0 14.7 8H9.3a3 3 0 0 0-2.9 2.8L5 17Z" />
+        <path d="M4 17h16" />
+        <circle cx="7" cy="18" r="2" />
+        <circle cx="17" cy="18" r="2" />
+      </symbol>
+      <symbol id="icon-trees" viewBox="0 0 24 24">
+        <path d="m8 3-5 8h4l-3 5h8l-3-5h4L8 3Z" />
+        <path d="M8 16v5" />
+        <path d="m17 5-4 7h3l-2 4h6l-2-4h3l-4-7Z" />
+        <path d="M17 16v5" />
+      </symbol>
+      <symbol id="icon-heart" viewBox="0 0 24 24">
+        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" />
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 0 24 24">
+        <path d="M8 2v4" />
+        <path d="M16 2v4" />
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <path d="M3 10h18" />
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 24 24">
+        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="icon-flame" viewBox="0 0 24 24">
+        <path d="M8.5 14.5A4 4 0 0 0 12 21a6 6 0 0 0 6-6c0-4-3-6-4-10-2 2-2.5 5-1 7-2.5-.7-4-2.2-4.5-5C6 9 5 11.2 5 14a7 7 0 0 0 7 7" />
+      </symbol>
+      <symbol id="icon-sparkles" viewBox="0 0 24 24">
+        <path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" />
+        <path d="M5 3v4" />
+        <path d="M3 5h4" />
+        <path d="M19 17v4" />
+        <path d="M17 19h4" />
+      </symbol>
+      <symbol id="icon-dumbbell" viewBox="0 0 24 24">
+        <path d="m6.5 6.5 11 11" />
+        <path d="m21 14-7 7" />
+        <path d="m3 10 7-7" />
+        <path d="m18 11 3 3" />
+        <path d="m3 10 3 3" />
+      </symbol>
+      <symbol id="icon-bike" viewBox="0 0 24 24">
+        <circle cx="5.5" cy="17.5" r="3.5" />
+        <circle cx="18.5" cy="17.5" r="3.5" />
+        <path d="M15 6h3" />
+        <path d="m9 6 3 6h4l-3-6" />
+        <path d="M5.5 17.5 9 12h3" />
+      </symbol>
+      <symbol id="icon-users" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.9" />
+        <path d="M16 3.1a4 4 0 0 1 0 7.8" />
+      </symbol>
+      <symbol id="icon-gift" viewBox="0 0 24 24">
+        <rect x="3" y="8" width="18" height="13" rx="2" />
+        <path d="M12 8v13" />
+        <path d="M3 12h18" />
+        <path d="M7.5 8A2.5 2.5 0 1 1 12 6c0 2-4.5 2-4.5 2Z" />
+        <path d="M16.5 8A2.5 2.5 0 1 0 12 6c0 2 4.5 2 4.5 2Z" />
+      </symbol>
+      <symbol id="icon-phone" viewBox="0 0 24 24">
+        <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 1.9Z" />
+      </symbol>
+      <symbol id="icon-mail" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m3 7 9 6 9-6" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m20 6-11 11-5-5" />
+      </symbol>
+    </svg>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="Карповка, главная">
+        <img src="./assets/imgs/logo.png" alt="Карповка" />
+      </a>
+      <nav class="main-nav" data-nav aria-label="Главная навигация">
+        <a href="#stay">Проживание</a>
+        <a href="#spa">SPA-центр</a>
+        <a href="#bath">Банный комплекс</a>
+        <a href="#food">Кафе и банкет</a>
+        <a href="#gazebo">Территория</a>
+        <a href="#active">Активный отдых</a>
+        <a href="#loyalty">Акции</a>
+      </nav>
+      <div class="header-actions">
+        <a class="phone" href="tel:+73425655005">+7 (342) 565-50-05</a>
+        <a class="btn btn-sand btn-small" href="#booking">Забронировать</a>
+        <button class="menu-toggle" type="button" data-menu aria-label="Открыть меню">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <p class="hero-kicker">Здесь слышно природу, а не город</p>
+            <h1>Место, созданное природой и человеком с душой</h1>
+            <p>
+              Парк-отель «Карповка» — заповедная зона у воды для тихого отдыха,
+              SPA-восстановления, семейных поездок и событий на природе.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-sand" href="#booking">Забронировать проживание</a>
+              <a class="btn btn-outline-light" href="#stories">Отдых на день</a>
+            </div>
+          </div>
+          <form class="booking-card" id="booking">
+            <div class="booking-title">
+              <strong>Быстрое бронирование</strong>
+              <span>Подберите проживание и даты отдыха</span>
+            </div>
+            <label>
+              Заезд
+              <input type="date" value="2026-07-06" />
+            </label>
+            <label>
+              Выезд
+              <input type="date" value="2026-07-07" />
+            </label>
+            <label>
+              Гости
+              <select>
+                <option>2 взрослых, 0 детей</option>
+                <option>2 взрослых, 1 ребенок</option>
+                <option>4 гостя</option>
+                <option>Компания 6+</option>
+              </select>
+            </label>
+            <button class="btn btn-sand" type="submit">Найти номер</button>
+            <p>Проживание — через TravelLine, услуги — по заявке</p>
+          </form>
+          <div class="hero-features" aria-label="Преимущества на первом экране">
+            <span>Заповедная природная зона без шума города</span>
+            <span>Пруд, лес и прогулки на территории</span>
+            <span>SPA-центр, бассейны, массажи и соляная комната</span>
+            <span>Эко-дома, гостиница и гостевые дома</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section why-section">
+        <div class="container">
+          <h2 class="center-title reveal">Почему гости выбирают Карповку</h2>
+          <div class="why-grid reveal">
+            <article>
+              <span class="why-icon"><svg class="icon"><use href="#icon-map-pin"></use></svg></span>
+              <p>Заповедная зона для отдыха без городского шума</p>
+            </article>
+            <article>
+              <span class="why-icon"><svg class="icon"><use href="#icon-trees"></use></svg></span>
+              <p>Лес, вода и ощущение настоящей природы рядом</p>
+            </article>
+            <article>
+              <span class="why-icon"><svg class="icon"><use href="#icon-waves"></use></svg></span>
+              <p>SPA-центр с бассейнами, массажами и программами</p>
+            </article>
+            <article>
+              <span class="why-icon"><svg class="icon"><use href="#icon-calendar"></use></svg></span>
+              <p>Рыбалка летом и осенью, прогулки круглый год</p>
+            </article>
+            <article>
+              <span class="why-icon"><svg class="icon"><use href="#icon-utensils"></use></svg></span>
+              <p>Кафе и банкетный зал для любого события</p>
+            </article>
+            <article>
+              <span class="why-icon"><svg class="icon"><use href="#icon-heart"></use></svg></span>
+              <p>Теплая атмосфера и заботливый сервис</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section stories-section" id="stories">
+        <div class="container">
+          <h2 class="center-title reveal">Выберите формат отдыха</h2>
+          <div class="story-row">
+            <a class="story-card reveal" href="#stay">
+              <img src="./assets/imgs/imgs/tempImagelyuBrS.jpg.jpeg" alt="Семейный отдых" />
+              <span>Семейный отдых</span>
+            </a>
+            <a class="story-card reveal" href="#spa">
+              <img src="./assets/imgs/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Отдых для двоих" />
+              <span>Для двоих</span>
+            </a>
+            <a class="story-card reveal" href="#spa">
+              <img src="./assets/imgs/imgs/IMG_0119-2.jpg.jpeg" alt="SPA-день" />
+              <span>SPA-день</span>
+            </a>
+            <a class="story-card reveal" href="#bath">
+              <img src="./assets/imgs/imgs/tempImagewZbK0r.jpg.jpeg" alt="Отдых компанией" />
+              <span>Компанией</span>
+            </a>
+            <a class="story-card reveal" href="#active">
+              <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Отдых с детьми" />
+              <span>С детьми</span>
+            </a>
+            <a class="story-card reveal" href="#events">
+              <img src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Корпоративы и мероприятия" />
+              <span>Корпоративы и мероприятия</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section stay-section" id="stay">
+        <div class="container section-head reveal">
+          <h2>Проживание</h2>
+          <a href="#booking">Подобрать формат</a>
+        </div>
+        <div class="container stay-grid">
+          <article class="stay-card reveal">
+            <img src="./assets/imgs/imgs/1.jpg.jpeg" alt="Эко-дома" />
+            <div>
+              <h3>Эко-дома</h3>
+              <p>Для пар, семей и спокойных выходных на природе</p>
+              <small>Отдельный дом, терраса, кухня, мангальная зона</small>
+              <strong>от 10 500 ₽ / ночь</strong>
+              <span class="amenities">☕ ♨ ⛺</span>
+            </div>
+          </article>
+          <article class="stay-card reveal">
+            <img src="./assets/imgs/imgs/IMG_9846.JPG.jpeg" alt="Гостиница" />
+            <div>
+              <h3>Гостиница</h3>
+              <p>Номера для короткого отдыха, SPA-визита или события</p>
+              <small>Завтрак, Wi-Fi, удобный доступ к услугам комплекса</small>
+              <strong>от 6 000 ₽ / ночь</strong>
+              <span class="amenities">☕ ☾ ♡</span>
+            </div>
+          </article>
+          <article class="stay-card reveal">
+            <img src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Гостевые дома" />
+            <div>
+              <h3>Гостевые дома</h3>
+              <p>Для компаний, семейных встреч и выездных мероприятий</p>
+              <small>Несколько спален, гостиная, кухня, приватность</small>
+              <strong>от 14 500 ₽ / ночь</strong>
+              <span class="amenities">♨ ☕ ⛺</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section spa-section" id="spa">
+        <div class="container spa-card reveal">
+          <div class="spa-copy">
+            <h2>SPA-центр</h2>
+            <p>
+              Пространство восстановления с понятной структурой услуг:
+              бассейны, SPA-программы, ручной и аппаратный массаж, соляная комната.
+            </p>
+            <a class="btn btn-sand" href="#request">Смотреть услуги</a>
+          </div>
+          <img src="./assets/imgs/imgs/IMG_0632-2.jpg.jpeg" alt="SPA-центр" />
+          <ul>
+            <li><svg class="icon"><use href="#icon-waves"></use></svg>Бассейны и водная зона</li>
+            <li><svg class="icon"><use href="#icon-sparkles"></use></svg>SPA-программы</li>
+            <li><svg class="icon"><use href="#icon-heart"></use></svg>Ручной массаж</li>
+            <li><svg class="icon"><use href="#icon-dumbbell"></use></svg>Аппаратный массаж</li>
+            <li><svg class="icon"><use href="#icon-flame"></use></svg>Соляная комната</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section service-grid-section">
+        <div class="container service-grid">
+          <article class="service-card reveal" id="bath">
+            <div>
+              <h2>Банный комплекс</h2>
+              <p>Русская баня на дровах, парные, купель и комната отдыха.</p>
+              <a class="btn btn-light" href="#request">Подробнее</a>
+            </div>
+            <img src="./assets/imgs/imgs/tempImagewZbK0r.jpg.jpeg" alt="Банный комплекс" />
+          </article>
+
+          <article class="active-card reveal" id="active">
+            <div>
+              <h2>Активный отдых</h2>
+              <div class="tabs" role="tablist" aria-label="Сезоны активного отдыха">
+                <button class="active" type="button" data-tab="summer">Лето-осень</button>
+                <button type="button" data-tab="winter">Зима</button>
+                <button type="button" data-tab="year">Круглый год</button>
+              </div>
+              <ul data-activity-list>
+                <li><svg class="icon"><use href="#icon-fish"></use></svg>Рыбалка летом и осенью</li>
+                <li><svg class="icon"><use href="#icon-waves"></use></svg>Лодки и сапборды</li>
+                <li><svg class="icon"><use href="#icon-waves"></use></svg>Катамараны</li>
+                <li><svg class="icon"><use href="#icon-bike"></use></svg>Квадроциклы</li>
+                <li><svg class="icon"><use href="#icon-bike"></use></svg>Велосипеды</li>
+                <li><svg class="icon"><use href="#icon-users"></use></svg>Волейбол</li>
+              </ul>
+            </div>
+            <img src="./assets/imgs/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Активный отдых у воды" />
+          </article>
+
+          <article class="service-card reveal" id="food">
+            <div>
+              <h2>Кафе и банкетный зал</h2>
+              <p>Домашняя кухня, сезонные блюда и уютная атмосфера для событий.</p>
+              <a class="btn btn-light" href="#request">Смотреть меню</a>
+            </div>
+            <img src="./assets/imgs/imgs/photo.png" alt="Кафе и банкетный зал" />
+          </article>
+
+          <article class="events-card reveal" id="events">
+            <div>
+              <h2>Мероприятия</h2>
+              <ul>
+                <li><svg class="icon"><use href="#icon-heart"></use></svg>Свадьбы</li>
+                <li><svg class="icon"><use href="#icon-utensils"></use></svg>Банкеты</li>
+                <li><svg class="icon"><use href="#icon-users"></use></svg>Корпоративы</li>
+                <li><svg class="icon"><use href="#icon-calendar"></use></svg>Выпускные</li>
+                <li><svg class="icon"><use href="#icon-gift"></use></svg>Дни рождения</li>
+                <li><svg class="icon"><use href="#icon-sparkles"></use></svg>Ретриты</li>
+              </ul>
+              <a href="#request">Подробнее о мероприятиях</a>
+            </div>
+            <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Мероприятия в Карповке" />
+          </article>
+        </div>
+      </section>
+
+      <section class="loyalty-section" id="loyalty">
+        <div class="container loyalty-grid reveal">
+          <article>
+            <h2>Программа лояльности</h2>
+            <p>Бонусы за каждое бронирование и привилегии для постоянных гостей.</p>
+            <a class="btn btn-sand" href="#request">Подробнее</a>
+          </article>
+          <article>
+            <h2>Подарочные сертификаты</h2>
+            <p>Лучший подарок для близких и друзей. Выберите номинал и оформите онлайн.</p>
+            <a class="btn btn-sand" href="#request">Выбрать сертификат</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section map-section" id="gazebo">
+        <div class="container map-card reveal">
+          <div class="map-copy">
+            <h2>Интерактивная карта территории</h2>
+            <p>Посмотрите, как рядом расположены проживание, SPA-центр, кафе, беседки и зоны отдыха у воды.</p>
+            <a class="btn btn-light" href="#request">Открыть карту</a>
+          </div>
+          <div class="illustrated-map" aria-label="Схема территории">
+            <img src="../assets/interactive-territory-map.png" alt="Иллюстрированная интерактивная карта территории Карповки" />
+            <button style="--x: 17%; --y: 22%" data-map-pin="Проживание" aria-label="Проживание" title="Проживание">
+              <svg class="icon"><use href="#icon-home"></use></svg>
+            </button>
+            <button style="--x: 53%; --y: 28%" data-map-pin="SPA-центр" aria-label="SPA-центр" title="SPA-центр">
+              <svg class="icon"><use href="#icon-waves"></use></svg>
+            </button>
+            <button style="--x: 81%; --y: 18%" data-map-pin="Кафе" aria-label="Кафе" title="Кафе">
+              <svg class="icon"><use href="#icon-utensils"></use></svg>
+            </button>
+            <button style="--x: 16%; --y: 54%" data-map-pin="Беседки" aria-label="Беседки" title="Беседки">
+              <svg class="icon"><use href="#icon-tent"></use></svg>
+            </button>
+            <button style="--x: 80%; --y: 72%" data-map-pin="Активный отдых" aria-label="Активный отдых" title="Активный отдых">
+              <svg class="icon"><use href="#icon-fish"></use></svg>
+            </button>
+          </div>
+          <ul class="map-legend">
+            <li><svg class="icon"><use href="#icon-home"></use></svg>Проживание</li>
+            <li><svg class="icon"><use href="#icon-waves"></use></svg>SPA-центр</li>
+            <li><svg class="icon"><use href="#icon-utensils"></use></svg>Кафе и банкетный зал</li>
+            <li><svg class="icon"><use href="#icon-tent"></use></svg>Беседки</li>
+            <li><svg class="icon"><use href="#icon-fish"></use></svg>Активный отдых</li>
+            <li><svg class="icon"><use href="#icon-car"></use></svg>Парковка</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section reviews-section">
+        <div class="container section-head reveal">
+          <h2>Отзывы гостей</h2>
+          <a href="#request">Смотреть все отзывы</a>
+        </div>
+        <div class="container reviews-grid">
+          <article class="review reveal">
+            <span>★★★★★</span>
+            <p>Прекрасное место для отдыха с семьей. Чистый воздух, пруд и уютные дома.</p>
+            <strong>Мария, Пермь</strong>
+          </article>
+          <article class="review reveal">
+            <span>★★★★★</span>
+            <p>Понравились SPA-программы и массажи. Тихо, спокойно, без ощущения городской суеты.</p>
+            <strong>Алексей, Екатеринбург</strong>
+          </article>
+          <article class="review reveal">
+            <span>★★★★★</span>
+            <p>Праздновали свадьбу в Карповке. Все прошло идеально, спасибо команде.</p>
+            <strong>Ольга и Дмитрий</strong>
+          </article>
+          <article class="review reveal">
+            <span>★★★★★</span>
+            <p>Приезжали осенью на рыбалку. Тихо, спокойно, природа потрясающая.</p>
+            <strong>Игорь, Чайковский</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="section faq-section">
+        <div class="container faq-layout">
+          <div class="faq-copy reveal">
+            <h2>Часто задаваемые вопросы</h2>
+            <a href="#request">Все вопросы</a>
+          </div>
+          <div class="faq-list reveal">
+            <button type="button">Как забронировать номер?<span>+</span></button>
+            <button type="button">Во сколько заезд и выезд?<span>+</span></button>
+            <button type="button">Можно ли приехать с питомцами?<span>+</span></button>
+            <button type="button">Что включено в стоимость проживания?<span>+</span></button>
+            <button type="button">Есть ли Wi-Fi в номерах?<span>+</span></button>
+            <button type="button">Предоставляются ли детские кроватки?<span>+</span></button>
+          </div>
+          <img class="faq-image reveal" src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Гости у воды" />
+        </div>
+      </section>
+
+      <section class="contacts-section" id="request">
+        <div class="container contacts-grid reveal">
+          <article>
+            <h2>Как добраться</h2>
+            <p class="contact-line"><svg class="icon"><use href="#icon-map-pin"></use></svg>Пермский край, Карагайский район, деревня Карповка</p>
+            <a class="contact-line" href="tel:+73425655005"><svg class="icon"><use href="#icon-phone"></use></svg>+7 (342) 565-50-05</a>
+            <a class="contact-line" href="mailto:info@karpovka.ru"><svg class="icon"><use href="#icon-mail"></use></svg>info@karpovka.ru</a>
+          </article>
+          <article>
+            <strong>Заповедная тишина</strong>
+            <p>Подскажем удобный маршрут к заповедной тишине</p>
+            <a class="btn btn-light" href="#top">Построить маршрут</a>
+          </article>
+          <div class="mini-map yandex-map">
+            <div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/org/park_otel_karpovka/1716447826/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Парк Отель Карповка</a><a href="https://yandex.ru/maps/11108/perm-krai/category/resort/184106400/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;">База, дом отдыха в Пермском крае</a><iframe src="https://yandex.ru/map-widget/v1/?ll=54.869726%2C58.309505&mode=search&oid=1716447826&ol=biz&z=10.53" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+          </div>
+          <form>
+            <h3>Остались вопросы?</h3>
+            <input type="tel" placeholder="Ваш телефон" aria-label="Ваш телефон" />
+            <button class="btn btn-sand" type="submit">Перезвоните мне</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <img src="./assets/imgs/logo.png" alt="Карповка" />
+          <p>© 2026 Парк-отель &amp; SPA «Карповка»</p>
+        </div>
+        <nav>
+          <strong>Проживание</strong>
+          <a href="#stay">Все форматы</a>
+          <a href="#stay">Эко-дома</a>
+          <a href="#stay">Гостиница</a>
+          <a href="#stay">Гостевые дома</a>
+          <a href="#loyalty">Спецпредложения</a>
+        </nav>
+        <nav>
+          <strong>SPA-центр</strong>
+          <a href="#spa">Бассейны</a>
+          <a href="#spa">SPA-программы</a>
+          <a href="#spa">Массажи</a>
+          <a href="#bath">Банный комплекс</a>
+        </nav>
+        <nav>
+          <strong>Отдых</strong>
+          <a href="#active">Активный отдых</a>
+          <a href="#stories">Для детей</a>
+          <a href="#active">Рыбалка летом и осенью</a>
+          <a href="#gazebo">Беседки</a>
+        </nav>
+        <nav>
+          <strong>Гостям</strong>
+          <a href="#request">Как добраться</a>
+          <a href="#request">FAQ</a>
+          <a href="#loyalty">Подарочные сертификаты</a>
+        </nav>
+      </div>
+    </footer>
+
+    <a class="floating-chat" href="#request">Онлайн-консультант</a>
+
+    <script src="script.js"></script>
+  </body>
+</html>
