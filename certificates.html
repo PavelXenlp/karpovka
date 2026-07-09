@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Подарочные сертификаты — Карповка</title>
+    <meta
+      name="description"
+      content="Подарочные сертификаты парк-отеля Карповка: SPA, проживание, банный комплекс и отдых на природе. Выберите номинал и подарите близким."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-chevron-left" viewBox="0 0 24 24">
+        <path d="m15 18-6-6 6-6" />
+      </symbol>
+      <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+        <path d="m9 18 6-6-6-6" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m20 6-11 11-5-5" />
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 24 24">
+        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="icon-phone" viewBox="0 0 24 24">
+        <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 1.9Z" />
+      </symbol>
+      <symbol id="icon-mail" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m3 7 9 6 9-6" />
+      </symbol>
+      <symbol id="icon-gift" viewBox="0 0 24 24">
+        <rect x="3" y="8" width="18" height="13" rx="2" />
+        <path d="M12 8v13" />
+        <path d="M3 12h18" />
+        <path d="M7.5 8A2.5 2.5 0 1 1 12 6c0 2-4.5 2-4.5 2Z" />
+        <path d="M16.5 8A2.5 2.5 0 1 0 12 6c0 2 4.5 2 4.5 2Z" />
+      </symbol>
+      <symbol id="icon-sparkles" viewBox="0 0 24 24">
+        <path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" />
+        <path d="M5 3v4" />
+        <path d="M3 5h4" />
+        <path d="M19 17v4" />
+        <path d="M17 19h4" />
+      </symbol>
+    </svg>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="index.html#top" aria-label="Карповка, главная">
+        <img src="./assets/imgs/logo.png" alt="Карповка" />
+      </a>
+      <nav class="main-nav" data-nav aria-label="Главная навигация">
+        <a href="index.html#stay">Проживание</a>
+        <a href="index.html#spa">SPA-центр</a>
+        <a href="index.html#bath">Банный комплекс</a>
+        <a href="index.html#food">Кафе и банкет</a>
+        <a href="index.html#gazebo">Территория</a>
+        <a href="index.html#active">Активный отдых</a>
+        <a href="certificates.html">Сертификаты</a>
+        <a href="index.html#loyalty">Акции</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+      <div class="header-actions">
+        <a class="phone" href="tel:+73425655005">+7 (342) 565-50-05</a>
+        <a class="btn btn-sand btn-small" href="index.html#booking">Забронировать</a>
+        <button class="menu-toggle" type="button" data-menu aria-label="Открыть меню">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="section certificates-section">
+        <div class="container">
+          <div class="certificates-intro reveal">
+            <p class="certificates-kicker">
+              <svg class="icon"><use href="#icon-gift"></use></svg>Подарок с заботой
+            </p>
+            <h1 class="center-title">Подарочные сертификаты</h1>
+            <p class="certificates-lead">
+              Лучший подарок для близких — день на природе, SPA-восстановление
+              или тёплый банный вечер. Выберите номинал, а получатель сам решит,
+              как провести время в «Карповке».
+            </p>
+          </div>
+
+          <div class="story-slider cert-slider reveal" data-story-slider>
+            <button class="story-nav story-nav--prev" type="button" data-story-prev aria-label="Предыдущий сертификат">
+              <svg class="icon"><use href="#icon-chevron-left"></use></svg>
+            </button>
+            <div class="story-stage" data-story-stage>
+              <article class="story-card cert-card cert-card--pine">
+                <div class="cert-inner">
+                  <div class="cert-head">
+                    <span class="cert-brand">Карповка</span>
+                    <span class="cert-brand-sub">Парк-отель &amp; SPA</span>
+                  </div>
+                  <div class="cert-body">
+                    <span class="cert-label">Подарочный сертификат</span>
+                    <span class="cert-value">5 000 ₽</span>
+                    <span class="cert-theme">SPA-день</span>
+                  </div>
+                  <div class="cert-foot">
+                    <span>Действует 12 месяцев</span>
+                    <span class="cert-code">№ KRP-0001</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="story-card cert-card cert-card--light">
+                <div class="cert-inner">
+                  <div class="cert-head">
+                    <span class="cert-brand">Карповка</span>
+                    <span class="cert-brand-sub">Парк-отель &amp; SPA</span>
+                  </div>
+                  <div class="cert-body">
+                    <span class="cert-label">Подарочный сертификат</span>
+                    <span class="cert-value">10 000 ₽</span>
+                    <span class="cert-theme">Отдых для двоих</span>
+                  </div>
+                  <div class="cert-foot">
+                    <span>Действует 12 месяцев</span>
+                    <span class="cert-code">№ KRP-0002</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="story-card cert-card cert-card--pine">
+                <div class="cert-inner">
+                  <div class="cert-head">
+                    <span class="cert-brand">Карповка</span>
+                    <span class="cert-brand-sub">Парк-отель &amp; SPA</span>
+                  </div>
+                  <div class="cert-body">
+                    <span class="cert-label">Подарочный сертификат</span>
+                    <span class="cert-value">15 000 ₽</span>
+                    <span class="cert-theme">Выходные на природе</span>
+                  </div>
+                  <div class="cert-foot">
+                    <span>Действует 12 месяцев</span>
+                    <span class="cert-code">№ KRP-0003</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="story-card cert-card cert-card--light">
+                <div class="cert-inner">
+                  <div class="cert-head">
+                    <span class="cert-brand">Карповка</span>
+                    <span class="cert-brand-sub">Парк-отель &amp; SPA</span>
+                  </div>
+                  <div class="cert-body">
+                    <span class="cert-label">Подарочный сертификат</span>
+                    <span class="cert-value">25 000 ₽</span>
+                    <span class="cert-theme">Большая программа</span>
+                  </div>
+                  <div class="cert-foot">
+                    <span>Действует 12 месяцев</span>
+                    <span class="cert-code">№ KRP-0004</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <button class="story-nav story-nav--next" type="button" data-story-next aria-label="Следующий сертификат">
+              <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+            </button>
+            <div class="story-dots" data-story-dots></div>
+          </div>
+
+          <div class="certificates-cta reveal">
+            <a class="btn btn-sand" href="#contacts">Оформить сертификат</a>
+            <p class="certificates-note">
+              Номиналы указаны для примера — набор и стоимость сертификатов
+              уточняются.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section uds-section">
+        <div class="container uds-card reveal">
+          <div class="uds-copy">
+            <h2>Бонусная карта в приложении UDS</h2>
+            <p>
+              Отсканируйте QR-код камерой телефона, установите приложение UDS
+              и активируйте бонусную карту «Карповки». Копите баллы за каждое
+              посещение и оплачивайте ими до части счёта.
+            </p>
+            <ul class="uds-steps">
+              <li><svg class="icon"><use href="#icon-check"></use></svg>Наведите камеру телефона на QR-код</li>
+              <li><svg class="icon"><use href="#icon-check"></use></svg>Установите приложение UDS</li>
+              <li><svg class="icon"><use href="#icon-check"></use></svg>Активируйте бонусную карту и копите баллы</li>
+            </ul>
+          </div>
+          <div class="uds-qr">
+            <img class="uds-logo" src="./assets/imgs/uds_logo.jpg" alt="Логотип UDS" />
+            <div class="uds-qr-code">
+              <img src="./assets/imgs/uds_qr.png" alt="QR-код для активации бонусной карты в приложении UDS" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contacts-section" id="contacts">
+        <div class="container contacts-grid reveal">
+          <article>
+            <h2>Как добраться</h2>
+            <p class="contact-line"><svg class="icon"><use href="#icon-map-pin"></use></svg>Пермский край, Карагайский район, деревня Карповка</p>
+            <a class="contact-line" href="tel:+73425655005"><svg class="icon"><use href="#icon-phone"></use></svg>+7 (342) 565-50-05</a>
+            <a class="contact-line" href="mailto:info@karpovka.ru"><svg class="icon"><use href="#icon-mail"></use></svg>info@karpovka.ru</a>
+          </article>
+          <article>
+            <strong>Заповедная тишина</strong>
+            <p>Подскажем удобный маршрут к заповедной тишине</p>
+            <a class="btn btn-light" href="#top">Построить маршрут</a>
+          </article>
+          <div class="mini-map yandex-map">
+            <div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/org/park_otel_karpovka/1716447826/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Парк Отель Карповка</a><a href="https://yandex.ru/maps/11108/perm-krai/category/resort/184106400/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;">База, дом отдыха в Пермском крае</a><iframe src="https://yandex.ru/map-widget/v1/?ll=54.869726%2C58.309505&mode=search&oid=1716447826&ol=biz&z=10.53" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+          </div>
+          <form>
+            <h3>Остались вопросы?</h3>
+            <input type="text" placeholder="Ваше имя" aria-label="Ваше имя" />
+            <input type="tel" placeholder="Ваш телефон" aria-label="Ваш телефон" />
+            <button class="btn btn-sand" type="submit">Перезвоните мне</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <img src="./assets/imgs/logo.png" alt="Карповка" />
+          <p>© 2026 Парк-отель &amp; SPA «Карповка»</p>
+        </div>
+        <nav>
+          <strong>Проживание</strong>
+          <a href="index.html#stay">Все форматы</a>
+          <a href="index.html#stay">Эко-дома</a>
+          <a href="index.html#stay">Гостиничный комплекс</a>
+          <a href="index.html#stay">Гостевые дома</a>
+          <a href="index.html#loyalty">Спецпредложения</a>
+        </nav>
+        <nav>
+          <strong>SPA-центр</strong>
+          <a href="index.html#spa">Бассейны</a>
+          <a href="index.html#spa">SPA-программы</a>
+          <a href="index.html#spa">Массажи</a>
+          <a href="index.html#bath">Банный комплекс</a>
+        </nav>
+        <nav>
+          <strong>Отдых</strong>
+          <a href="index.html#active">Активный отдых</a>
+          <a href="index.html#stories">Для детей</a>
+          <a href="index.html#active">Рыбалка летом и осенью</a>
+          <a href="index.html#gazebo">Беседки</a>
+        </nav>
+        <nav>
+          <strong>Гостям</strong>
+          <a href="#contacts">Как добраться</a>
+          <a href="index.html#request">FAQ</a>
+          <a href="certificates.html">Подарочные сертификаты</a>
+        </nav>
+      </div>
+    </footer>
+
+    <a class="floating-chat" href="#contacts">Онлайн-консультант</a>
+
+    <script src="script.js"></script>
+  </body>
+</html>

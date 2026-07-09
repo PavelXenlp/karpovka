@@ -390,7 +390,7 @@ h3 {
 }
 
 .section {
-  padding: 86px 0;
+  padding: 60px 0;
 }
 
 .center-title {
@@ -405,6 +405,10 @@ h3 {
 .faq-section,
 .contacts-section {
   background: var(--cream);
+}
+
+.stories-section {
+  overflow: hidden;
 }
 
 .why-grid {
@@ -442,45 +446,361 @@ h3 {
   font-size: 14px;
 }
 
-.story-row {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 14px;
+.story-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.story-stage {
+  position: relative;
+  flex: 1;
+  height: 420px;
+  perspective: 1400px;
+  transform-style: preserve-3d;
 }
 
 .story-card {
-  position: relative;
-  min-height: 160px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 400px;
+  margin: -200px 0 0 -160px;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 20px;
   color: var(--white);
   background: var(--pine);
   box-shadow: var(--shadow);
+  transform-style: preserve-3d;
+  transform: translateX(0) scale(1);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.55s ease, filter 0.55s ease;
+  will-change: transform, opacity, filter;
+}
+
+/* Позиции слайдов относительно активного (задаются data-pos из JS) */
+.story-card[data-pos="0"] {
+  z-index: 5;
+  opacity: 1;
+  filter: brightness(1);
+  transform: translateX(0) scale(1) rotateY(0deg);
+}
+
+.story-card[data-pos="-1"] {
+  z-index: 4;
+  opacity: 0.9;
+  filter: brightness(0.5);
+  transform: translateX(-72%) scale(0.82) rotateY(18deg);
+}
+
+.story-card[data-pos="1"] {
+  z-index: 4;
+  opacity: 0.9;
+  filter: brightness(0.5);
+  transform: translateX(72%) scale(0.82) rotateY(-18deg);
+}
+
+.story-card[data-pos="-2"] {
+  z-index: 3;
+  opacity: 0.55;
+  filter: brightness(0.32);
+  transform: translateX(-128%) scale(0.66) rotateY(24deg);
+}
+
+.story-card[data-pos="2"] {
+  z-index: 3;
+  opacity: 0.55;
+  filter: brightness(0.32);
+  transform: translateX(128%) scale(0.66) rotateY(-24deg);
+}
+
+/* Дальние слайды скрыты */
+.story-card[data-pos="hidden"] {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0) scale(0.5) rotateY(0deg);
+}
+
+.story-card[data-pos="0"] {
+  cursor: default;
 }
 
 .story-card img {
   width: 100%;
   height: 100%;
-  min-height: inherit;
   object-fit: cover;
-  opacity: 0.8;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
-.story-card:hover img {
-  opacity: 0.94;
+.story-card[data-pos="0"]:hover img {
   transform: scale(1.05);
 }
 
 .story-card span {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 14px;
+  left: 20px;
+  right: 20px;
+  bottom: 18px;
+  z-index: 2;
   font-family: var(--serif);
-  font-size: 21px;
+  font-size: 24px;
   line-height: 1.1;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
+.story-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 55%);
+  pointer-events: none;
+}
+
+.story-nav {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  color: var(--pine);
+  background: var(--white);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  z-index: 6;
+}
+
+.story-nav:hover {
+  transform: scale(1.08);
+  background: var(--pine);
+  color: var(--white);
+}
+
+.story-nav .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.story-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -34px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.story-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.story-dots button.active {
+  background: var(--pine);
+  transform: scale(1.3);
+}
+
+/* ===== Подарочные сертификаты ===== */
+.certificates-section {
+  padding-top: 132px;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.certificates-intro {
+  max-width: 720px;
+  margin: 0 auto 44px;
+  text-align: center;
+}
+
+.certificates-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--sage);
+  color: var(--pine);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.certificates-kicker .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.certificates-intro .center-title {
+  margin-bottom: 16px;
+}
+
+.certificates-lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.cert-slider {
+  margin-top: 8px;
+}
+
+/* Карточка-сертификат наследует раскладку слайдера story-card,
+   но получает собственное оформление */
+.cert-card {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(150deg, var(--pine), var(--forest));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.cert-card::after {
+  display: none;
+}
+
+/* Сертификаты — текстовые карточки, поэтому соседние делаем непрозрачными
+   (глубину задаёт только затемнение brightness), чтобы текст не просвечивал */
+.cert-card[data-pos="-2"],
+.cert-card[data-pos="-1"],
+.cert-card[data-pos="1"],
+.cert-card[data-pos="2"] {
+  opacity: 1;
+}
+
+/* Декоративное «сияние» на фоне сертификата */
+.cert-card::before {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 164, 108, 0.45), rgba(200, 164, 108, 0) 70%);
+  pointer-events: none;
+}
+
+.cert-inner {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 28px;
+}
+
+/* Сбрасываем базовое правило .story-card span (абсолютное позиционирование
+   у нижнего края), чтобы текст сертификата шёл нормальным потоком */
+.cert-card span {
+  position: static;
+  inset: auto;
+  font: inherit;
+  text-shadow: none;
+}
+
+.cert-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cert-card .cert-brand {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.cert-card .cert-brand-sub {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.cert-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cert-card .cert-label {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.cert-card .cert-value {
+  font-family: var(--serif);
+  font-size: 46px;
+  line-height: 1;
+  color: var(--warm-sand);
+}
+
+.cert-card .cert-theme {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.cert-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.cert-card .cert-code {
+  letter-spacing: 0.08em;
+}
+
+/* Светлый вариант сертификата */
+.cert-card--light {
+  background: linear-gradient(150deg, var(--cream), var(--warm-sand));
+  color: var(--pine);
+  border-color: rgba(18, 61, 52, 0.15);
+}
+
+.cert-card--light::before {
+  background: radial-gradient(circle, rgba(18, 61, 52, 0.22), rgba(18, 61, 52, 0) 70%);
+}
+
+.cert-card--light .cert-value {
+  color: var(--forest);
+}
+
+.cert-card--light .cert-foot {
+  border-top-color: rgba(18, 61, 52, 0.2);
+}
+
+.certificates-cta {
+  margin-top: 64px;
+  text-align: center;
+}
+
+.certificates-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .section-head {
@@ -559,7 +879,7 @@ h3 {
 
 .spa-card {
   display: grid;
-  grid-template-columns: 0.9fr 1.4fr 0.72fr;
+  grid-template-columns: 0.82fr 1.6fr;
   overflow: hidden;
   border-radius: 16px;
   color: var(--white);
@@ -577,31 +897,121 @@ h3 {
   line-height: 1.6;
 }
 
-.spa-card > img {
-  width: 100%;
+/* Слайдер бассейнов */
+.spa-slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.spa-track {
+  display: flex;
   height: 100%;
-  min-height: 330px;
+  transition: transform 0.5s ease;
+}
+
+.spa-slide {
+  flex: 0 0 100%;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.spa-slide > img {
+  width: 100%;
+  /* height: 100%; */
+  height: 450px;
+  /* min-height: 100px; */
   object-fit: cover;
 }
 
-.spa-card ul {
+.spa-slide-info {
   display: grid;
-  gap: 18px;
   align-content: center;
-  margin: 0;
+  gap: 18px;
   padding: 34px;
+  background: var(--pine);
+}
+
+.spa-slide-info h3 {
+  margin: 0;
+  color: var(--white);
+}
+
+.spa-slide-info ul {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
-.spa-card li {
+.spa-slide-info li {
   display: flex;
   gap: 12px;
-  align-items: center;
+  align-items: flex-start;
   color: rgba(255, 255, 255, 0.86);
+  line-height: 1.4;
 }
 
-.spa-card li .icon {
+.spa-slide-info li .icon {
+  margin-top: 2px;
   color: var(--sand);
+}
+
+.spa-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  color: var(--white);
+  background: rgba(18, 61, 52, 0.5);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.spa-nav:hover,
+.spa-nav:focus-visible {
+  border-color: var(--sand);
+  background: rgba(18, 61, 52, 0.8);
+}
+
+.spa-prev {
+  left: 16px;
+}
+
+.spa-next {
+  right: 16px;
+}
+
+.spa-dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.spa-dots button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.spa-dots button.active {
+  background: var(--sand);
+  transform: scale(1.2);
 }
 
 .service-grid {
@@ -623,10 +1033,14 @@ h3 {
 }
 
 .service-card div,
-.active-card > div,
 .events-card div {
   padding: 30px;
   align-self: center;
+}
+
+.active-card > div {
+  padding: 30px;
+  align-self: flex-start
 }
 
 .service-card p,
@@ -641,7 +1055,7 @@ h3 {
   width: 100%;
   height: 100%;
   min-height: 300px;
-  max-height: 420px;
+  max-height: 440px;
   object-fit: cover;
 }
 
@@ -650,6 +1064,10 @@ h3 {
   flex-wrap: wrap;
   gap: 8px;
   margin: 14px 0 18px;
+
+  @media (max-width: 720px) {
+    padding: 0 !important;
+  }
 }
 
 .tabs button {
@@ -706,7 +1124,6 @@ h3 {
 .loyalty-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px;
   overflow: hidden;
   border-radius: 16px;
   color: var(--white);
@@ -714,12 +1131,22 @@ h3 {
   box-shadow: var(--shadow);
 }
 
+.loyalty-grid-loyalty {
+background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/loyalty_background.jpg");
+}
+
+.loyalty-grid-certificates {
+background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/certificates_background.jpg");
+}
+
 .loyalty-grid article {
   min-height: 210px;
   padding: 34px;
-  background:
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background:
     radial-gradient(circle at 88% 22%, rgba(200, 164, 108, 0.18), transparent 28%),
-    var(--pine);
+    var(--pine); */
 }
 
 .loyalty-grid p {
@@ -808,6 +1235,55 @@ h3 {
   color: var(--sand);
 }
 
+.advantages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.advantage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.advantage:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(25, 45, 38, 0.12);
+}
+
+.advantage-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  color: var(--sand);
+  background: var(--sage);
+}
+
+.advantage-icon .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.advantage h3 {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text);
+}
+
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -815,7 +1291,37 @@ h3 {
 }
 
 .review {
+  position: relative;
+  max-height: 270px;
+  overflow: hidden;
   padding: 22px;
+  transition: max-height 0.4s ease;
+}
+
+/* Градиент-затухание показываем только когда отзыв обрезан */
+.review.is-clamped {
+  cursor: pointer;
+}
+
+.review.is-clamped::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 88px;
+  background: linear-gradient(to top, var(--white) 20%, rgba(255, 255, 255, 0));
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.review.expanded {
+  max-height: 1600px;
+}
+
+.review.expanded::after {
+  opacity: 0;
 }
 
 .review span {
@@ -865,6 +1371,79 @@ h3 {
   object-fit: cover;
   border-radius: 16px;
   box-shadow: var(--shadow);
+}
+
+.uds-section {
+  background: var(--pine);
+  margin-bottom: 60px;
+}
+
+.uds-card {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  align-items: center;
+  color: var(--white);
+}
+
+.uds-copy p {
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.6;
+}
+
+.uds-steps {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.uds-steps li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.uds-steps li .icon {
+  color: var(--sand);
+}
+
+.uds-qr {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.uds-qr-code {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.uds-qr-code img {
+  width: 220px;
+  height: 220px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--white);
+}
+
+.uds-logo {
+  width: 220px;
+  height: 220px;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.uds-qr-code span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .contacts-section {
@@ -1026,16 +1605,27 @@ h3 {
 
   .hero-features,
   .why-grid,
-  .story-row,
   .stay-grid,
+  .advantages-grid,
   .reviews-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .story-stage {
+    height: 380px;
+  }
+
+  .story-card {
+    width: 280px;
+    height: 360px;
+    margin: -180px 0 0 -140px;
   }
 
   .booking-panel,
   .spa-card,
   .map-card,
   .faq-layout,
+  .uds-card,
   .contacts-grid,
   .footer-grid {
     grid-template-columns: 1fr;
@@ -1070,14 +1660,48 @@ h3 {
 
   .hero-features,
   .why-grid,
-  .story-row,
   .stay-grid,
+  .advantages-grid,
   .reviews-grid,
   .loyalty-grid,
   .service-card,
   .active-card,
   .events-card {
     grid-template-columns: 1fr;
+  }
+
+  .story-slider {
+    gap: 6px;
+  }
+
+  .story-stage {
+    height: 340px;
+  }
+
+  .story-card {
+    width: 230px;
+    height: 320px;
+    margin: -160px 0 0 -115px;
+  }
+
+  .story-card[data-pos="-1"] {
+    transform: translateX(-58%) scale(0.8) rotateY(16deg);
+  }
+
+  .story-card[data-pos="1"] {
+    transform: translateX(58%) scale(0.8) rotateY(-16deg);
+  }
+
+  /* На мобильных прячем дальние слайды, оставляя активный + соседние */
+  .story-card[data-pos="-2"],
+  .story-card[data-pos="2"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .story-nav {
+    width: 42px;
+    height: 42px;
   }
 
   .hero-actions,
@@ -1099,13 +1723,18 @@ h3 {
   }
 
   .spa-copy,
+  .spa-slide-info,
   .service-card div,
   .active-card div,
   .events-card div {
     padding: 24px;
   }
 
-  .spa-card > img,
+  .spa-slide {
+    grid-template-columns: 1fr;
+  }
+
+  .spa-slide > img,
   .service-card img,
   .active-card img,
   .events-card img {
@@ -1119,6 +1748,26 @@ h3 {
 
   .contacts-section {
     padding-bottom: 70px;
+  }
+
+  .certificates-section {
+    padding-top: 108px;
+  }
+
+  .certificates-intro .center-title {
+    font-size: clamp(26px, 7vw, 32px);
+  }
+
+  .certificates-lead {
+    font-size: 16px;
+  }
+
+  .cert-inner {
+    padding: 24px 22px;
+  }
+
+  .cert-value {
+    font-size: 38px;
   }
 
   .floating-chat {
