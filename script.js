@@ -198,6 +198,17 @@ document.querySelectorAll("[data-spa-slider]").forEach((slider) => {
   render();
 });
 
+// Вкладки SPA-центра: переключение панелей с услугами
+document.querySelectorAll("[data-spa-tab]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const key = button.dataset.spaTab;
+    document.querySelectorAll("[data-spa-tab]").forEach((item) => item.classList.toggle("active", item === button));
+    document.querySelectorAll("[data-spa-panel]").forEach((panel) => {
+      panel.classList.toggle("active", panel.dataset.spaPanel === key);
+    });
+  });
+});
+
 // Отзывы: обрезаем длинные до 270px и раскрываем по клику
 function setupReviews() {
   document.querySelectorAll(".review").forEach((review) => {
@@ -219,27 +230,6 @@ document.querySelectorAll(".review").forEach((review) => {
 
 setupReviews();
 window.addEventListener("resize", setupReviews);
-
-// Отзывы: если текст не помещается в 270px — показываем градиент и раскрываем по клику
-document.querySelectorAll(".review").forEach((review) => {
-  function updateClamp() {
-    if (review.classList.contains("expanded")) return;
-    const clamped = review.scrollHeight > review.clientHeight + 1;
-    review.classList.toggle("is-clamped", clamped);
-  }
-
-  review.addEventListener("click", () => {
-    if (!review.classList.contains("is-clamped") && !review.classList.contains("expanded")) return;
-    review.classList.toggle("expanded");
-    if (!review.classList.contains("expanded")) {
-      // После сворачивания заново проверяем, нужен ли градиент
-      requestAnimationFrame(updateClamp);
-    }
-  });
-
-  updateClamp();
-  window.addEventListener("resize", updateClamp, { passive: true });
-});
 
 const observer = new IntersectionObserver(
   (entries) => {

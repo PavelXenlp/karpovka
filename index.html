@@ -465,72 +465,276 @@
       </section>
 
       <section class="section spa-section" id="spa">
-        <div class="container spa-card reveal">
-          <div class="spa-copy">
+        <div class="container">
+          <div class="spa-copy reveal">
             <h2>SPA-центр</h2>
             <p>
               Пространство восстановления с понятной структурой услуг:
               бассейны, SPA-программы, ручной и аппаратный массаж, соляная комната.
             </p>
-            <a class="btn btn-sand" href="#request">Смотреть услуги</a>
+            <!-- <a class="btn btn-sand" href="#request">Смотреть услуги</a> -->
           </div>
-          <div class="spa-slider" data-spa-slider>
-            <div class="spa-track" data-spa-track>
-              <div class="spa-slide">
-                <img src="./assets/imgs/imgs/pool_6x18.jpg" alt="Бассейн 6×18" />
-                <div class="spa-slide-info">
-                  <h3>Бассейн 6×18</h3>
-                  <ul>
-                    <li><svg class="icon"><use href="#icon-flame"></use></svg>Финская сауна</li>
-                    <li><svg class="icon"><use href="#icon-waves"></use></svg>Душевые</li>
-                    <li><svg class="icon"><use href="#icon-heart"></use></svg>Зона отдыха</li>
-                    <li><svg class="icon"><use href="#icon-gift"></use></svg>Посещение подогреваемого уличного бассейна в подарок (сезонно)</li>
-                  </ul>
+
+          <div class="spa-tabs" role="tablist" aria-label="Услуги SPA-центра">
+            <button class="active" type="button" data-spa-tab="pools">Бассейны</button>
+            <button type="button" data-spa-tab="massage">Массаж</button>
+            <button type="button" data-spa-tab="programs">SPA-программы</button>
+          </div>
+
+          <div class="spa-panels reveal">
+            <!-- Бассейны -->
+            <div class="spa-panel active" data-spa-panel="pools">
+              <div class="spa-slider" data-spa-slider>
+                <div class="spa-track" data-spa-track>
+                  <div class="spa-slide">
+                    <img src="./assets/imgs/imgs/pool_6x18.jpg" alt="Бассейн 6×18" />
+                    <div class="spa-slide-info">
+                      <h3>Бассейн 6×18</h3>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-flame"></use></svg>Финская сауна</li>
+                        <li><svg class="icon"><use href="#icon-waves"></use></svg>Душевые</li>
+                        <li><svg class="icon"><use href="#icon-heart"></use></svg>Зона отдыха</li>
+                        <li><svg class="icon"><use href="#icon-gift"></use></svg>Посещение подогреваемого уличного бассейна в подарок (сезонно)</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="spa-slide">
+                    <img src="./assets/imgs/imgs/pool_outdoor.jpg" alt="Уличный бассейн" />
+                    <div class="spa-slide-info">
+                      <h3>Уличный бассейн</h3>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-heart"></use></svg>Входит в состав посещения бассейна 6x18</li>
+                        <li><svg class="icon"><use href="#icon-sparkles"></use></svg>Открытый</li>
+                        <li><svg class="icon"><use href="#icon-waves"></use></svg>Подогреваемый </li>
+                        <li><svg class="icon"><use href="#icon-flame"></use></svg>Работает в теплое время года</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="spa-slide">
+                    <img src="./assets/imgs/imgs/pool_10x4.jpg" alt="Бассейн 10×4" />
+                    <div class="spa-slide-info">
+                      <h3>Бассейн 10×4</h3>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-waves"></use></svg>Водопад</li>
+                        <li><svg class="icon"><use href="#icon-flame"></use></svg>Турецкая паровая</li>
+                        <li><svg class="icon"><use href="#icon-heart"></use></svg>Комната отдыха</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="spa-slide">
+                    <img src="./assets/imgs/imgs/pool_afrodita.jpg" alt="Бассейн «Афродита»" />
+                    <div class="spa-slide-info">
+                      <h3>Бассейн «Афродита»</h3>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-sparkles"></use></svg>Подводный массаж, джакузи с 75 форсунками</li>
+                        <li><svg class="icon"><use href="#icon-flame"></use></svg>Паровая</li>
+                        <li><svg class="icon"><use href="#icon-waves"></use></svg>Хамам</li>
+                        <li><svg class="icon"><use href="#icon-heart"></use></svg>Комната отдыха</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="spa-slide">
-                <img src="./assets/imgs/imgs/pool_outdoor.jpg" alt="Уличный бассейн" />
-                <div class="spa-slide-info">
-                  <h3>Уличный бассейн</h3>
-                  <ul>
-                    <li><svg class="icon"><use href="#icon-heart"></use></svg>Входит в состав посещения бассейна 6x18</li>
-                    <li><svg class="icon"><use href="#icon-sparkles"></use></svg>Открытый</li>
-                    <li><svg class="icon"><use href="#icon-waves"></use></svg>Подогреваемый </li>
-                    <li><svg class="icon"><use href="#icon-flame"></use></svg>Работает в теплое время года</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="spa-slide">
-                <img src="./assets/imgs/imgs/pool_10x4.jpg" alt="Бассейн 10×4" />
-                <div class="spa-slide-info">
-                  <h3>Бассейн 10×4</h3>
-                  <ul>
-                    <li><svg class="icon"><use href="#icon-waves"></use></svg>Водопад</li>
-                    <li><svg class="icon"><use href="#icon-flame"></use></svg>Турецкая паровая</li>
-                    <li><svg class="icon"><use href="#icon-heart"></use></svg>Комната отдыха</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="spa-slide">
-                <img src="./assets/imgs/imgs/pool_afrodita.jpg" alt="Бассейн «Афродита»" />
-                <div class="spa-slide-info">
-                  <h3>Бассейн «Афродита»</h3>
-                  <ul>
-                    <li><svg class="icon"><use href="#icon-sparkles"></use></svg>Подводный массаж, джакузи с 75 форсунками</li>
-                    <li><svg class="icon"><use href="#icon-flame"></use></svg>Паровая</li>
-                    <li><svg class="icon"><use href="#icon-waves"></use></svg>Хамам</li>
-                    <li><svg class="icon"><use href="#icon-heart"></use></svg>Комната отдыха</li>
-                  </ul>
-                </div>
+                <button class="spa-nav spa-prev" type="button" data-spa-prev aria-label="Предыдущий слайд">
+                  <svg class="icon"><use href="#icon-chevron-left"></use></svg>
+                </button>
+                <button class="spa-nav spa-next" type="button" data-spa-next aria-label="Следующий слайд">
+                  <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+                </button>
+                <div class="spa-dots" data-spa-dots></div>
               </div>
             </div>
-            <button class="spa-nav spa-prev" type="button" data-spa-prev aria-label="Предыдущий бассейн">
-              <svg class="icon"><use href="#icon-chevron-left"></use></svg>
-            </button>
-            <button class="spa-nav spa-next" type="button" data-spa-next aria-label="Следующий бассейн">
-              <svg class="icon"><use href="#icon-chevron-right"></use></svg>
-            </button>
-            <div class="spa-dots" data-spa-dots></div>
+
+            <!-- Массаж -->
+            <div class="spa-panel" data-spa-panel="massage">
+              <div class="spa-slider" data-spa-slider>
+                <div class="spa-track" data-spa-track>
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/massage_spine.jpg" alt="Массаж спины" />
+                    <div class="spa-slide-info">
+                      <h3>Массаж спины</h3>
+                      <p>
+                        Массаж спины — прекрасное средство для улучшения общего состояния,
+                        профилактической борьбы с воздействием на организм вредных факторов
+                        окружающей среды. Он повышает сопротивляемость организма различным
+                        инфекциям и стрессам, нормализует функции сальных и потовых желёз,
+                        улучшает состояние подкожно-жировой клетчатки — в результате кожа
+                        становится гладкой, плотной и эластичной.
+                      </p>
+                      <!-- <span class="spa-price">1200 ₽</span> -->
+                    </div>
+                  </div>
+
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/massage_method.jpg" alt="Массаж по авторской методике" />
+                    <div class="spa-slide-info">
+                      <h3>Массаж по авторской методике</h3>
+                      <p>
+                        Процедура направлена на снятие напряжения и улучшение общего
+                        самочувствия и охватывает все основные группы мышц. Используются
+                        различные техники — разминание, поглаживание и растирание, что
+                        помогает расслабить мышцы и снять болевые ощущения.
+                      </p>
+                      <p>Регулярный общий массаж помогает:</p>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg>Улучшить кровообращение</li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg>Стимулировать лимфатическую систему</li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg>Способствовать эмоциональному расслаблению</li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg>Снизить уровень стресса и улучшить настроение</li>
+                      </ul>
+                      <!-- <span class="spa-price">2300 ₽ / час</span> -->
+                    </div>
+                  </div>
+
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/massage_childern.jpg" alt="Детский массаж" />
+                    <div class="spa-slide-info">
+                      <h3>Детский массаж</h3>
+                      <p>
+                        Организм и тело подростка непрерывно изменяются, и именно эти
+                        изменения могут стать причиной различных болей в мышцах, головных
+                        болей и травм.
+                      </p>
+                      <p>
+                        Многие школьники активно занимаются спортом, иногда даже слишком,
+                        мало спят и плохо питаются — всё это отрицательно сказывается на
+                        физическом самочувствии.
+                      </p>
+                      <p>
+                        Массаж помогает восстановить повреждённые мышцы, снять боль и
+                        улучшить качество сна — всё это крайне положительно скажется на
+                        здоровье и учебной продуктивности ребёнка.
+                      </p>
+                      <!-- <span class="spa-price">1200 ₽</span> -->
+                    </div>
+                  </div>
+
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/massage_lpg.jpg" alt="LPG-массаж" />
+                    <div class="spa-slide-info">
+                      <h3>LPG-массаж</h3>
+                      <p>
+                        Применяется для борьбы с проблемами кожи, не требующими медицинского
+                        вмешательства (в том числе с так называемым «целлюлитом»), улучшения
+                        внешнего вида и эластичности кожи, а также способствует улучшению
+                        обменных процессов и уменьшению жировых клеток.
+                      </p>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg>Особая технология стимулирует коллаген и эластин, что укрепляет и уплотняет кожу</li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg>Помогает бороться с вялостью кожи: активное воздействие на мышцы укрепляет и тонизирует их</li>
+                      </ul>
+                      <!-- <span class="spa-price">900 ₽ / 30 минут&nbsp;&nbsp;·&nbsp;&nbsp;1200 ₽ / 40 минут</span> -->
+                    </div>
+                  </div>
+
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/massage_vibro.jpg" alt="Вибромассаж" />
+                    <div class="spa-slide-info">
+                      <h3>Вибромассаж</h3>
+                      <p>
+                        Вибрационный массаж всего тела — эффективная и приятная процедура
+                        с множеством преимуществ для здоровья и благополучия организма:
+                      </p>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Улучшение кровообращения:</strong> стимулирует кровоток, улучшая поступление кислорода и питательных веществ в ткани и выведение токсинов</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Расслабление мышц:</strong> снимает напряжение и усталость, уменьшает болевые ощущения и спазмы — особенно после тренировок или долгой работы за компьютером</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Снятие стресса:</strong> способствует выделению эндорфинов, улучшая настроение и психоэмоциональное состояние</span></li>
+                      </ul>
+                      <!-- <span class="spa-price">30 минут — 900 ₽&nbsp;&nbsp;·&nbsp;&nbsp;40 минут — 1200 ₽</span> -->
+                    </div>
+                  </div>
+
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/massage_press.jpg" alt="Прессотерапия" />
+                    <div class="spa-slide-info">
+                      <h3>Прессотерапия</h3>
+                      <p>
+                        Прессотерапия — вид аппаратного массажа, суть которого заключается
+                        в механическом воздействии на тело сжатым воздухом.
+                      </p>
+                      <p>
+                        Терапевтический эффект основан на активизации тока лимфы по сосудам
+                        и ускорении выхода жидкости из межклеточного пространства.
+                      </p>
+                      <p>
+                        Для максимального комфорта и эффективности просим надеть удобную
+                        одежду, закрывающую руки и ноги: хлопковые брюки или леггинсы и
+                        кофту с длинным рукавом. Это обеспечит приятное скольжение костюма
+                        и позволит полностью расслабиться во время процедуры.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <button class="spa-nav spa-prev" type="button" data-spa-prev aria-label="Предыдущий слайд">
+                  <svg class="icon"><use href="#icon-chevron-left"></use></svg>
+                </button>
+                <button class="spa-nav spa-next" type="button" data-spa-next aria-label="Следующий слайд">
+                  <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+                </button>
+                <div class="spa-dots" data-spa-dots></div>
+              </div>
+            </div>
+
+            <!-- SPA-программы -->
+            <div class="spa-panel" data-spa-panel="programs">
+              <div class="spa-slider" data-spa-slider>
+                <div class="spa-track" data-spa-track>
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/spa_krasivoe-telo.jpg" alt="SPA-программа «Красивое тело»" />
+                    <div class="spa-slide-info">
+                      <h3>SPA-программа «Красивое тело»</h3>
+                      <p>Что вас ждёт:</p>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Медовый скраб</strong> — нежное очищение и питание кожи</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Медовое обёртывание</strong> — глубокое увлажнение и восстановление</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Лимфодренажный массаж</strong> — уменьшение отёков, улучшение тонуса</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Травяной чай</strong> — расслабляющее завершение</span></li>
+                      </ul>
+                      <p><strong>Эффект:</strong> подтянутая, сияющая кожа, ощущение лёгкости и прилив энергии.</p>
+                    </div>
+                  </div>
+
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/spa_chocolate-heaven.jpg" alt="SPA-программа «Шоколадный рай»" />
+                    <div class="spa-slide-info">
+                      <h3>SPA-программа «Шоколадный рай»</h3>
+                      <p>Что вас ждёт:</p>
+                      <ul>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Шоколадное скрабирование</strong> — мягкое отшелушивание с ароматом какао</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Шоколадное обёртывание</strong> — глубокое питание и увлажнение кожи</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Расслабляющий массаж</strong> — снятие напряжения и мышечных зажимов</span></li>
+                        <li><svg class="icon"><use href="#icon-check"></use></svg><span><strong>Травяной чай</strong> — тёплое завершение ритуала</span></li>
+                      </ul>
+                      <p><strong>Эффект:</strong> бархатистая кожа, приподнятое настроение и полное восстановление сил.</p>
+                    </div>
+                  </div>
+
+                  <div class="spa-slide spa-slide--text">
+                    <img src="./assets/imgs/imgs/spa_salt-room.jpg" alt="Соляная комната" />
+                    <div class="spa-slide-info">
+                      <h3>Соляная комната</h3>
+                      <p>
+                        Соляная пещера в «Карповке» — отличный способ снять накопившуюся
+                        усталость.
+                      </p>
+                      <p>
+                        Солегенератор, установленный в пещере, поставляет в неё микрочастицы
+                        соли, оказывающие лечебное воздействие на организм. Ионы соли,
+                        распыляемые в воздухе, помогают справляться с простудными
+                        заболеваниями, укреплять иммунитет и избавляться от стресса.
+                      </p>
+                      <p>Сеанс проходит в сопровождении расслабляющей музыки (по желанию).</p>
+                    </div>
+                  </div>
+                </div>
+                <button class="spa-nav spa-prev" type="button" data-spa-prev aria-label="Предыдущий слайд">
+                  <svg class="icon"><use href="#icon-chevron-left"></use></svg>
+                </button>
+                <button class="spa-nav spa-next" type="button" data-spa-next aria-label="Следующий слайд">
+                  <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+                </button>
+                <div class="spa-dots" data-spa-dots></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -596,6 +800,18 @@
               <a href="#request">Подробнее о мероприятиях</a>
             </div>
             <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Мероприятия в Карповке" />
+          </article>
+
+          <article class="service-card service-card--wide reveal" id="food-delivery">
+            <div>
+              <h2>Доставка еды и напитков</h2>
+              <p>
+                С ПН по ЧТ заказы принимаются с 8:00 до 20:30, в ПТ и СБ — с 08:00
+                до 21:30. Примерное время доставки — 40 минут.
+              </p>
+              <a class="btn btn-sand" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank">Заказать онлайн</a>
+            </div>
+            <img src="./assets/imgs/imgs/food_delivery.jpg" alt="Доставка еды и напитков" />
           </article>
         </div>
       </section>

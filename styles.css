@@ -877,58 +877,132 @@ h3 {
   padding-top: 24px;
 }
 
-.spa-card {
-  display: grid;
-  grid-template-columns: 0.82fr 1.6fr;
-  overflow: hidden;
-  border-radius: 16px;
-  color: var(--white);
-  background: var(--pine);
-  box-shadow: var(--shadow);
-}
-
+/* Шапка секции SPA */
 .spa-copy {
-  padding: 36px;
-  align-self: center;
+  max-width: 760px;
+  margin: 0 auto 28px;
+  text-align: center;
 }
 
 .spa-copy p {
-  color: rgba(255, 255, 255, 0.74);
+  color: var(--muted);
   line-height: 1.6;
+  margin-bottom: 22px;
 }
 
-/* Слайдер бассейнов */
+/* Вкладки услуг */
+.spa-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.spa-tabs button {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 24px;
+  font-weight: 800;
+  color: var(--pine);
+  background: var(--white);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.spa-tabs button:hover {
+  border-color: var(--forest);
+}
+
+.spa-tabs button.active {
+  color: var(--white);
+  background: var(--forest);
+  border-color: var(--forest);
+}
+
+.spa-panel {
+  display: none;
+}
+
+.spa-panel.active {
+  display: block;
+}
+
+/* Слайдер услуг */
 .spa-slider {
   position: relative;
   overflow: hidden;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 .spa-track {
   display: flex;
-  height: 100%;
+  align-items: stretch;
   transition: transform 0.5s ease;
 }
 
 .spa-slide {
   flex: 0 0 100%;
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  display: flex;
 }
 
 .spa-slide > img {
-  width: 100%;
-  /* height: 100%; */
-  height: 450px;
-  /* min-height: 100px; */
+  flex: 0 0 58%;
+  width: 58%;
+  align-self: stretch;
+  max-height: 550px;
   object-fit: cover;
 }
 
 .spa-slide-info {
+  flex: 1;
   display: grid;
   align-content: center;
-  gap: 18px;
+  gap: 16px;
   padding: 34px;
   background: var(--pine);
+}
+
+/* Текстовые слайды (массаж, программы) */
+.spa-slide--text .spa-slide-info {
+  align-content: start;
+}
+
+.spa-slide-info p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.55;
+}
+
+.spa-slide-info li span strong {
+  color: var(--white);
+  font-weight: 700;
+}
+
+.spa-price {
+  justify-self: start;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(200, 164, 108, 0.16);
+  color: var(--sand);
+  font-weight: 800;
+}
+
+/* Заглушка для ещё не заполненных вкладок */
+.spa-empty {
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  padding: 40px;
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.82);
+  background: var(--pine);
+  box-shadow: var(--shadow);
+}
+
+.spa-empty p {
+  margin: 0;
 }
 
 .spa-slide-info h3 {
@@ -1036,6 +1110,12 @@ h3 {
 .events-card div {
   padding: 30px;
   align-self: center;
+}
+
+/* Широкая карточка-баннер на всю ширину сетки (доставка еды) */
+.service-card--wide {
+  grid-column: 1 / -1;
+  grid-template-columns: 1fr 1.25fr;
 }
 
 .active-card > div {
@@ -1622,7 +1702,6 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
   }
 
   .booking-panel,
-  .spa-card,
   .map-card,
   .faq-layout,
   .uds-card,
@@ -1730,11 +1809,20 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
     padding: 24px;
   }
 
-  .spa-slide {
-    grid-template-columns: 1fr;
+  .spa-slide-info {
+    padding: 24px 24px 48px;
   }
 
-  .spa-slide > img,
+  .spa-slide {
+    flex-direction: column;
+  }
+
+  .spa-slide > img {
+    flex: none;
+    width: 100%;
+    min-height: 240px;
+  }
+
   .service-card img,
   .active-card img,
   .events-card img {
