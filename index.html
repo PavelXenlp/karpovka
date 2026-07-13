@@ -272,6 +272,22 @@
         <path d="M12 8 8.5 10" />
         <path d="M12 8l3.5 1.5" />
       </symbol>
+      <symbol id="icon-award" viewBox="0 0 24 24">
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+        <path d="M4 22h16" />
+        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+      </symbol>
+      <symbol id="icon-medal" viewBox="0 0 24 24">
+        <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15" />
+        <path d="M11 12 5.12 2.2" />
+        <path d="m13 12 5.88-9.8" />
+        <path d="M8 7h8" />
+        <circle cx="12" cy="17" r="5" />
+        <path d="M12 18v-2h-.5" />
+      </symbol>
     </svg>
 
     <header class="site-header" data-header>
@@ -319,23 +335,23 @@
             <div class="booking-title">
               <strong>Быстрое бронирование</strong>
             </div>
-            <label>
-              Заезд
-              <input type="date" value="2026-07-06" />
-            </label>
-            <label>
-              Выезд
-              <input type="date" value="2026-07-07" />
-            </label>
-            <label>
-              Гости
-              <select>
+            <div class="booking-field">
+              <label for="booking-checkin">Заезд</label>
+              <input id="booking-checkin" name="checkin" type="date" value="2026-07-06" />
+            </div>
+            <div class="booking-field">
+              <label for="booking-checkout">Выезд</label>
+              <input id="booking-checkout" name="checkout" type="date" value="2026-07-07" />
+            </div>
+            <div class="booking-field">
+              <label for="booking-guests">Гости</label>
+              <select id="booking-guests" name="guests">
                 <option>2 взрослых, 0 детей</option>
                 <option>2 взрослых, 1 ребенок</option>
                 <option>4 гостя</option>
                 <option>Компания 6+</option>
               </select>
-            </label>
+            </div>
             <button class="btn btn-sand" type="submit">Показать</button>
           </form>
           <div class="hero-features" aria-label="Преимущества на первом экране">
@@ -799,10 +815,10 @@
               </ul>
               <a href="#request">Подробнее о мероприятиях</a>
             </div>
-            <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Мероприятия в Карповке" />
+            <img src="./assets/imgs/imgs/events.jpg" alt="Мероприятия в Карповке" />
           </article>
 
-          <article class="service-card service-card--wide reveal" id="food-delivery">
+          <article class="service-card reveal" id="food-delivery">
             <div>
               <h2>Доставка еды и напитков</h2>
               <p>
@@ -812,6 +828,17 @@
               <a class="btn btn-sand" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank">Заказать онлайн</a>
             </div>
             <img src="./assets/imgs/imgs/food_delivery.jpg" alt="Доставка еды и напитков" />
+          </article>
+
+          <article class="service-card reveal" id="food-delivery">
+            <div>
+              <h2>Беседки</h2>
+              <p>
+                Уютная беседка — малый банкетный зал для ваших праздников и встреч
+              </p>
+              <a class="btn btn-sand" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank">Заказать онлайн</a>
+            </div>
+            <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Доставка еды и напитков" />
           </article>
         </div>
       </section>
@@ -847,6 +874,8 @@
           </article>
         </div>
       </section>
+
+      
 
       <section class="loyalty-section" id="loyalty">
         <div class="container loyalty-grid reveal">
@@ -994,7 +1023,44 @@
             <button class="btn btn-sand" type="submit">Перезвоните мне</button>
           </form>
         </div>
+        
       </section>
+
+      <section class="section awards-section">
+        <div class="container center-title reveal">
+          <h2>Признание и награды</h2>
+          <p class="awards-subtitle">Гостям нравится «Карповка» — и это подтверждено наградами</p>
+        </div>
+        <div class="container awards-grid reveal">
+          <article class="award-card">
+            <div class="rating-badge">
+              <iframe src="https://yandex.ru/sprav/widget/rating-badge/1716447826?type=award" width="150" height="50" frameborder="0" title="Награда Яндекс Карт"></iframe>
+            </div>
+            <div class="award-body">
+              <span class="award-source">Яндекс Карты</span>
+              <h3>«Хорошее место»</h3>
+              <p>Награда по оценкам и отзывам гостей — присуждается лучшим организациям сервиса.</p>
+            </div>
+            <div class="award-years">
+              <span>2026</span>
+              <span>2025</span>
+              <span>2024</span>
+            </div>
+          </article>
+          <article class="award-card">
+            <span class="award-icon"><svg class="icon"><use href="#icon-medal"></use></svg></span>
+            <div class="award-body">
+              <span class="award-source">Народная премия 59.RU</span>
+              <h3>База отдыха и глэмпинг года</h3>
+              <p>Победитель в номинации по итогам народного голосования.</p>
+            </div>
+            <div class="award-years">
+              <span>2024</span>
+            </div>
+          </article>
+        </div>
+      </section>    
+
     </main>
 
     <footer class="site-footer">

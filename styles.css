@@ -89,6 +89,7 @@ button {
   align-items: center;
   padding: 18px clamp(20px, 2vw, 40px);
   color: var(--white);
+  background: rgba(18, 61, 52, transparent);
   transition: background 0.25s ease, padding 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -107,6 +108,7 @@ button {
 .main-nav {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: clamp(14px, 2vw, 27px);
   font-size: 13px;
   font-weight: 800;
@@ -126,8 +128,9 @@ button {
 
 .header-actions {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column-reverse;
+  align-items: end;
+  gap: 7px;
   white-space: nowrap;
 }
 
@@ -170,8 +173,12 @@ button {
   border-radius: 10px;
   padding: 14px 24px;
   border: 0;
+  font-size: 14px;
   font-weight: 900;
-  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .btn:hover,
@@ -220,7 +227,7 @@ button {
   background:
     linear-gradient(90deg, rgba(18, 61, 52, 0.88) 0%, rgba(18, 61, 52, 0.58) 42%, rgba(18, 61, 52, 0.16) 100%),
     linear-gradient(0deg, rgba(18, 61, 52, 0.58), rgba(18, 61, 52, 0.1) 54%),
-    url("../Текущий сайт/imgs/1.jpg_1.jpeg") center / cover;
+    url("../assets/imgs/imgs/1.jpg_1.jpeg") center / cover;
   transform: scale(1.02);
 }
 
@@ -366,6 +373,11 @@ h3 {
   font-size: 13px;
 }
 
+.booking-field {
+  display: grid;
+  gap: 8px;
+}
+
 .booking-card label,
 .booking-panel label {
   display: grid;
@@ -380,13 +392,24 @@ h3 {
 .booking-panel input,
 .booking-panel select,
 .contacts-grid input {
-  width: 100%;
-  min-height: 54px;
-  border: 1px solid transparent;
+  max-width: 100%;
+  height: 50px !important;
+  border: 1px solid var(--line);
   border-radius: 10px;
   padding: 0 14px;
   color: var(--text);
   background: var(--white);
+}
+
+/* Своя стрелка у селекта, чтобы отодвинуть её от правого края */
+.booking-card select,
+.booking-panel select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2324342f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
 }
 
 .section {
@@ -406,6 +429,7 @@ h3 {
 .contacts-section {
   background: var(--cream);
 }
+
 
 .stories-section {
   overflow: hidden;
@@ -476,8 +500,10 @@ h3 {
   box-shadow: var(--shadow);
   transform-style: preserve-3d;
   transform: translateX(0) scale(1);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.55s ease, filter 0.55s ease;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.55s ease,
+    filter 0.55s ease;
   will-change: transform, opacity, filter;
 }
 
@@ -572,7 +598,10 @@ h3 {
   background: var(--white);
   box-shadow: var(--shadow);
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
   z-index: 6;
 }
 
@@ -605,7 +634,9 @@ h3 {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .story-dots button.active {
@@ -907,7 +938,10 @@ h3 {
   font-weight: 800;
   color: var(--pine);
   background: var(--white);
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .spa-tabs button:hover {
@@ -1046,7 +1080,9 @@ h3 {
   color: var(--white);
   background: rgba(18, 61, 52, 0.5);
   backdrop-filter: blur(6px);
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .spa-nav:hover,
@@ -1080,7 +1116,9 @@ h3 {
   border: 0;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.45);
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .spa-dots button.active {
@@ -1120,7 +1158,7 @@ h3 {
 
 .active-card > div {
   padding: 30px;
-  align-self: flex-start
+  align-self: flex-start;
 }
 
 .service-card p,
@@ -1181,6 +1219,7 @@ h3 {
   gap: 9px;
   align-items: center;
   min-width: 0;
+  font-size: 14px;
 }
 
 .active-card li .icon,
@@ -1212,11 +1251,11 @@ h3 {
 }
 
 .loyalty-grid-loyalty {
-background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/loyalty_background.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/loyalty_background.jpg");
 }
 
 .loyalty-grid-certificates {
-background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/certificates_background.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/certificates_background.jpg");
 }
 
 .loyalty-grid article {
@@ -1278,7 +1317,10 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
   background: var(--forest);
   box-shadow: 0 10px 22px rgba(18, 61, 52, 0.24);
   transform: translate(-50%, -50%);
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .illustrated-map button:hover {
@@ -1330,7 +1372,9 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
   padding: 24px;
   background: var(--white);
   box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .advantage:hover {
@@ -1362,6 +1406,88 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
   font-weight: 800;
   line-height: 1.3;
   color: var(--text);
+}
+
+/* Награды */
+.awards-section {
+  padding: 0 0 60px 0;
+}
+
+.awards-subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.awards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.award-card {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  padding: 36px;
+  border-radius: 16px;
+  color: var(--white);
+  background: var(--pine);
+  box-shadow: var(--shadow);
+}
+
+.award-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  color: var(--pine);
+  background: var(--warm-sand);
+}
+
+.award-icon .icon {
+  width: 28px;
+  height: 28px;
+}
+
+.award-body {
+  display: grid;
+  gap: 8px;
+}
+
+.award-source {
+  color: var(--warm-sand);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.award-card h3 {
+  margin: 0;
+  color: var(--white);
+}
+
+.award-card p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
+}
+
+.award-years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.award-years span {
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(216, 188, 135, 0.4);
+  color: var(--warm-sand);
+  font-weight: 800;
+  font-size: 15px;
 }
 
 .reviews-grid {
@@ -1586,6 +1712,23 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
   gap: 12px;
 }
 
+/* Виджет-награда Яндекс.Карт: iframe кросс-доменный, поэтому внутренний
+   бейдж 150×50 нельзя увеличить стилями — масштабируем сам iframe трансформом.
+   Меняйте только --badge-scale, чтобы задать размер. */
+.rating-badge {
+  --badge-scale: 1.7;
+  width: calc(150px * var(--badge-scale));
+  height: calc(50px * var(--badge-scale));
+}
+
+.rating-badge iframe {
+  width: 150px;
+  height: 50px;
+  border: 0;
+  transform: scale(var(--badge-scale));
+  transform-origin: top left;
+}
+
 .site-footer {
   padding: 56px 0;
   color: rgba(255, 255, 255, 0.72);
@@ -1743,6 +1886,7 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
   .advantages-grid,
   .reviews-grid,
   .loyalty-grid,
+  .awards-grid,
   .service-card,
   .active-card,
   .events-card {
@@ -1861,4 +2005,9 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./asse
   .floating-chat {
     display: none;
   }
+}
+
+.RatingBadgeWidget {
+  width: 300px !important;
+  height: 100px;
 }
