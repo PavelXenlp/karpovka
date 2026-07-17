@@ -238,7 +238,7 @@ button {
   background:
     linear-gradient(90deg, rgba(18, 61, 52, 0.88) 0%, rgba(18, 61, 52, 0.58) 42%, rgba(18, 61, 52, 0.16) 100%),
     linear-gradient(0deg, rgba(18, 61, 52, 0.58), rgba(18, 61, 52, 0.1) 54%),
-    url("../assets/imgs/imgs/1.jpg_1.jpeg") center / cover;
+    url("./assets/imgs/imgs/1.jpg_1.jpeg") center / cover;
   transform: scale(1.02);
 }
 
