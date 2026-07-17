@@ -121,8 +121,10 @@ button {
   opacity: 0.9;
   border-bottom: 1px solid transparent;
   padding-bottom: 4px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: 400;
+  font-size: 16px;
+  text-align: center;
 
   @media (max-width: 1120px) {
     font-size: 16px;
@@ -248,7 +250,7 @@ button {
   gap: 42px 64px;
   align-items: end;
   min-height: 720px;
-  padding: 130px 0 104px;
+  padding: 160px 0 104px;
 }
 
 .hero-copy {
