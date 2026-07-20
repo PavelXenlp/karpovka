@@ -475,8 +475,8 @@
             <img src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Эко-дома" />
             <div>
               <h3>Эко-дома</h3>
-              <p>Для пар, семей и спокойных выходных на природе</p>
-              <small>Отдельный дом, терраса, кухня, мангальная зона</small>
+              <p class="stay-section__top-caption">Для пар, семей и спокойных выходных на природе</p>
+              <p>Отдельный дом, терраса, кухня, мангальная зона</p>
               <strong>от 10 500 ₽ / ночь</strong>
             </div>
           </article>
@@ -484,8 +484,8 @@
             <img src="./assets/imgs/imgs/IMG_9846.JPG.jpeg" alt="Гостиничный комплекс" />
             <div>
               <h3>Гостиничный комплекс</h3>
-              <p>Номера для короткого отдыха, СПА-визита или события</p>
-              <small>Завтрак, Wi-Fi, удобный доступ к услугам комплекса</small>
+              <p class="stay-section__top-caption">Номера для короткого отдыха, СПА-визита или события</p>
+              <p>Мангальная зона, Wi-Fi, удобный доступ к услугам комплекса</p>
               <strong>от 6 000 ₽ / ночь</strong>
             </div>
           </article>
@@ -493,8 +493,8 @@
             <img src="./assets/imgs/imgs/1.jpg.jpeg" alt="Гостевые дома" />
             <div>
               <h3>Гостевые дома</h3>
-              <p>Для компаний, семейных встреч и выездных мероприятий</p>
-              <small>Несколько спален, гостиная, кухня, приватность</small>
+              <p class="stay-section__top-caption">Для компаний, семейных встреч и выездных мероприятий</p>
+              <p>Несколько спален, гостиная, кухня, приватность</p>
               <strong>от 14 500 ₽ / ночь</strong>
             </div>
           </article>
@@ -780,11 +780,13 @@
         <div class="container service-grid">
           <article class="service-card reveal" id="bath">
             <div>
-              <h2>Банный комплекс</h2>
-              <p>Русская баня на дровах, парные с системой второе дыхание</p>
-              <a class="btn btn-light" href="#request">Подробнее</a>
+              <div class="service-card__heading">
+                <h2>Банный комплекс</h2>
+                <p>Русская баня на дровах, парные с системой второе дыхание</p>
+              </div>
+              <a class="btn btn-forest" href="#request">Подробнее</a>
             </div>
-            <img src="./assets/imgs/imgs/tempImagewZbK0r.jpg.jpeg" alt="Банный комплекс" />
+            <img src="./assets/imgs/imgs/banya.png" alt="Банный комплекс" />
           </article>
 
           <article class="active-card reveal" id="active">
@@ -814,52 +816,79 @@
 
           <article class="service-card reveal" id="food">
             <div>
-              <h2>Кафе и банкетный зал</h2>
-              <p>Домашняя кухня, сезонные блюда и уютная атмосфера для событий.</p>
-              <a class="btn btn-light" href="#request">Смотреть меню</a>
+              <div class="service-card__heading">
+                <h2>Кафе и банкетный зал</h2>
+                <p>Домашняя кухня, сезонные блюда и уютная атмосфера для событий.</p>
+              </div>
+              <a class="btn btn-forest" href="/cafe">Смотреть меню</a>
             </div>
             <img src="./assets/imgs/imgs/photo.png" alt="Кафе и банкетный зал" />
           </article>
 
           <article class="events-card reveal" id="events">
             <div>
+              <div class="service-card__heading">
               <h2>Мероприятия</h2>
-              <ul>
-                <li><svg class="icon"><use href="#icon-heart"></use></svg>Свадьбы</li>
-                <li><svg class="icon"><use href="#icon-utensils"></use></svg>Банкеты</li>
-                <li><svg class="icon"><use href="#icon-users"></use></svg>Корпоративы</li>
-                <li><svg class="icon"><use href="#icon-calendar"></use></svg>Выпускные</li>
-                <li><svg class="icon"><use href="#icon-gift"></use></svg>Дни рождения</li>
-                <li><svg class="icon"><use href="#icon-retreat"></use></svg>Ретриты</li>
-                <li><svg class="icon"><use href="#icon-camp"></use></svg>Лагеря</li>
-                <li><svg class="icon"><use href="#icon-newyear"></use></svg>Новый год</li>
-              </ul>
-              <a href="#request">Подробнее о мероприятиях</a>
+                <ul>
+                  <li><svg class="icon"><use href="#icon-heart"></use></svg>Свадьбы</li>
+                  <li><svg class="icon"><use href="#icon-utensils"></use></svg>Банкеты</li>
+                  <li><svg class="icon"><use href="#icon-calendar"></use></svg>Выпускные</li>
+                  <li><svg class="icon"><use href="#icon-gift"></use></svg>Дни рождения</li>
+                  <li><svg class="icon"><use href="#icon-retreat"></use></svg>Ретриты</li>
+                  <li><svg class="icon"><use href="#icon-users"></use></svg>Корпоративы</li>
+                  <li><svg class="icon"><use href="#icon-camp"></use></svg>Лагеря</li>
+                  <li><svg class="icon"><use href="#icon-newyear"></use></svg>Новый год</li>
+                </ul>
+              </div>
+              <a class="btn btn-forest" href="#request">Подробнее о мероприятиях</a>
             </div>
             <img src="./assets/imgs/imgs/events.jpg" alt="Мероприятия в Карповке" />
           </article>
 
           <article class="service-card reveal" id="food-delivery">
             <div>
-              <h2>Доставка еды и напитков</h2>
-              <p>
-                С ПН по ЧТ заказы принимаются с 8:00 до 20:30, в ПТ и СБ — с 08:00
-                до 21:30. Примерное время доставки — 40 минут.
-              </p>
-              <a class="btn btn-sand" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank">Заказать онлайн</a>
+              <div class="service-card__heading">
+                <h2>Доставка еды и напитков</h2>
+                <p>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet necessitatibus quos reiciendis tempora harum blanditiis ullam eligendi, placeat aut soluta?
+                  <!-- С ПН по ЧТ заказы принимаются с 8:00 до 20:30, в ПТ и СБ — с 08:00
+                  до 21:30. Примерное время доставки — 40 минут. -->
+                </p>
+              </div>
+              <a class="btn btn-forest" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank">Заказать онлайн</a>
             </div>
             <img src="./assets/imgs/imgs/food_delivery.jpg" alt="Доставка еды и напитков" />
           </article>
 
           <article class="service-card reveal" id="food-delivery">
             <div>
-              <h2>Беседки</h2>
-              <p>
-                Уютная беседка — малый банкетный зал для ваших праздников и встреч
-              </p>
-              <a class="btn btn-sand" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank">Заказать онлайн</a>
+              <div class="service-card__heading">
+                <h2>Беседки</h2>
+                <p>
+                  Уютная беседка — малый банкетный зал для ваших праздников и встреч
+                </p>
+              </div>
+              <a class="btn btn-forest" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank">Заказать онлайн</a>
             </div>
-            <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Доставка еды и напитков" />
+            <div class="gazebo-slider" data-spa-slider>
+              <div class="gazebo-track" data-spa-track>
+                <div class="gazebo-slide">
+                  <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Тёплая беседка" />
+                  <span class="gazebo-caption">Тёплая беседка — крытый малый банкетный зал</span>
+                </div>
+                <div class="gazebo-slide">
+                  <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Открытая беседка" />
+                  <span class="gazebo-caption">Открытая беседка — большая уличная на 130 человек</span>
+                </div>
+              </div>
+              <button class="spa-nav spa-prev" type="button" data-spa-prev aria-label="Предыдущая беседка">
+                <svg class="icon"><use href="#icon-chevron-left"></use></svg>
+              </button>
+              <button class="spa-nav spa-next" type="button" data-spa-next aria-label="Следующая беседка">
+                <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+              </button>
+              <div class="spa-dots" data-spa-dots></div>
+            </div>
           </article>
         </div>
       </section>
@@ -871,7 +900,7 @@
         <div class="container advantages-grid reveal">
           <article class="advantage">
             <span class="advantage-icon"><svg class="icon"><use href="#icon-trees"></use></svg></span>
-            <h3>Заповедная зона</h3>
+            <h3>Расположение на берегу пруда</h3>
           </article>
           <article class="advantage">
             <span class="advantage-icon"><svg class="icon"><use href="#icon-car"></use></svg></span>
@@ -895,7 +924,7 @@
           </article>
           <article class="advantage">
             <span class="advantage-icon"><svg class="icon"><use href="#icon-route"></use></svg></span>
-            <h3>90 км от г. Пермь</h3>
+            <h3>Разнообразие активностей</h3>
           </article>
           <article class="advantage">
             <span class="advantage-icon"><svg class="icon"><use href="#icon-paw"></use></svg></span>
@@ -915,11 +944,11 @@
           <article class="loyalty-grid-loyalty">
             <h2>Программа лояльности</h2>
             <p>Бонусы за каждое бронирование и привилегии для постоянных гостей.</p>
-            <a class="btn btn-sand" href="#request">Подробнее</a>
+            <a class="btn btn-sand" href="/loyalty">Подробнее</a>
           </article>
           <article class="loyalty-grid-certificates">
             <h2>Подарочные сертификаты</h2>
-            <p>Лучший подарок для близких и друзей. Выберите номинал и оформите онлайн.</p>
+            <p>Лучший подарок для близких и друзей</p>
             <a class="btn btn-sand" href="#request">Выбрать сертификат</a>
           </article>
         </div>
@@ -1016,7 +1045,7 @@
             <p>
               Отсканируйте QR-код камерой телефона, установите приложение UDS
               и активируйте бонусную карту «Карповки». Копите баллы за каждое
-              посещение и оплачивайте ими до части счёта.
+              посещение и используйте при оплате проживания и услуг
             </p>
             <ul class="uds-steps">
               <li><svg class="icon"><use href="#icon-check"></use></svg>Наведите камеру телефона на QR-код</li>
@@ -1062,7 +1091,6 @@
       <section class="section awards-section">
         <div class="container center-title reveal">
           <h2>Признание и награды</h2>
-          <p class="awards-subtitle">Гостям нравится «Карповка» — и это подтверждено наградами</p>
         </div>
         <div class="container awards-grid reveal">
           <article class="award-card">

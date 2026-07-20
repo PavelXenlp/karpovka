@@ -181,6 +181,7 @@ button {
   min-height: 48px;
   align-items: center;
   justify-content: center;
+  text-align: center;
   border-radius: 10px;
   padding: 14px 24px;
   border: 0;
@@ -225,6 +226,11 @@ button {
   font-size: 13px;
 }
 
+.btn-forest {
+  background-color: var(--forest);
+  color: white;
+}
+
 .hero {
   position: relative;
   min-height: 720px;
@@ -238,7 +244,7 @@ button {
   background:
     linear-gradient(90deg, rgba(18, 61, 52, 0.88) 0%, rgba(18, 61, 52, 0.58) 42%, rgba(18, 61, 52, 0.16) 100%),
     linear-gradient(0deg, rgba(18, 61, 52, 0.58), rgba(18, 61, 52, 0.1) 54%),
-    url("./assets/imgs/imgs/1.jpg_1.jpeg") center / cover;
+    url("../assets/imgs/imgs/1.jpg_1.jpeg") center / cover;
   transform: scale(1.02);
 }
 
@@ -1114,7 +1120,8 @@ h3 {
   bottom: 18px;
   left: 50%;
   z-index: 2;
-  display: flex;
+  display: flex !important;
+  flex-direction: row;
   gap: 8px;
   transform: translateX(-50%);
 }
@@ -1158,6 +1165,21 @@ h3 {
 .events-card div {
   padding: 30px;
   align-self: center;
+
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  height: 100%;
+
+  @media (max-width: 720px) {
+    /* align-items: start; */
+    align-self: flex-start;
+  }
+}
+
+.service-card__heading {
+  padding: 0 !important;
+  width: 100%;
 }
 
 /* Широкая карточка-баннер на всю ширину сетки (доставка еды) */
@@ -1183,8 +1205,78 @@ h3 {
   width: 100%;
   height: 100%;
   min-height: 300px;
-  max-height: 440px;
+  max-height: 480px;
   object-fit: cover;
+}
+
+/* Слайдер беседок — занимает ту же ячейку, что и картинка карточки.
+   Сбрасываем padding/align-self, которые задаёт общий .service-card div */
+.service-card .gazebo-slider,
+.service-card .gazebo-track,
+.service-card .gazebo-slide {
+  padding: 0;
+  align-self: stretch;
+}
+
+/* Общий `.service-card div` навязывает flex-direction: column — из-за этого
+   слайды выстраивались вертикально, а горизонтальный translateX уводил их за
+   край. Возвращаем горизонтальную раскладку трека. */
+.service-card .gazebo-track {
+  flex-direction: row;
+}
+
+.gazebo-slider {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  min-height: 300px;
+  max-height: 440px;
+
+  .spa-dots {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 2;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px;
+    transform: translateX(-50%);
+    height: fit-content !important;
+  }
+}
+
+.gazebo-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.gazebo-slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+}
+
+.gazebo-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 42%);
+  pointer-events: none;
+}
+
+.gazebo-caption {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 46px;
+  z-index: 2;
+  color: var(--white);
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.2;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 
 .tabs {
@@ -1229,7 +1321,7 @@ h3 {
   gap: 9px;
   align-items: center;
   min-width: 0;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .active-card li .icon,
@@ -1242,7 +1334,7 @@ h3 {
 .events-card a {
   display: inline-flex;
   margin-top: 20px;
-  color: var(--forest);
+  /* color: var(--forest); */
   font-weight: 900;
 }
 
@@ -1253,19 +1345,23 @@ h3 {
 .loyalty-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 18px;
   overflow: hidden;
-  border-radius: 16px;
+  /* border-radius: 16px; */
   color: var(--white);
   background: rgba(255, 255, 255, 0.16);
   box-shadow: var(--shadow);
 }
 
 .loyalty-grid-loyalty {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/loyalty_background.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/loyalty_background.jpg");
+  border-radius: 16px;
 }
 
 .loyalty-grid-certificates {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/certificates_background.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url("./assets/imgs/imgs/certificates_background_2.jpg.png");
+  background-position: top;
+  border-radius: 16px;
 }
 
 .loyalty-grid article {
@@ -1280,6 +1376,7 @@ h3 {
 
 .loyalty-grid p {
   color: rgba(255, 255, 255, 0.76);
+  font-size: 16px;
 }
 
 .map-card {
@@ -1587,6 +1684,7 @@ h3 {
   object-fit: cover;
   border-radius: 16px;
   box-shadow: var(--shadow);
+  align-self: center;
 }
 
 .uds-section {
@@ -1898,10 +1996,10 @@ h3 {
     padding: 112px 0 64px;
   }
 
-  .hero-features,
-  .why-grid,
-  .stay-grid,
-  .advantages-grid,
+  .hero-.gazebo-track {
+    transform: translateX(-50%) !important;
+  }
+  grid,
   .reviews-grid,
   .loyalty-grid,
   .awards-grid,
@@ -1990,10 +2088,14 @@ h3 {
   .events-card img {
     min-height: 240px;
   }
+  .gazebo-slider {
+    min-height: 240px;
+  }
 
   .active-card ul,
   .events-card ul {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
   }
 
   .contacts-section {
