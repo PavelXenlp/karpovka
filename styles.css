@@ -201,6 +201,7 @@ button {
 .btn-sand {
   color: var(--white);
   background: var(--sand);
+  font-family: var(--serif);
 }
 
 .btn-sand:hover,
@@ -416,6 +417,7 @@ h3 {
   padding: 0 14px;
   color: var(--text);
   background: var(--white);
+  font-family: var(--serif);
 }
 
 /* Своя стрелка у селекта, чтобы отодвинуть её от правого края */
@@ -920,6 +922,8 @@ h3 {
   letter-spacing: 0.22em;
 }
 
+
+
 .spa-section {
   padding-top: 24px;
 }
@@ -990,6 +994,7 @@ h3 {
   display: flex;
   align-items: stretch;
   transition: transform 0.5s ease;
+  height: min-content;
 }
 
 .spa-slide {
@@ -999,7 +1004,7 @@ h3 {
 
 .spa-slide > img {
   flex: 0 0 58%;
-  width: 58%;
+  width: 100px;
   align-self: stretch;
   max-height: 550px;
   object-fit: cover;
@@ -1016,13 +1021,15 @@ h3 {
 
 /* Текстовые слайды (массаж, программы) */
 .spa-slide--text .spa-slide-info {
-  align-content: start;
+  align-content: center;
+  max-height: 100%;
 }
 
 .spa-slide-info p {
   margin: 0;
   color: rgba(255, 255, 255, 0.82);
   line-height: 1.55;
+  font-size: 20px;
 }
 
 .spa-slide-info li span strong {
@@ -1058,6 +1065,7 @@ h3 {
 .spa-slide-info h3 {
   margin: 0;
   color: var(--white);
+  font-size: 35px;
 }
 
 .spa-slide-info ul {
@@ -1083,7 +1091,7 @@ h3 {
 
 .spa-nav {
   position: absolute;
-  top: 50%;
+  top: 40%;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -1100,6 +1108,13 @@ h3 {
     background 0.2s ease,
     border-color 0.2s ease;
 }
+
+.spa-nav-pool {
+  top: 50%
+}
+
+
+
 
 .spa-nav:hover,
 .spa-nav:focus-visible {
@@ -1142,6 +1157,10 @@ h3 {
   background: var(--sand);
   transform: scale(1.2);
 }
+
+
+
+
 
 .service-grid {
   display: grid;
@@ -1765,8 +1784,7 @@ h3 {
 }
 
 .contacts-grid {
-  display: grid;
-  grid-template-columns: 1fr 0.8fr 1fr 0.9fr;
+  display: flex;
   gap: 14px;
 }
 
@@ -1777,6 +1795,7 @@ h3 {
 .contacts-grid p,
 .contacts-grid a:not(.btn) {
   color: var(--muted);
+  font-family: var(--serif);
 }
 
 .contacts-grid strong {
@@ -1787,11 +1806,16 @@ h3 {
   font-weight: 400;
 }
 
+.contacts-heading {
+  font-size: 24px !important;
+}
+
 .contact-line {
   display: flex;
   gap: 9px;
   align-items: center;
   margin: 0 0 10px;
+  font-family: var(--serif);
 }
 
 .contact-line .icon {
@@ -1805,6 +1829,12 @@ h3 {
   overflow: hidden;
   padding: 0;
   background: var(--white);
+  display: flex;
+  width: 100%;
+}
+
+.block-inf-route {
+  padding: 24px;
 }
 
 .yandex-map > div,
@@ -1818,6 +1848,7 @@ h3 {
 .contacts-grid form {
   display: grid;
   gap: 12px;
+  min-width: 350px;
 }
 
 /* Виджет-награда Яндекс.Карт: iframe кросс-доменный, поэтому внутренний
@@ -1836,6 +1867,17 @@ h3 {
   transform: scale(var(--badge-scale));
   transform-origin: top left;
 }
+
+@media screen and (max-width: 800px) {
+  .contacts-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .mini-map {
+    flex-direction: column;
+  }
+}
+
 
 .site-footer {
   padding: 56px 0;
@@ -1956,8 +1998,7 @@ h3 {
   .map-card,
   .faq-layout,
   .uds-card,
-  .contacts-grid,
-  .footer-grid {
+  .contacts-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2080,7 +2121,7 @@ h3 {
   .spa-slide > img {
     flex: none;
     width: 100%;
-    min-height: 240px;
+    height: 100%;
   }
 
   .service-card img,
@@ -2130,4 +2171,170 @@ h3 {
 .RatingBadgeWidget {
   width: 300px !important;
   height: 100px;
+}
+
+
+.footer-icon {
+  display: none !important;
+}
+
+/* Стили для списка иконок */
+.footer-icon .t-sociallinks__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-icon .t-sociallinks__item {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-icon .t-sociallinks__item a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-icon .t-sociallinks__item a:hover {
+  transform: scale(1.15);
+  opacity: 0.85;
+}
+
+.footer-icon .t-sociallinks__svg {
+  display: block;
+}
+
+
+
+/* =========================================
+   ПРОМЕЖУТОЧНЫЕ ЭКРАНЫ (от 601px до 1120px)
+   Сетка 2x2, лого по центру, иконки по центру
+   ========================================= */
+@media (min-width: 601px) and (max-width: 1120px) {
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 столбца */
+    grid-template-areas:
+      "brand brand"
+      "nav1 nav2"
+      "nav3 nav4"
+      "icons icons";
+    gap: 32px;
+    text-align: center;
+  }
+
+  /* Логотип и копирайт по центру на всю ширину */
+  .footer-brand {
+    grid-area: brand;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .footer-brand img {
+    margin-bottom: 8px;
+    margin: auto;
+  }
+
+  .footer-brand p {
+    margin: 0;
+    font-size: 13px;
+  }
+
+  /* Распределяем 4 блока nav по сетке 2x2 */
+  .footer-grid nav:nth-of-type(1) { grid-area: nav1; }
+  .footer-grid nav:nth-of-type(2) { grid-area: nav2; }
+  .footer-grid nav:nth-of-type(3) { grid-area: nav3; }
+  .footer-grid nav:nth-of-type(4) { grid-area: nav4; }
+
+  /* Центрируем содержимое навигационных блоков */
+  .footer-grid nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-icon {
+    display: block !important;
+    grid-area: icons;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .footer-icons .icon {
+    width: 28px;
+    height: 28px;
+    color: var(--sand);
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .footer-icons a:hover .icon {
+    color: var(--white);
+    transform: scale(1.15);
+  }
+}
+
+/* =========================================
+   МОБИЛЬНЫЕ УСТРОЙСТВА (до 600px)
+   Всё по центру, иконки в ряд
+   ========================================= */
+@media (max-width: 600px) {
+
+  .site-footer div {
+    gap: 30px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 32px;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .footer-brand img {
+    margin-bottom: 8px;
+    margin: auto;
+  }
+
+  .footer-brand p {
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .footer-grid nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-icon {
+    display: block !important;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+
+  .floating-chat {
+    display: none;
+  }
 }
