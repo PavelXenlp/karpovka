@@ -89,66 +89,162 @@ document.querySelectorAll(".faq-list button").forEach((button) => {
   });
 });
 
-document.querySelectorAll("[data-story-slider]").forEach((slider) => {
-  const stage = slider.querySelector("[data-story-stage]");
-  const cards = Array.from(stage.querySelectorAll(".story-card"));
-  const dotsBox = slider.querySelector("[data-story-dots]");
-  const prevBtn = slider.querySelector("[data-story-prev]");
-  const nextBtn = slider.querySelector("[data-story-next]");
-  if (cards.length === 0) return;
 
-  let active = Math.floor(cards.length / 2);
+// Слайдер для СПА-центр
+(() => {
+  const sliders = [];
 
-  const dots = cards.map((_, index) => {
-    const dot = document.createElement("button");
-    dot.type = "button";
-    dot.setAttribute("aria-label", `Слайд ${index + 1}`);
-    dot.addEventListener("click", () => goTo(index));
-    dotsBox.appendChild(dot);
-    return dot;
-  });
+  function initSlider(slider) {
+    const track = slider.querySelector("[data-spa-track]");
+    const slides = Array.from(slider.querySelectorAll(".spa-slide"));
+    const dotsBox = slider.querySelector("[data-spa-dots]");
+    const prevBtn = slider.querySelector("[data-spa-prev]");
+    const nextBtn = slider.querySelector("[data-spa-next]");
 
-  function render() {
-    cards.forEach((card, index) => {
-      const offset = index - active;
-      // Позиция -2..2 задаёт трансформацию через CSS, остальные скрыты
-      card.dataset.pos = Math.abs(offset) <= 2 ? String(offset) : "hidden";
+    if (!track || !slides.length) return;
+
+    let active = 0;
+
+    if (dotsBox) {
+      dotsBox.innerHTML = "";
+    }
+
+    const dots = slides.map((_, index) => {
+      const dot = document.createElement("button");
+
+      dot.type = "button";
+      dot.setAttribute("aria-label", `Слайд ${index + 1}`);
+
+      dot.addEventListener("click", () => {
+        goTo(index);
+      });
+
+      dotsBox?.appendChild(dot);
+
+      return dot;
     });
-    dots.forEach((dot, index) => dot.classList.toggle("active", index === active));
-  }
 
-  function goTo(index) {
-    active = (index + cards.length) % cards.length;
+    function isMobile() {
+      return window.innerWidth <= 720;
+    }
+
+    function render() {
+      if (isMobile()) {
+        // Мобильная версия:
+        slides.forEach((slide, index) => {
+          slide.style.display = index === active ? "flex" : "none";
+        });
+        track.style.transform = "none";
+        const currentSlide = slides[active];
+
+        if (currentSlide) {
+          requestAnimationFrame(() => {
+            track.style.height = `${currentSlide.offsetHeight}px`;
+          });
+        }
+      } else {
+
+        // Десктоп:
+        slides.forEach((slide) => {
+          slide.style.display = "flex";
+        });
+        track.style.transform = `translateX(-${active * 100}%)`;
+
+        track.style.height = "";
+      }
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === active);
+      });
+    }
+
+    function goTo(index) {
+      active = (index + slides.length) % slides.length;
+      render();
+    }
+
+    prevBtn?.addEventListener("click", () => {
+      goTo(active - 1);
+    });
+
+    nextBtn?.addEventListener("click", () => {
+      goTo(active + 1);
+    });
+
+    // Свайп
+    let startX = null;
+
+    track.addEventListener(
+      "touchstart",
+      (event) => {
+        startX = event.touches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    track.addEventListener(
+      "touchend",
+      (event) => {
+        if (startX === null) return;
+
+        const endX = event.changedTouches[0].clientX;
+        const diff = endX - startX;
+
+        if (Math.abs(diff) > 40) {
+          goTo(active + (diff < 0 ? 1 : -1));
+        }
+
+        startX = null;
+      },
+      { passive: true }
+    );
+
+    sliders.push({
+      render,
+      reset() {
+        active = 0;
+        render();
+      },
+    });
+
     render();
   }
 
-  prevBtn.addEventListener("click", () => goTo(active - 1));
-  nextBtn.addEventListener("click", () => goTo(active + 1));
+  function initAll() {
+    document.querySelectorAll("[data-spa-slider]").forEach(initSlider);
+  }
 
-  cards.forEach((card, index) => {
-    card.addEventListener("click", (event) => {
-      // Клик по соседней карточке — переводим её в центр, а не переходим по ссылке
-      if (index !== active) {
-        event.preventDefault();
-        goTo(index);
-      }
+  // Инициализация
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAll);
+  } else {
+    initAll();
+  }
+
+  // Resize
+  let resizeTimer;
+
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+
+    resizeTimer = setTimeout(() => {
+      sliders.forEach((slider) => {
+        slider.render();
+      });
+    }, 150);
+  });
+
+  // Переключение вкладок SPA
+  document.querySelectorAll("[data-spa-tab]").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      setTimeout(() => {
+        sliders.forEach((slider) => {
+          slider.reset();
+        });
+      }, 50);
     });
   });
-
-  // Свайп на тач-устройствах
-  let startX = null;
-  stage.addEventListener("touchstart", (event) => {
-    startX = event.touches[0].clientX;
-  }, { passive: true });
-  stage.addEventListener("touchend", (event) => {
-    if (startX === null) return;
-    const dx = event.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) goTo(active + (dx < 0 ? 1 : -1));
-    startX = null;
-  });
-
-  render();
-});
+})();
 
 document.querySelectorAll("[data-spa-slider]").forEach((slider) => {
   const track = slider.querySelector("[data-spa-track]");
@@ -243,3 +339,7 @@ const observer = new IntersectionObserver(
 );
 
 document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
+
+
+
+
