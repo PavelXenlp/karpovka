@@ -10,9 +10,166 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="styles2.css" />
+
+    <!-- ─── Глобальный лоадер: критический CSS (в WP → wp_head) ── -->
+    <style>
+      /* Цвета захардкожены: этот <style> рендерится до styles2.css,
+         где определены CSS-переменные (--navy-950 / --gold). */
+      #site-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 34px;
+        background: #0a2822;
+        opacity: 1;
+        visibility: visible;
+        transition:
+          opacity 0.6s ease,
+          visibility 0s linear 0.6s;
+      }
+      #site-loader.is-done {
+        opacity: 0;
+        visibility: hidden;
+      }
+      #site-loader .loader__logo {
+        width: clamp(150px, 26vw, 240px);
+        height: auto;
+        display: block;
+        animation: loaderPulse 1.8s ease-in-out infinite;
+      }
+      #site-loader .loader__bar {
+        position: relative;
+        width: clamp(180px, 40vw, 280px);
+        height: 3px;
+        background: rgba(200, 164, 108, 0.18);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      #site-loader .loader__bar-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background: #c8a46c;
+        border-radius: 2px;
+      }
+      @keyframes loaderPulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.55;
+        }
+      }
+      /* Блокируем прокрутку, пока лоадер активен */
+      html.is-loading {
+        overflow: hidden;
+      }
+      /* Повторный визит в рамках сессии — лоадер не показываем */
+      html.loader-skip #site-loader {
+        display: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #site-loader .loader__logo {
+          animation: none;
+        }
+      }
+    </style>
+
+    <!-- Решение показать/пропустить — до отрисовки, чтобы не было мигания -->
+    <script>
+      (function () {
+        try {
+          if (sessionStorage.getItem('kpLoaderShown')) {
+            document.documentElement.classList.add('loader-skip');
+            return;
+          }
+        } catch (e) {}
+        document.documentElement.classList.add('is-loading');
+      })();
+    </script>
+
+    <!-- Если JS выключен — лоадер не должен «запереть» сайт -->
+    <noscript>
+      <style>
+        #site-loader {
+          display: none !important;
+        }
+        html.is-loading {
+          overflow: auto !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
+    <!-- ─── Глобальный лоадер (в WP → после wp_body_open) ───────── -->
+    <div id="site-loader" role="status" aria-label="Загрузка сайта">
+      <img class="loader__logo" src="./assets/imgs/logo.png" alt="Карповка" />
+      <div class="loader__bar"><div class="loader__bar-fill"></div></div>
+    </div>
+
+    <script>
+      // Управление лоадером. Стоит сразу после разметки → стартует немедленно,
+      // не дожидаясь Swiper с CDN и script2.js. Чистый ванильный JS.
+      (function () {
+        var root = document.documentElement;
+        if (!root.classList.contains('is-loading')) return; // повторный визит — пропуск
+        try {
+          sessionStorage.setItem('kpLoaderShown', '1');
+        } catch (e) {}
+
+        var loader = document.getElementById('site-loader');
+        if (!loader) {
+          root.classList.remove('is-loading');
+          return;
+        }
+        var fill = loader.querySelector('.loader__bar-fill');
+        var start = Date.now();
+        var MIN = 600; // минимум показа, чтобы не мигал на быстрой загрузке
+        var MAX = 7000; // фолбэк, если ресурс завис
+        var progress = 0;
+        var raf;
+
+        function tick() {
+          // асимптотически подползаем к 90% — до 100% доходим на window.load
+          progress += (90 - progress) * 0.02;
+          if (fill) fill.style.width = progress.toFixed(1) + '%';
+          if (progress < 89.5) raf = requestAnimationFrame(tick);
+        }
+        tick();
+
+        var hidden = false;
+        function hide() {
+          if (hidden) return;
+          hidden = true;
+          if (raf) cancelAnimationFrame(raf);
+          if (fill) {
+            fill.style.transition = 'width .3s ease';
+            fill.style.width = '100%';
+          }
+          var wait = Math.max(0, MIN - (Date.now() - start));
+          setTimeout(function () {
+            loader.classList.add('is-done'); // плавное затухание (CSS)
+            root.classList.remove('is-loading'); // разблокировать скролл
+            setTimeout(function () {
+              loader.style.display = 'none';
+            }, 650); // после CSS-перехода 0.6s
+          }, wait);
+        }
+
+        window.addEventListener('load', hide);
+        setTimeout(hide, MAX);
+      })();
+    </script>
+
     <!-- ─── Icon sprite (иконки активностей из основного сайта) ─ -->
     <svg class="icon-sprite" aria-hidden="true" width="0" height="0">
       <symbol id="icon-fish" viewBox="0 0 24 24">
@@ -179,6 +336,14 @@
         <path d="M5 12h14" />
         <path d="m13 6 6 6-6 6" />
       </symbol>
+      <symbol id="icon-arrow-ur" viewBox="0 0 24 24">
+        <path d="M7 17 17 7" />
+        <path d="M8 7h9v9" />
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24">
+        <path d="M6 6 18 18" />
+        <path d="M18 6 6 18" />
+      </symbol>
     </svg>
 
     <!-- ─── Nav ─────────────────────────────────────────────── -->
@@ -296,58 +461,58 @@
         <h2 class="center-title reveal">Выберите формат отдыха</h2>
       </div>
 
-      <div class="stories-slider reveal" data-stories>
-        <div class="stories-track" data-stories-track>
-          <article class="story-slide">
+      <div class="stories-slider swiper reveal" data-stories>
+        <div class="swiper-wrapper">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#accommodation">
               <img src="./assets/imgs/imgs/tempImagelyuBrS.jpg.jpeg" alt="Семейный отдых" />
               <span class="story-slide__title">Семейный отдых</span>
               <span class="story-slide__more">Подробнее</span>
             </a>
           </article>
-          <article class="story-slide">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#spa">
               <img src="./assets/imgs/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Отдых для двоих" />
               <span class="story-slide__title">Для двоих</span>
               <span class="story-slide__more">Подробнее</span>
             </a>
           </article>
-          <article class="story-slide">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#spa">
               <img src="./assets/imgs/imgs/IMG_0119-2.jpg.jpeg" alt="СПА-день" />
               <span class="story-slide__title">СПА-день</span>
               <span class="story-slide__more">Подробнее</span>
             </a>
           </article>
-          <article class="story-slide">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#bath">
               <img src="./assets/imgs/imgs/tempImagewZbK0r.jpg.jpeg" alt="Отдых компанией" />
               <span class="story-slide__title">Компанией</span>
               <span class="story-slide__more">Подробнее</span>
             </a>
           </article>
-          <article class="story-slide">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#bath">
               <img src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Банный отдых" />
               <span class="story-slide__title">Индивидуальный</span>
               <span class="story-slide__more">Подробнее</span>
             </a>
           </article>
-          <article class="story-slide">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#events">
               <img src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Корпоративы" />
               <span class="story-slide__title">Корпоративы</span>
               <span class="story-slide__more">Подробнее</span>
             </a>
           </article>
-          <article class="story-slide">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#events">
               <img src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Мероприятия" />
               <span class="story-slide__title">Мероприятия</span>
               <span class="story-slide__more">Подробнее</span>
             </a>
           </article>
-          <article class="story-slide">
+          <article class="story-slide swiper-slide">
             <a class="story-slide__card" href="#bath">
               <img src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Банный отдых" />
               <span class="story-slide__title">Банный</span>
@@ -630,113 +795,185 @@
     -->
 
     <!-- ─── Услуги · ВАРИАНТ 2: masonry-сетка (Pinterest) ────── -->
-    <section class="section mgrid-section" id="services-grid">
-      <div class="container">
-        <header class="section-head reveal">
-          <!-- <p class="eyebrow">Услуги комплекса · вариант 2</p> -->
+    <section class="section offers-section" id="services-grid">
+      <!-- <div class="container"> -->
+        <div class="section-head section-head--row reveal">
           <h2 class="section-title">Всё для насыщенного <em>отдыха</em></h2>
-        </header>
-      </div>
-
-      <div class="mgrid reveal">
-        <!-- Колонка 1: Банный + Кафе -->
-        <div class="mgrid__col">
-          <!-- Банный комплекс -->
-          <article class="mcard" id="bath">
-            <div class="mcard__media">
-              <img src="./assets/imgs/imgs/banya.png" alt="Банный комплекс" />
-            </div>
-            <div class="mcard__body">
-              <h3 class="mcard__title">Банный комплекс</h3>
-              <p class="mcard__desc">Русская баня на дровах, парные с системой «второе дыхание».</p>
-              <a class="btn btn--gold btn--sm mcard__btn" href="#contacts">Подробнее</a>
-            </div>
-          </article>
-
-          <!-- Кафе и банкетный зал -->
-          <article class="mcard" id="dining">
-            <div class="mcard__media">
-              <img src="./assets/imgs/imgs/photo.png" alt="Кафе и банкетный зал" />
-            </div>
-            <div class="mcard__body">
-              <h3 class="mcard__title">Кафе и банкетный зал</h3>
-              <p class="mcard__desc">Домашняя кухня, сезонные блюда и уютная атмосфера для событий.</p>
-              <a class="btn btn--gold btn--sm mcard__btn" href="/cafe">Смотреть меню</a>
-            </div>
-          </article>
+          <div class="offers-nav">
+            <button class="offers-nav__btn" type="button" data-offers-prev aria-label="Предыдущие">
+              <svg class="icon"><use href="#icon-chevron-left"></use></svg>
+            </button>
+            <button class="offers-nav__btn" type="button" data-offers-next aria-label="Следующие">
+              <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+            </button>
+          </div>
         </div>
+      <!-- </div> -->
 
-        <!-- Колонка 2: Мероприятия -->
-        <div class="mgrid__col">
-          <article class="mcard mcard--events" id="events">
-            <div class="mcard__media">
-              <img src="./assets/imgs/imgs/events.JPG" alt="Мероприятия в Карповке" />
-            </div>
-            <div class="mcard__body">
-              <h3 class="mcard__title">Мероприятия</h3>
-              <ul class="mcard__list">
-                <li>Свадьбы</li>
-                <li>Банкеты</li>
-                <li>Выпускные</li>
-                <li>Дни рождения</li>
-                <li>Ретриты</li>
-                <li>Корпоративы</li>
-                <li>Лагеря</li>
-                <li>Новый год</li>
-              </ul>
-              <a class="btn btn--gold btn--sm mcard__btn" href="#contacts">Подробнее о мероприятиях</a>
-            </div>
-          </article>
-        </div>
-
-        <!-- Колонка 3: Доставка + Беседки -->
-        <div class="mgrid__col">
-          <!-- Доставка еды и напитков -->
-          <article class="mcard">
-            <div class="mcard__media">
-              <img src="./assets/imgs/imgs/food_delivery.jpg" alt="Доставка еды и напитков" />
-            </div>
-            <div class="mcard__body">
-              <h3 class="mcard__title">Доставка еды и напитков</h3>
-              <p class="mcard__desc">
-                С ПН по ЧТ заказы принимаются с 8:00 до 20:30, в ПТ и СБ — с 08:00 до 21:30. Примерное время доставки — 40 минут.
-              </p>
-              <a class="btn btn--gold btn--sm mcard__btn" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank" rel="noopener"
-                >Заказать онлайн</a
-              >
-            </div>
-          </article>
-
-          <!-- Беседки (мини-слайдер) -->
-          <article class="mcard">
-            <div class="mcard__media mcard__media--slider" data-gz>
-              <div class="hcard__gz-track" data-gz-track>
-                <div class="hcard__gz-slide">
-                  <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Тёплая беседка" />
-                  <span class="hcard__gz-cap">Тёплая беседка — крытый малый банкетный зал</span>
-                </div>
-                <div class="hcard__gz-slide">
-                  <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Открытая беседка" />
-                  <span class="hcard__gz-cap">Открытая беседка — большая уличная на 130 человек</span>
+      <div class="swiper offers-swiper reveal" data-offers>
+        <div class="swiper-wrapper">
+            <!-- Банный комплекс -->
+            <article class="swiper-slide ocard" id="bath">
+              <div class="ocard__media">
+                <img src="./assets/imgs/imgs/banya.png" alt="Банный комплекс" />
+              </div>
+              <div class="ocard__body">
+                <h3 class="ocard__title">Банный комплекс</h3>
+                <div class="ocard__foot">
+                  <p class="ocard__desc">Русская баня на дровах, парные с системой «второе дыхание».</p>
+                  <a class="ocard__arrow" href="#contacts" aria-label="Подробнее — Банный комплекс">
+                    <svg class="icon"><use href="#icon-arrow-ur"></use></svg>
+                  </a>
                 </div>
               </div>
-              <button class="hcard__gz-nav hcard__gz-nav--prev" type="button" data-gz-prev aria-label="Предыдущая беседка">
-                <svg class="icon"><use href="#icon-chevron-left"></use></svg>
-              </button>
-              <button class="hcard__gz-nav hcard__gz-nav--next" type="button" data-gz-next aria-label="Следующая беседка">
-                <svg class="icon"><use href="#icon-chevron-right"></use></svg>
-              </button>
-              <div class="hcard__gz-dots" data-gz-dots></div>
-            </div>
-            <div class="mcard__body">
-              <h3 class="mcard__title">Беседки</h3>
-              <p class="mcard__desc">Уютная беседка — малый банкетный зал для ваших праздников и встреч.</p>
-              <a class="btn btn--gold btn--sm mcard__btn" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank" rel="noopener"
-                >Заказать онлайн</a
-              >
-            </div>
-          </article>
+            </article>
+
+            <!-- Кафе и банкетный зал -->
+            <article class="swiper-slide ocard" id="dining">
+              <div class="ocard__media">
+                <img src="./assets/imgs/imgs/photo.png" alt="Кафе и банкетный зал" />
+              </div>
+              <div class="ocard__body">
+                <h3 class="ocard__title">Кафе и банкетный зал</h3>
+                <div class="ocard__foot">
+                  <p class="ocard__desc">Домашняя кухня, сезонные блюда и уютная атмосфера для событий.</p>
+                  <a class="ocard__arrow" href="/cafe" aria-label="Смотреть меню">
+                    <svg class="icon"><use href="#icon-arrow-ur"></use></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Мероприятия -->
+            <article class="swiper-slide ocard" id="events">
+              <div class="ocard__media">
+                <img src="./assets/imgs/imgs/events.JPG" alt="Мероприятия в Карповке" />
+              </div>
+              <div class="ocard__body">
+                <h3 class="ocard__title">Мероприятия</h3>
+                <div class="ocard__foot">
+                  <ul class="ocard__list">
+                    <li>Свадьбы</li>
+                    <li>Банкеты</li>
+                    <li>Выпускные</li>
+                    <li>Дни рождения</li>
+                    <li>Ретриты</li>
+                    <li>Корпоративы</li>
+                    <li>Лагеря</li>
+                    <li>Новый год</li>
+                  </ul>
+                  <a class="ocard__arrow" href="#contacts" aria-label="Подробнее о мероприятиях">
+                    <svg class="icon"><use href="#icon-arrow-ur"></use></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Доставка еды и напитков -->
+            <article class="swiper-slide ocard">
+              <div class="ocard__media">
+                <img src="./assets/imgs/imgs/food_delivery.jpg" alt="Доставка еды и напитков" />
+              </div>
+              <div class="ocard__body">
+                <h3 class="ocard__title">Доставка еды и напитков</h3>
+                <div class="ocard__foot">
+                  <p class="ocard__desc">Закажите любимые блюда и напитки — доставим в любое место на территории парк-отеля.</p>
+                  <a class="ocard__arrow" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank" rel="noopener" aria-label="Заказать онлайн">
+                    <svg class="icon"><use href="#icon-arrow-ur"></use></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Беседки -->
+            <article class="swiper-slide ocard">
+              <div class="ocard__media">
+                <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Беседки" />
+              </div>
+              <div class="ocard__body">
+                <h3 class="ocard__title">Беседки</h3>
+                <div class="ocard__foot">
+                  <p class="ocard__desc">Уютная беседка — малый банкетный зал для ваших праздников и встреч.</p>
+                  <a class="ocard__arrow" href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/" target="_blank" rel="noopener" aria-label="Заказать онлайн">
+                    <svg class="icon"><use href="#icon-arrow-ur"></use></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
+    </section>
+
+    <!-- ─── Карта территории (интерактивная: перетаскивание + зум) ─ -->
+    <section class="map-section" id="map">
+      <div class="map" data-map>
+        <h2 class="map__title">Интерактивная карта <em>Карповки</em></h2>
+
+        <!-- Слой, который двигаем/масштабируем: только изображение -->
+        <div class="map__canvas" data-map-canvas>
+          <img class="map__img" src="./assets/imgs/map_no_wm.png" alt="Карта территории парк-отеля «Карповка»" draggable="false" />
+        </div>
+
+        <!-- Метки лежат в отдельном слое и позиционируются из JS,
+             поэтому не «уезжают» и не меняют размер при зуме/прокрутке.
+             data-x/data-y — доля (0..1) от размеров изображения. -->
+        <div class="map__markers" data-map-markers>
+          <button
+            class="map__marker"
+            type="button"
+            data-map-marker
+            data-x="0.4"
+            data-y="0.20"
+            data-title="Эко-дома"
+            data-img="./assets/imgs/imgs/1.jpg_1.jpeg"
+            data-desc="Отдельный дом, терраса, кухня, мангальная зона. Для пар, семей и спокойных выходных на природе."
+            data-price="от 10 500 ₽ / ночь"
+            aria-label="Эко-дома"
+          >
+            <span class="map__pin"></span>
+            <span class="map__marker-label">Эко-дома</span>
+          </button>
+
+          <button
+            class="map__marker"
+            type="button"
+            data-map-marker
+            data-x="0.32"
+            data-y="0.60"
+            data-title="Гостиничный комплекс"
+            data-img="./assets/imgs/imgs/IMG_9846.JPG.jpeg"
+            data-desc="Номера для короткого отдыха, СПА-визита или события. Мангальная зона, Wi-Fi, удобный доступ к услугам комплекса."
+            data-price="от 6 000 ₽ / ночь"
+            aria-label="Гостиничный комплекс"
+          >
+            <span class="map__pin"></span>
+            <span class="map__marker-label">Гостиничный комплекс</span>
+          </button>
+
+          <button
+            class="map__marker"
+            type="button"
+            data-map-marker
+            data-x="0.5"
+            data-y="0.4"
+            data-title="Гостевые дома"
+            data-img="./assets/imgs/imgs/1.jpg.jpeg"
+            data-desc="Несколько спален, гостиная, кухня, приватность. Для компаний, семейных встреч и выездных мероприятий."
+            data-price="от 14 500 ₽ / ночь"
+            aria-label="Гостевые дома"
+          >
+            <span class="map__pin"></span>
+            <span class="map__marker-label">Гостевые дома</span>
+          </button>
+        </div>
+
+        <!-- Полупрозрачное затемнение поверх карты — уходит при активации -->
+        <div class="map__veil" aria-hidden="true"></div>
+
+        <!-- Стартовое состояние: большая кнопка по центру -->
+        <button class="map__activate" type="button" data-map-activate>Активировать карту</button>
+        <!-- Активное состояние: компактная кнопка справа сверху -->
+        <button class="map__deactivate" type="button" data-map-deactivate>Отключить карту</button>
       </div>
     </section>
 
@@ -805,11 +1042,6 @@
 
     <!-- ─── Бонусная программа (UDS + Telegram) ──────────────── -->
 
-    <!-- ─── Интерактивная карта территории (пока просто картинка) ─ -->
-    <!-- <section class="map-section" id="map">
-      <img class="map-section__img" src="./assets/imgs/map.jpg" alt="Карта территории парк-отеля «Карповка»" />
-    </section> -->
-
     <!-- ─── Reviews ─────────────────────────────────────────── -->
     <section class="section reviews-section">
       <div class="container">
@@ -819,9 +1051,9 @@
         </header>
       </div>
 
-      <div class="reviews-slider reveal" data-reviews>
-        <div class="reviews-track" data-reviews-track>
-          <blockquote class="review" data-review>
+      <div class="reviews-slider swiper reveal" data-reviews>
+        <div class="swiper-wrapper">
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Спа-отель «Карповка» — место, куда всегда хочется вернуться!<br /><br />
@@ -842,7 +1074,7 @@
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
 
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Хотите сбежать от суеты, провести незабываемый день с семьёй, устроить волшебный девичник или романтическое свидание? Добро пожаловать в
@@ -860,7 +1092,7 @@
             <div class="review__fade" aria-hidden="true"></div>
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               О Карповка!!! Ты лучший Спа отель! Умиротворение, чувство спокойствия и отдыха, персонал всегда на связи, ты всегда под защитой,
@@ -874,7 +1106,7 @@
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
 
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Всей душой и сердцем любим это место, невероятная сказка зимой, весной наслаждаешься тишиной, летом есть куча активностей и все на одной
@@ -889,7 +1121,7 @@
             <div class="review__fade" aria-hidden="true"></div>
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Замечательно отдохнули в очередной раз в Карповке!<br />
@@ -911,7 +1143,7 @@
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
 
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Очень душевное место среди красоты природы. Жили в VIP доме, всё очень достойно, удобно, красиво. Прекрасный релакс в теплом бассейне
@@ -924,7 +1156,7 @@
             <div class="review__fade" aria-hidden="true"></div>
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Прекрасное удалённое место для отдыха, уютные стильные обустроенные домики. Детская площадка. Возможность половить рыбу в местном пруду.
@@ -939,7 +1171,7 @@
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
 
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Бываю здесь летом, и зимой — всегда есть чем заняться. Сервис на высоте, ремонт и интерьер сделаны с настоящей заботой о клиентах. В
@@ -953,7 +1185,7 @@
             <div class="review__fade" aria-hidden="true"></div>
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Благодарю за волшебный отдых на Базе Парк оттель Карповка.<br />
@@ -969,7 +1201,7 @@
             <button class="review__toggle" type="button" data-review-toggle>Читать полностью</button>
           </blockquote>
 
-          <blockquote class="review" data-review>
+          <blockquote class="review swiper-slide" data-review>
             <div class="review__stars">★★★★★</div>
             <p class="review__text">
               Часто ездим отдыхать в парк отель Карповка с семьёй и друзьями!<br /><br />
@@ -1017,8 +1249,9 @@
             </button>
             <div class="faq-item__a" data-faq-answer>
               <p>
-                Забронировать можно онлайн на сайте, по телефону +7&nbsp;(342)&nbsp;565-50-05 или написав нам. Мы подберём формат размещения под ваши
-                даты и количество гостей, подтвердим бронь и вышлем все детали заезда.
+                Забронировать можно онлайн на сайте, по телефонам, указанным на сайте, или написав нам. После согласования условий бронь
+                закрепляется задатком — минимум 50% от суммы, оплата вносится не позднее 3 часов с момента согласования. Аннуляция возможна не
+                позднее чем за 7 календарных дней до заезда — с возвратом задатка.
               </p>
             </div>
           </div>
@@ -1030,7 +1263,8 @@
             </button>
             <div class="faq-item__a" data-faq-answer>
               <p>
-                Стандартное время заезда — с 15:00, выезд — до 12:00. При наличии свободных домиков возможен более ранний заезд или поздний выезд.
+                Заселение — с 14:00, выселение — до 12:00 (единый расчётный час). Ранний заезд до 14:00 возможен при наличии свободных мест за
+                дополнительную плату.
               </p>
             </div>
           </div>
@@ -1042,8 +1276,9 @@
             </button>
             <div class="faq-item__a" data-faq-answer>
               <p>
-                Да, мы рады гостям с животными — на территории и в ряде домиков пребывание с питомцами разрешено. Просим предупредить об этом при
-                бронировании, чтобы мы подготовили подходящий вариант размещения.
+                Да, но только по согласованию с администрацией. Размещение возможно с собаками весом до 10 кг и ростом не более 45 см в холке,
+                доплата — 1000 ₽ в сутки. Понадобится ветеринарная справка с прививками и переноска (клетка). Проживание с питомцем — только в
+                отдельном доме; вход в ресторан и SPA с животными исключён.
               </p>
             </div>
           </div>
@@ -1081,9 +1316,33 @@
             </button>
             <div class="faq-item__a" data-faq-answer>
               <p>
-                Поздний выезд и ранний заезд возможны при наличии свободных мест — уточните у администратора заранее. Круглосуточная стойка приёма
-                встретит вас в любое время.
+                Ранний заезд до 14:00 возможен при наличии свободных мест за дополнительную плату. Задержка выезда после расчётного часа
+                оплачивается: почасово — до 6 часов, половина суток — от 6 до 12 часов, полные сутки — от 12 до 24 часов. Уточните у администратора
+                заранее.
               </p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-faq-item>
+            <button class="faq-item__q" type="button" data-faq-toggle aria-expanded="false">
+              <span>Могут ли приехать к нам в Карповку на время наши друзья?</span>
+              <span class="faq-item__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-item__a" data-faq-answer>
+              <p>
+                Да. Для гостей, желающих приехать на время к проживающим, действуют условия: 1000 ₽ с человека, пребывание до 6 часов. Находиться на
+                территории допустимо до 22:00. Необходима регистрация на рецепции и копия паспорта, а также подпись в правилах парк-отеля.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-faq-item>
+            <button class="faq-item__q" type="button" data-faq-toggle aria-expanded="false">
+              <span>Сколько человек вмещает база (количество спальных мест)?</span>
+              <span class="faq-item__icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-item__a" data-faq-answer>
+              <p>Количество спальных мест, включая диваны, — 103 человека.</p>
             </div>
           </div>
         </div>
@@ -1246,7 +1505,7 @@
 
     <!-- ─── Footer ──────────────────────────────────────────── -->
     <footer class="footer">
-      <div class="container">
+      <!-- <div class="container"> -->
         <div class="footer__grid grid-4responsive">
           <div>
             <a class="footer__logo" href="#" aria-label="Карповка — парк-отель">
@@ -1288,9 +1547,44 @@
           <span>© 2025 Парк-отель Карповка. Все права защищены.</span>
           <span>Пермский край, Карагайский район</span>
         </div>
-      </div>
+      <!-- </div> -->
     </footer>
 
+    <!-- ─── Попап с полным текстом отзыва ───────────────────── -->
+    <div class="review-modal" data-review-modal hidden>
+      <div class="review-modal__overlay" data-review-modal-close></div>
+      <div class="review-modal__dialog" role="dialog" aria-modal="true" aria-label="Отзыв гостя">
+        <button class="review-modal__close" type="button" data-review-modal-close aria-label="Закрыть">
+          <svg class="icon"><use href="#icon-close"></use></svg>
+        </button>
+        <div class="review-modal__stars" data-review-modal-stars></div>
+        <div class="review-modal__text" data-review-modal-text></div>
+        <div class="review-modal__author">
+          <div class="review-modal__name" data-review-modal-name></div>
+          <div class="review-modal__date" data-review-modal-date></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Попап метки на карте (место проживания) ─────────── -->
+    <div class="map-modal" data-map-modal hidden>
+      <div class="map-modal__overlay" data-map-modal-close></div>
+      <div class="map-modal__dialog" role="dialog" aria-modal="true" aria-label="Место проживания">
+        <button class="map-modal__close" type="button" data-map-modal-close aria-label="Закрыть">
+          <svg class="icon"><use href="#icon-close"></use></svg>
+        </button>
+        <div class="map-modal__media">
+          <img class="map-modal__img" data-map-modal-img src="" alt="" />
+        </div>
+        <div class="map-modal__body">
+          <h3 class="map-modal__title" data-map-modal-title></h3>
+          <p class="map-modal__desc" data-map-modal-desc></p>
+          <strong class="map-modal__price" data-map-modal-price></strong>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script2.js"></script>
   </body>
 </html>

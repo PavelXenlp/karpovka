@@ -749,13 +749,14 @@ button {
     border-top: 1px solid var(--gold-dark);
   }
 
-  &:nth-child(even) {
+  /* &:nth-child(even) {
     border-bottom: 1px solid var(--gold-dark);
-  }
+  } */
 }
 
 .combined-row__text-active-rest {
     /* height: 700px; */
+    box-sizing: border-box;
     padding-bottom: 40px;
     justify-content: start;
 }
@@ -1314,6 +1315,10 @@ button {
   transition:
     background 0.2s,
     color 0.2s;
+
+    @media (max-width: 600px) {
+      padding: 8px 16px;
+    }
 }
 
 .season-btn.is-active {
@@ -1485,16 +1490,376 @@ button {
 
 /* ─── Интерактивная карта территории ──────────────────────── */
 
+/* Карта во весь экран: секция высотой в вьюпорт */
 .map-section {
+  position: relative;
   width: 100%;
+  height: 100vh;
   background: var(--navy-900);
-  font-size: 0; /* убирает зазор под инлайновой картинкой */
+  overflow: hidden;
 }
 
-.map-section__img {
-  width: 100%;
-  height: auto;
+/* Вьюпорт карты: внутри — перетаскиваемый/масштабируемый слой и метки */
+.map {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.map__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  z-index: 1;
+  /* размеры задаёт JS по натуральному размеру картинки */
+}
+
+.map__img {
   display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Градиенты сверху/снизу — внахлёст на карту, от navy к прозрачному.
+   Лежат между картинкой (z1) и метками (z3), клики пропускают. */
+/* Градиенты сверху/снизу — поверх затемнения, чтобы края секции блендились
+   с соседними секциями в обоих состояниях карты */
+.map::before,
+.map::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(90px, 14vh, 180px);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.map::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--navy-800), transparent);
+}
+
+.map::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--navy-900), transparent);
+}
+
+/* Слой меток: не трансформируется, позиции считает JS */
+.map__markers {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none; /* кликаются только сами метки */
+}
+
+/* Метка: left/top в px задаёт JS (точка привязки), остриё пина — в этой точке.
+   Подпись позиционируется абсолютно, чтобы не влиять на привязку пина. */
+.map__marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -100%);
+  padding: 0;
+  border: none;
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Каплевидный пин */
+.map__pin {
+  position: relative;
+  display: block;
+  width: 56px;
+  height: 56px;
+  background: var(--gold);
+  border: 2px solid var(--cream);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.map__pin::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--navy-950);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.map__marker:hover .map__pin,
+.map__marker:focus-visible .map__pin {
+  transform: rotate(-45deg) scale(1.12);
+  background: var(--cream);
+}
+
+/* Подпись метки — абсолютно под пином, появляется при наведении/фокусе */
+.map__marker-label {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  padding: 5px 10px;
+  background: var(--navy-950);
+  border: 1px solid rgba(200, 164, 108, 0.35);
+  color: var(--cream);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: none;
+}
+
+.map__marker:hover .map__marker-label,
+.map__marker:focus-visible .map__marker-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Заголовок секции — поверх карты, по центру сверху */
+.map__title {
+  position: absolute;
+  top: clamp(24px, 5vh, 56px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  margin: 0;
+  max-width: 90%;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: clamp(26px, 4vw, 48px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--cream);
+  text-shadow: 0 2px 22px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
+}
+
+.map__title em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+/* При активной карте заголовок исчезает */
+.map.is-active .map__title {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Полупрозрачное затемнение поверх карты (над метками), уходит при активации */
+.map__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: rgba(10, 40, 34, 0.55);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.map.is-active .map__veil {
+  opacity: 0;
+}
+
+/* Метки некликабельны, пока карта не активирована */
+.map:not(.is-active) .map__marker {
+  pointer-events: none;
+}
+
+/* Общий вид кнопок карты (выше градиентов, чтобы не подкрашивались) */
+.map__activate,
+.map__deactivate {
+  position: absolute;
+  z-index: 6;
+  border: 1px solid var(--gold);
+  background: var(--navy-950);
+  color: var(--gold);
+  font-family: var(--sans);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.map__activate:hover,
+.map__deactivate:hover {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+/* Стартовое состояние — большая кнопка по центру секции */
+.map__activate {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: clamp(16px, 2vw, 22px) clamp(34px, 4vw, 52px);
+  font-size: clamp(15px, 1.6vw, 19px);
+}
+
+/* Активное состояние — компактная кнопка справа сверху */
+.map__deactivate {
+  top: clamp(16px, 3vw, 32px);
+  right: clamp(16px, 3vw, 32px);
+  padding: 12px 22px;
+  font-size: 13px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Переключение видимости кнопок по состоянию карты */
+.map.is-active .map__activate {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.map.is-active .map__deactivate {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* При активной карте берём жесты на себя (drag/pinch) и меняем курсор.
+   Пока карта не активна — touch-action по умолчанию, страница скроллится. */
+.map.is-active {
+  cursor: grab;
+  touch-action: none;
+}
+
+.map.is-active.is-grabbing {
+  cursor: grabbing;
+}
+
+/* ─── Попап метки на карте ────────────────────────────────── */
+.map-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.map-modal[hidden] {
+  display: none;
+}
+
+.map-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 24, 20, 0.72);
+  backdrop-filter: blur(2px);
+  animation: reviewOverlayIn 0.3s ease;
+}
+
+.map-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(460px, 100%);
+  max-height: min(88vh, 720px);
+  overflow-y: auto;
+  background: var(--navy-900);
+  border: 1px solid rgba(200, 164, 108, 0.25);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  animation: reviewModalIn 0.3s ease;
+}
+
+.map-modal.is-closing .map-modal__overlay {
+  animation: reviewOverlayOut 0.26s ease forwards;
+}
+
+.map-modal.is-closing .map-modal__dialog {
+  animation: reviewModalOut 0.26s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-modal__overlay,
+  .map-modal__dialog {
+    animation: none;
+  }
+}
+
+.map-modal__media {
+  height: clamp(180px, 30vh, 260px);
+  overflow: hidden;
+}
+
+.map-modal__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.map-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(200, 164, 108, 0.3);
+  background: var(--navy-950);
+  color: var(--gold);
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.map-modal__close:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.map-modal__body {
+  padding: clamp(24px, 3vw, 34px);
+}
+
+.map-modal__title {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--cream);
+  margin: 0 0 14px;
+}
+
+.map-modal__desc {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(248, 245, 238, 0.7);
+  margin: 0 0 18px;
+}
+
+.map-modal__price {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gold);
 }
 
 /* ─── Reviews ─────────────────────────────────────────────── */
@@ -1505,36 +1870,25 @@ button {
   padding: 50px 0 !important;
 }
 
-/* Слайдер отзывов во всю ширину экрана. Бесконечная прокрутка —
-   набор карточек клонируется в script2.js: [клоны][оригиналы][клоны],
-   после ухода в зону клонов трек бесшовно возвращается к оригиналам. */
+/* Слайдер отзывов во всю ширину экрана (Swiper, бесконечная прокрутка).
+   Ширину карточек задаёт --review-card-w (slidesPerView: 'auto'). */
 .reviews-slider {
   --review-card-w: clamp(280px, 24vw, 380px);
-  --review-dur: 0.55s;
-  --review-ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 
-.reviews-track {
-  display: flex;
-  /* stretch — все свёрнутые карточки одной высоты (её ограничивает
-     max-height у .review), раскрытая растёт только сама */
+/* stretch — все свёрнутые карточки одной высоты (её ограничивает
+   max-height у .review), раскрытая растёт только сама */
+.reviews-slider .swiper-wrapper {
   align-items: stretch;
-  gap: 24px;
-  will-change: transform;
-  transition: transform var(--review-dur) var(--review-ease);
 }
 
-/* Бесшовный перескок к оригиналам — без анимации */
-.reviews-track.is-jumping {
-  transition: none;
-}
-
-.reviews-track .review {
+.reviews-slider .review {
   flex: 0 0 var(--review-card-w);
   width: var(--review-card-w);
+  height: auto;
 }
 
 .reviews-nav {
@@ -1581,10 +1935,6 @@ button {
     --review-card-w: min(86vw, 340px);
   }
 
-  .reviews-track {
-    gap: 14px;
-  }
-
   .reviews-nav {
     width: 44px;
     height: 44px;
@@ -1599,7 +1949,7 @@ button {
 
 .review {
   position: relative;
-  /* Свёрнутый отзыв ограничен по высоте; JS раскрывает его до scrollHeight */
+  /* Карточка фиксированной высоты; полный текст открывается в попапе */
   max-height: 250px;
   overflow: hidden;
   background: var(--navy-900);
@@ -1607,11 +1957,10 @@ button {
   /* нижний паддинг зарезервирован под кнопку «Читать полностью» */
   padding: 30px 28px 54px;
   margin: 0;
-  transition: max-height 0.35s ease;
 }
 
 /* У коротких отзывов кнопки нет — не оставляем под неё пустое место */
-.review:not(.is-clamped):not(.is-expanded) {
+.review:not(.is-clamped) {
   padding-bottom: 30px;
 }
 
@@ -1674,8 +2023,7 @@ button {
   color: var(--cream);
 }
 
-.review.is-clamped .review__toggle,
-.review.is-expanded .review__toggle {
+.review.is-clamped .review__toggle {
   display: block;
 }
 
@@ -1690,6 +2038,148 @@ button {
   color: rgba(248, 245, 238, 0.4);
   letter-spacing: 0.08em;
   margin-top: 2px;
+}
+
+/* ─── Попап с полным текстом отзыва ───────────────────────── */
+.review-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.review-modal[hidden] {
+  display: none;
+}
+
+.review-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 24, 20, 0.72);
+  backdrop-filter: blur(2px);
+  animation: reviewOverlayIn 0.3s ease;
+}
+
+@keyframes reviewOverlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.review-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 100%);
+  max-height: min(82vh, 720px);
+  overflow-y: auto;
+  background: var(--navy-900);
+  border: 1px solid rgba(200, 164, 108, 0.25);
+  padding: clamp(30px, 4vw, 52px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  animation: reviewModalIn 0.3s ease;
+}
+
+@keyframes reviewModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Плавное закрытие: класс is-closing добавляется в JS перед скрытием */
+.review-modal.is-closing .review-modal__overlay {
+  animation: reviewOverlayOut 0.26s ease forwards;
+}
+
+.review-modal.is-closing .review-modal__dialog {
+  animation: reviewModalOut 0.26s ease forwards;
+}
+
+@keyframes reviewOverlayOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes reviewModalOut {
+  to {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-modal__overlay,
+  .review-modal__dialog {
+    animation: none;
+  }
+}
+
+.review-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(200, 164, 108, 0.3);
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.review-modal__close:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.review-modal__stars {
+  color: var(--gold);
+  font-size: 15px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.review-modal__text {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  color: rgba(248, 245, 238, 0.85);
+  margin-bottom: 26px;
+}
+
+.review-modal__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.review-modal__date {
+  font-size: 12px;
+  color: rgba(248, 245, 238, 0.4);
+  letter-spacing: 0.08em;
+  margin-top: 3px;
+}
+
+/* блокируем прокрутку фона, пока открыт попап */
+body.is-modal-open {
+  overflow: hidden;
 }
 
 /* ─── Признание и награды ─────────────────────────────────── */
@@ -2046,7 +2536,7 @@ button {
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
   gap: 48px;
   margin-bottom: 48px;
 }
@@ -2169,22 +2659,13 @@ button {
   position: relative;
   width: 100%;
   overflow: hidden;
-}
-
-.stories-track {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+  /* вертикальный запас под обводку активной карточки */
   padding: 30px 0;
-  will-change: transform;
-  transition: transform var(--story-dur) var(--story-ease);
 }
 
-/* В момент бесшовного перескока к оригиналам анимации выключаем,
-   иначе карточка «прыгает» из маленькой в большую на границе клонов */
-.stories-track.is-jumping,
-.stories-track.is-jumping .story-slide__card {
-  transition: none;
+/* Короткие (неактивные) карточки центрируем по вертикали ряда */
+.stories-slider .swiper-wrapper {
+  align-items: center;
 }
 
 .story-slide {
@@ -2222,7 +2703,7 @@ button {
 }
 
 /* Активный слайд — крупнее и с акцентной обводкой */
-.story-slide.is-active .story-slide__card {
+.story-slide.swiper-slide-active .story-slide__card {
   height: var(--story-card-h-active);
   filter: brightness(1);
   /* outline-color: var(--gold); */
@@ -2342,10 +2823,6 @@ button {
   .stories-nav .icon {
     width: 18px;
     height: 18px;
-  }
-
-  .stories-track {
-    gap: 14px;
   }
 }
 
@@ -2768,12 +3245,231 @@ button {
 }
 
 /* Мобильные: одна колонка, карточки естественной высоты */
-@media (max-width: 720px) {
+@media (max-width: 940px) {
   .mgrid {
     flex-direction: column;
     padding: 0;
   }
 }
+
+/* ─── Услуги · слайдер «Всё для насыщенного отдыха» (Swiper) ──
+   Пришёл на смену сетке .mgrid/.mcard выше (та оставлена неиспользуемой
+   на случай возврата). Карточки-слайды: фото сверху, тёмная панель с
+   заголовком, коротким описанием и квадратной кнопкой-стрелкой. */
+.offers-section {
+  background: var(--navy-800);
+  overflow: hidden;
+  /* слайдер во всю ширину: боковые отступы секции убираем,
+     чтобы слайды доходили до краёв экрана и уходили за них */
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* перебиваем .section { padding: 50px 20px !important } на мобильных */
+@media (max-width: 900px) {
+  .offers-section {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* Шапка: заголовок слева, стрелки навигации справа */
+.section-head--row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  text-align: left;
+  padding: 0 50px;
+
+  @media (max-width: 900px) {
+    padding: 0 20px;
+  }
+}
+
+.section-head--row .section-title {
+  margin: 0;
+}
+
+.offers-nav {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.offers-nav__btn {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(200, 164, 108, 0.4);
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.offers-nav__btn:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.offers-nav__btn .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.offers-nav__btn.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* swiper-wrapper по умолчанию flex — align stretch выравнивает
+   высоту всех карточек по самой высокой */
+.offers-swiper .swiper-wrapper {
+  align-items: stretch;
+}
+
+.ocard {
+  /* slidesPerView: 'auto' — ширину слайда задаём здесь.
+     Карточки уже вьюпорта → крайний справа «торчит» за краем экрана. */
+  width: 82vw; /* мобайл: ~1 карточка + подглядывающий сосед */
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--navy-900);
+  border: 1px solid rgba(200, 164, 108, 0.14);
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .ocard {
+    width: 46vw; /* ~2 карточки + peek */
+  }
+}
+
+@media (min-width: 1024px) {
+  .ocard {
+    width: 600px; /* десктоп: фиксированная ширина слайда */
+  }
+}
+
+.ocard__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.ocard__media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  opacity: 0.92;
+}
+
+.ocard__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 28px 24px;
+}
+
+.ocard__title {
+  font-family: var(--serif);
+  font-size: clamp(20px, 1.6vw, 26px);
+  font-weight: 500;
+  color: var(--cream);
+  margin: 0 0 20px;
+}
+
+/* Нижняя часть панели: описание слева, кнопка-стрелка справа,
+   разделена тонкой линией сверху. Прижата к низу карточки. */
+.ocard__foot {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(200, 164, 108, 0.14);
+}
+
+.ocard__desc {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(248, 245, 238, 0.6);
+  margin: 0;
+}
+
+/* Список мероприятий вместо описания — в две колонки, маркер-линия */
+.ocard__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 50px;
+}
+
+.ocard__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(248, 245, 238, 0.7);
+}
+
+.ocard__list li::before {
+  content: "";
+  width: 16px;
+  height: 1px;
+  flex-shrink: 0;
+  background: var(--gold);
+}
+
+.ocard__arrow {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(200, 164, 108, 0.4);
+  color: var(--gold);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.ocard__arrow:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.ocard__arrow .icon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 720px) {
+  .section-head--row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ocard__foot {
+    flex-wrap: wrap;
+  }
+}
+
 /* ─── Наши преимущества: две бегущие строки ───────────────── */
 /* Дорожка состоит из одинаковых копий набора (клонируются в script2.js).
    Анимация сдвигает её ровно на половину ширины — стык незаметен. */
@@ -3204,6 +3900,8 @@ button {
   .grid-4responsive {
     grid-template-columns: 1fr 1fr !important;
     gap: 24px !important;
+
+    
   }
 
   .events-grid {

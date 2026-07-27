@@ -155,98 +155,74 @@
   renderList('summer');
 })();
 
-// ─── Слайдер «Выберите формат отдыха» (бесконечный) ───────
-document.querySelectorAll('[data-stories]').forEach((slider) => {
-  const track = slider.querySelector('[data-stories-track]');
-  const prevBtn = slider.querySelector('[data-stories-prev]');
-  const nextBtn = slider.querySelector('[data-stories-next]');
-  if (!track) return;
+// ─── Слайдер услуг «Всё для насыщенного отдыха» (Swiper) ──
+(() => {
+  const el = document.querySelector('[data-offers]');
+  if (!el || typeof Swiper === 'undefined') return;
 
-  const originals = Array.from(track.children);
-  const count = originals.length;
-  if (count === 0) return;
+  // Первый слайд выравниваем по левому краю заголовка секции: отступ слева
+  // = позиция заголовка относительно окна (пересчитываем при ресайзе/загрузке).
+  const section = el.closest('.offers-section');
+  const titleEl = section ? section.querySelector('.section-title') : null;
+  const offsetBefore = () => (titleEl ? Math.max(0, Math.round(titleEl.getBoundingClientRect().left)) : 0);
 
-  // Для бесконечной прокрутки дублируем набор до и после оригиналов:
-  // [клоны][оригиналы][клоны] — и незаметно возвращаемся в середину.
-  const tail = document.createDocumentFragment();
-  const head = document.createDocumentFragment();
-  originals.forEach((node) => tail.appendChild(node.cloneNode(true)));
-  originals.forEach((node) => head.appendChild(node.cloneNode(true)));
-  track.appendChild(tail);
-  track.insertBefore(head, track.firstChild);
+  const sw = new Swiper(el, {
+    slidesPerView: 'auto', // ширину карточек задаёт CSS → справа слайд «торчит»
+    spaceBetween: 24,
+    grabCursor: true, // курсор-«хват» + перетаскивание мышью/пальцем
+    slidesOffsetBefore: offsetBefore(),
+    navigation: {
+      prevEl: '[data-offers-prev]',
+      nextEl: '[data-offers-next]',
+    },
+    on: {
+      resize(s) {
+        s.params.slidesOffsetBefore = offsetBefore();
+        s.update();
+      },
+    },
+  });
 
-  const slides = Array.from(track.children);
-  let index = count; // первый оригинал
-  let animating = false;
+  // Позиция заголовка зависит от подгруженного шрифта — пересчитываем после load
+  window.addEventListener('load', () => {
+    sw.params.slidesOffsetBefore = offsetBefore();
+    sw.update();
+  });
+})();
 
-  function stepWidth() {
-    const styles = getComputedStyle(track);
-    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
-    return slides[0].getBoundingClientRect().width + gap;
-  }
+// ─── Слайдер «Выберите формат отдыха» (Swiper, центрированный) ─
+(() => {
+  const el = document.querySelector('[data-stories]');
+  if (!el || typeof Swiper === 'undefined') return;
 
-  function layout(animate) {
-    // is-jumping отключает анимации и трека, и размера карточек:
-    // перескок к оригиналам должен быть незаметным
-    if (!animate) track.classList.add('is-jumping');
-    const cardWidth = slides[0].getBoundingClientRect().width;
-    const offset = (slider.clientWidth - cardWidth) / 2;
-    track.style.transform = `translateX(${offset - index * stepWidth()}px)`;
-    slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
-    if (!animate) {
-      void track.offsetWidth; // применяем позицию без анимации
-      track.classList.remove('is-jumping');
+  new Swiper(el, {
+    slidesPerView: 'auto', // ширину карточек задаёт CSS (var(--story-card-w))
+    centeredSlides: true, // активная карточка — по центру
+    loop: true, // бесконечная прокрутка
+    speed: 600, // синхронно с --story-dur в CSS
+    grabCursor: true, // перетаскивание мышью/пальцем
+    slideToClickedSlide: true, // клик по соседней карточке центрирует её
+    navigation: {
+      prevEl: '[data-stories-prev]',
+      nextEl: '[data-stories-next]',
+    },
+    breakpoints: {
+      0: { spaceBetween: 14 },
+      720: { spaceBetween: 24 },
+    },
+  });
+
+  // Активна только центральная карточка: переход по ссылке у остальных
+  // отменяем (slideToClickedSlide просто центрирует кликнутую).
+  el.addEventListener('click', (event) => {
+    const card = event.target.closest('.story-slide__card');
+    if (!card) return;
+    const slide = card.closest('.swiper-slide');
+    if (slide && !slide.classList.contains('swiper-slide-active')) {
+      event.preventDefault();
     }
-  }
-
-  function goTo(target) {
-    if (animating) return;
-    animating = true;
-    index = target;
-    layout(true);
-  }
-
-  track.addEventListener('transitionend', (event) => {
-    if (event.target !== track || event.propertyName !== 'transform') return;
-    animating = false;
-    // Ушли в зону клонов — бесшовно возвращаемся к оригиналам
-    if (index >= count * 2) {
-      index -= count;
-      layout(false);
-    } else if (index < count) {
-      index += count;
-      layout(false);
-    }
   });
-
-  if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
-
-  // Клик по неактивной карточке — центрируем её, а не переходим по ссылке
-  slides.forEach((slide, i) => {
-    slide.addEventListener('click', (event) => {
-      if (i !== index) {
-        event.preventDefault();
-        goTo(i);
-      }
-    });
-  });
-
-  // Свайп на тач-устройствах
-  let startX = null;
-  track.addEventListener('touchstart', (event) => {
-    startX = event.touches[0].clientX;
-  }, { passive: true });
-  track.addEventListener('touchend', (event) => {
-    if (startX === null) return;
-    const dx = event.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) goTo(index + (dx < 0 ? 1 : -1));
-    startX = null;
-  });
-
-  window.addEventListener('resize', () => layout(false));
-  layout(false);
-});
+})();
 
 // ─── СПА-центр: вкладки + слайдер ─────────────────────────
 (() => {
@@ -676,129 +652,89 @@ document.querySelectorAll('[data-marquee]').forEach((track) => {
   window.addEventListener('resize', build);
 });
 
-// ─── Отзывы: бесконечный слайдер во всю ширину ────────────
-// Идёт ДО блока раскрытия отзывов: клоны создаются здесь, поэтому
-// кнопка «Читать полностью» навешивается и на них тоже.
-document.querySelectorAll('[data-reviews]').forEach((slider) => {
-  const track = slider.querySelector('[data-reviews-track]');
-  const prevBtn = slider.querySelector('[data-reviews-prev]');
-  const nextBtn = slider.querySelector('[data-reviews-next]');
-  if (!track) return;
-
-  const originals = Array.from(track.children);
-  const count = originals.length;
-  if (count === 0) return;
-
-  // [клоны][оригиналы][клоны] — и незаметный возврат в середину
-  const head = document.createDocumentFragment();
-  const tail = document.createDocumentFragment();
-  originals.forEach((node) => head.appendChild(node.cloneNode(true)));
-  originals.forEach((node) => tail.appendChild(node.cloneNode(true)));
-  track.appendChild(tail);
-  track.insertBefore(head, track.firstChild);
-
-  const slides = Array.from(track.children);
-  let index = count; // первый оригинал
-  let animating = false;
-
-  function stepWidth() {
-    const styles = getComputedStyle(track);
-    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
-    return slides[0].getBoundingClientRect().width + gap;
-  }
-
-  function layout(animate) {
-    if (!animate) track.classList.add('is-jumping');
-    track.style.transform = `translateX(${-index * stepWidth()}px)`;
-    if (!animate) {
-      void track.offsetWidth; // применяем позицию без анимации
-      track.classList.remove('is-jumping');
-    }
-  }
-
-  function goTo(target) {
-    if (animating) return;
-    animating = true;
-    index = target;
-    layout(true);
-  }
-
-  track.addEventListener('transitionend', (event) => {
-    // у карточек тоже есть переходы (max-height) — они всплывают сюда
-    if (event.target !== track || event.propertyName !== 'transform') return;
-    animating = false;
-    if (index >= count * 2) {
-      index -= count;
-      layout(false);
-    } else if (index < count) {
-      index += count;
-      layout(false);
-    }
-  });
-
-  if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
-
-  // Свайп на тач-устройствах
-  let startX = null;
-  track.addEventListener('touchstart', (event) => {
-    startX = event.touches[0].clientX;
-  }, { passive: true });
-  track.addEventListener('touchend', (event) => {
-    if (startX === null) return;
-    const dx = event.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) goTo(index + (dx < 0 ? 1 : -1));
-    startX = null;
-  });
-
-  window.addEventListener('resize', () => layout(false));
-  layout(false);
-});
-
-// ─── Отзывы: раскрытие полного текста ─────────────────────
+// ─── Отзывы: слайдер (Swiper, бесконечный) + попап полного текста ─
 (() => {
+  const el = document.querySelector('[data-reviews]');
+  if (!el || typeof Swiper === 'undefined') return;
+
+  new Swiper(el, {
+    slidesPerView: 'auto', // ширину карточек задаёт CSS (var(--review-card-w))
+    loop: true, // бесконечная прокрутка
+    grabCursor: true, // перетаскивание мышью/пальцем
+    navigation: {
+      prevEl: '[data-reviews-prev]',
+      nextEl: '[data-reviews-next]',
+    },
+    breakpoints: {
+      0: { spaceBetween: 14 },
+      720: { spaceBetween: 24 },
+    },
+  });
+
+  // ─ Обрезка карточки ─
+  // Карточка фиксированной высоты; кнопку «Читать полностью» и затенение
+  // показываем только если текст реально не помещается (класс is-clamped).
   const COLLAPSED = 250; // синхронизировано с max-height в styles2.css
+  const syncCollapsed = (review) => {
+    review.classList.toggle('is-clamped', review.scrollHeight > COLLAPSED + 4);
+  };
+  const syncAll = () => el.querySelectorAll('[data-review]').forEach(syncCollapsed);
+  syncAll();
+  window.addEventListener('load', syncAll);
+  window.addEventListener('resize', syncAll);
 
-  document.querySelectorAll('[data-review]').forEach((review) => {
-    const toggle = review.querySelector('[data-review-toggle]');
+  // ─ Попап с полным текстом ─
+  const modal = document.querySelector('[data-review-modal]');
+  if (!modal) return;
+  const mStars = modal.querySelector('[data-review-modal-stars]');
+  const mText = modal.querySelector('[data-review-modal-text]');
+  const mName = modal.querySelector('[data-review-modal-name]');
+  const mDate = modal.querySelector('[data-review-modal-date]');
+
+  const CLOSE_DUR = 260; // синхронно с анимацией reviewModalOut в styles2.css
+  let closeTimer = null;
+
+  const openModal = (review) => {
+    if (closeTimer) {
+      window.clearTimeout(closeTimer); // прервать незавершённое закрытие
+      closeTimer = null;
+    }
+    modal.classList.remove('is-closing');
+    const stars = review.querySelector('.review__stars');
+    const text = review.querySelector('.review__text');
+    const name = review.querySelector('.review__name');
+    const date = review.querySelector('.review__date');
+    if (mStars) mStars.textContent = stars ? stars.textContent : '';
+    // innerHTML — сохраняем переносы <br>; контент наш, доверенный
+    if (mText) mText.innerHTML = text ? text.innerHTML : '';
+    if (mName) mName.textContent = name ? name.textContent : '';
+    if (mDate) mDate.textContent = date ? date.textContent : '';
+    modal.hidden = false;
+    document.body.classList.add('is-modal-open');
+  };
+
+  const closeModal = () => {
+    if (modal.hidden || modal.classList.contains('is-closing')) return;
+    modal.classList.add('is-closing'); // запускает анимацию исчезновения
+    closeTimer = window.setTimeout(() => {
+      modal.hidden = true;
+      modal.classList.remove('is-closing');
+      document.body.classList.remove('is-modal-open');
+    }, CLOSE_DUR);
+  };
+
+  // Клик по «Читать полностью» — делегирование, работает и на клонах Swiper
+  el.addEventListener('click', (event) => {
+    const toggle = event.target.closest('[data-review-toggle]');
     if (!toggle) return;
+    const review = toggle.closest('[data-review]');
+    if (review) openModal(review);
+  });
 
-    // Свёрнутое состояние: ограничиваем высоту и показываем кнопку,
-    // только если текст реально не помещается
-    function syncCollapsed() {
-      review.style.maxHeight = COLLAPSED + 'px';
-      review.classList.toggle('is-clamped', review.scrollHeight > COLLAPSED + 4);
-    }
-
-    function expand() {
-      review.classList.add('is-expanded');
-      review.classList.remove('is-clamped');
-      // scrollHeight отдаёт полную высоту контента даже при overflow: hidden
-      review.style.maxHeight = review.scrollHeight + 'px';
-      toggle.textContent = 'Свернуть';
-    }
-
-    function collapse() {
-      review.classList.remove('is-expanded');
-      syncCollapsed();
-      toggle.textContent = 'Читать полностью';
-    }
-
-    toggle.addEventListener('click', () => {
-      if (review.classList.contains('is-expanded')) collapse();
-      else expand();
-    });
-
-    window.addEventListener('resize', () => {
-      if (review.classList.contains('is-expanded')) {
-        // при смене ширины колонки фиксированная высота может обрезать текст
-        review.style.maxHeight = 'none';
-      } else {
-        syncCollapsed();
-      }
-    });
-
-    syncCollapsed();
+  // Закрытие: оверлей, крестик, Esc
+  modal.querySelectorAll('[data-review-modal-close]').forEach((btn) => btn.addEventListener('click', closeModal));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) closeModal();
   });
 })();
 
@@ -890,4 +826,210 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   );
 
   targets.forEach((el) => observer.observe(el));
+})();
+
+// ─── Интерактивная карта территории ───────────────────────
+// Картинка-карта с перетаскиванием и зумом. Взаимодействие включается
+// кнопкой «Активировать карту». Метки привязаны к точкам изображения
+// (доля 0..1 в data-x/data-y) и позиционируются из JS — не «уезжают».
+(() => {
+  const view = document.querySelector('[data-map]');
+  if (!view) return;
+  const canvas = view.querySelector('[data-map-canvas]');
+  const img = view.querySelector('.map__img');
+  const activateBtn = view.querySelector('[data-map-activate]');
+  const deactivateBtn = view.querySelector('[data-map-deactivate]');
+  const markers = Array.from(view.querySelectorAll('[data-map-marker]'));
+  if (!canvas || !img) return;
+
+  let imgW = 0;
+  let imgH = 0;
+  let vpW = 0;
+  let vpH = 0;
+  let scale = 1;
+  let minScale = 1;
+  let maxScale = 1;
+  let tx = 0;
+  let ty = 0;
+  let active = false;
+
+  const positionMarkers = () => {
+    markers.forEach((m) => {
+      const fx = parseFloat(m.dataset.x) || 0;
+      const fy = parseFloat(m.dataset.y) || 0;
+      m.style.left = tx + fx * imgW * scale + 'px';
+      m.style.top = ty + fy * imgH * scale + 'px';
+    });
+  };
+
+  const apply = () => {
+    canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    positionMarkers();
+  };
+
+  const clampTranslate = () => {
+    const w = imgW * scale;
+    const h = imgH * scale;
+    tx = w <= vpW ? (vpW - w) / 2 : Math.min(0, Math.max(vpW - w, tx));
+    ty = h <= vpH ? (vpH - h) / 2 : Math.min(0, Math.max(vpH - h, ty));
+  };
+
+  const measure = () => {
+    if (!img.naturalWidth || !img.naturalHeight) return;
+    imgW = img.naturalWidth;
+    imgH = img.naturalHeight;
+    vpW = view.clientWidth;
+    vpH = view.clientHeight;
+    canvas.style.width = imgW + 'px';
+    canvas.style.height = imgH + 'px';
+    minScale = Math.max(vpW / imgW, vpH / imgH); // «cover» — карта всегда закрывает вьюпорт
+    maxScale = minScale * 4;
+    scale = minScale;
+    tx = (vpW - imgW * scale) / 2;
+    ty = (vpH - imgH * scale) / 2;
+    clampTranslate();
+    apply();
+  };
+
+  const zoomAt = (cx, cy, factor) => {
+    const next = Math.min(maxScale, Math.max(minScale, scale * factor));
+    if (next === scale) return;
+    // точка под курсором остаётся на месте
+    tx = cx - ((cx - tx) / scale) * next;
+    ty = cy - ((cy - ty) / scale) * next;
+    scale = next;
+    clampTranslate();
+    apply();
+  };
+
+  const setActive = (v) => {
+    active = v;
+    view.classList.toggle('is-active', v);
+  };
+  if (activateBtn) activateBtn.addEventListener('click', () => setActive(true));
+  if (deactivateBtn) deactivateBtn.addEventListener('click', () => setActive(false));
+
+  // Зум колесом — только при активной карте (иначе не мешаем скроллу страницы)
+  view.addEventListener(
+    'wheel',
+    (e) => {
+      if (!active) return;
+      e.preventDefault();
+      const rect = view.getBoundingClientRect();
+      const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+      zoomAt(e.clientX - rect.left, e.clientY - rect.top, factor);
+    },
+    { passive: false }
+  );
+
+  // Перетаскивание (мышь/палец) и пинч — на Pointer Events
+  const pointers = new Map();
+  let last = null;
+  let pinchDist = 0;
+
+  view.addEventListener('pointerdown', (e) => {
+    if (!active) return;
+    // клик по метке или кнопке не должен начинать перетаскивание:
+    // захват указателя на .map перебил бы их click (и кнопка не срабатывала бы)
+    if (e.target.closest('[data-map-marker], [data-map-activate], [data-map-deactivate]')) return;
+    view.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    view.classList.add('is-grabbing');
+    if (pointers.size === 1) {
+      last = { x: e.clientX, y: e.clientY };
+    } else if (pointers.size === 2) {
+      const p = [...pointers.values()];
+      pinchDist = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+    }
+  });
+
+  view.addEventListener('pointermove', (e) => {
+    if (!active || !pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const rect = view.getBoundingClientRect();
+    if (pointers.size === 1 && last) {
+      tx += e.clientX - last.x;
+      ty += e.clientY - last.y;
+      last = { x: e.clientX, y: e.clientY };
+      clampTranslate();
+      apply();
+    } else if (pointers.size === 2) {
+      const p = [...pointers.values()];
+      const dist = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+      const midX = (p[0].x + p[1].x) / 2 - rect.left;
+      const midY = (p[0].y + p[1].y) / 2 - rect.top;
+      if (pinchDist > 0) zoomAt(midX, midY, dist / pinchDist);
+      pinchDist = dist;
+    }
+  });
+
+  const endPointer = (e) => {
+    pointers.delete(e.pointerId);
+    if (pointers.size < 2) pinchDist = 0;
+    if (pointers.size === 1) {
+      const p = [...pointers.values()][0];
+      last = { x: p.x, y: p.y };
+    }
+    if (pointers.size === 0) {
+      last = null;
+      view.classList.remove('is-grabbing');
+    }
+  };
+  view.addEventListener('pointerup', endPointer);
+  view.addEventListener('pointercancel', endPointer);
+
+  // ─ Попап метки ─
+  const modal = document.querySelector('[data-map-modal]');
+  let mMapCloseTimer = null;
+  const openMarker = (marker) => {
+    if (!modal) return;
+    const mImg = modal.querySelector('[data-map-modal-img]');
+    const mTitle = modal.querySelector('[data-map-modal-title]');
+    const mDesc = modal.querySelector('[data-map-modal-desc]');
+    const mPrice = modal.querySelector('[data-map-modal-price]');
+    if (mMapCloseTimer) {
+      clearTimeout(mMapCloseTimer);
+      mMapCloseTimer = null;
+    }
+    modal.classList.remove('is-closing');
+    if (mImg) {
+      mImg.src = marker.dataset.img || '';
+      mImg.alt = marker.dataset.title || '';
+    }
+    if (mTitle) mTitle.textContent = marker.dataset.title || '';
+    if (mDesc) mDesc.textContent = marker.dataset.desc || '';
+    if (mPrice) mPrice.textContent = marker.dataset.price || '';
+    modal.hidden = false;
+    document.body.classList.add('is-modal-open');
+  };
+
+  const closeMarker = () => {
+    if (!modal || modal.hidden || modal.classList.contains('is-closing')) return;
+    modal.classList.add('is-closing');
+    mMapCloseTimer = setTimeout(() => {
+      modal.hidden = true;
+      modal.classList.remove('is-closing');
+      document.body.classList.remove('is-modal-open');
+    }, 260);
+  };
+
+  markers.forEach((m) => {
+    m.addEventListener('click', (e) => {
+      e.preventDefault();
+      openMarker(m);
+    });
+  });
+
+  if (modal) {
+    modal.querySelectorAll('[data-map-modal-close]').forEach((b) => b.addEventListener('click', closeMarker));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) closeMarker();
+    });
+  }
+
+  // Инициализация размеров карты
+  if (img.complete && img.naturalWidth) measure();
+  else img.addEventListener('load', measure);
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', measure);
 })();
