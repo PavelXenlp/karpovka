@@ -584,7 +584,7 @@ button {
 
 .hero__title {
   font-family: var(--serif);
-  font-size: clamp(42px, 7vw, 88px);
+  font-size: clamp(62px, 6vw, 36px);
   font-weight: 500;
   line-height: 1.05;
   color: var(--cream);
@@ -2770,6 +2770,7 @@ body.is-modal-open {
   font-size: 13px;
   color: #ffffff;
   transition: background 0.25s ease;
+  backdrop-filter: blur(20px);
 }
 
 .story-slide__card:hover .story-slide__more {
