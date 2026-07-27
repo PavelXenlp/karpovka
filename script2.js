@@ -15,11 +15,14 @@
 (() => {
   const burger = document.getElementById('burger');
   const menu = document.getElementById('mobileMenu');
+  const nav = document.getElementById('nav');
 
   const setOpen = (open) => {
     burger.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', String(open));
     menu.hidden = !open;
+    // Открытое меню — красим шапку так же, как при скролле
+    if (nav) nav.classList.toggle('is-menu-open', open);
   };
 
   burger.addEventListener('click', () => {

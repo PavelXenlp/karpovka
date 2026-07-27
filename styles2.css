@@ -93,7 +93,7 @@ button {
   padding: 0 var(--pad);
   width: 100%;
 
-  @media(max-width: 900px) {
+  @media (max-width: 900px) {
     padding: 20px;
   }
 }
@@ -102,7 +102,7 @@ button {
   padding: 50px var(--pad);
   background: var(--navy-800);
 
-  @media(max-width: 900px) {
+  @media (max-width: 900px) {
     padding: 50px 20px !important;
   }
 }
@@ -214,7 +214,6 @@ button {
     border-color 0.2s,
     color 0.2s;
   text-align: center;
-
 }
 
 .btn--sm {
@@ -291,6 +290,12 @@ button {
   border-bottom: 1px solid rgba(200, 164, 108, 0.15);
 }
 
+/* При открытом мобильном меню шапка окрашивается (как при скролле, чуть плотнее) */
+.nav.is-menu-open {
+  background: rgba(18, 61, 52, 0.98);
+  backdrop-filter: blur(12px);
+}
+
 .nav__inner {
   /* max-width: var(--maxw); */
   margin: 0 auto;
@@ -327,7 +332,7 @@ button {
 .nav__tels {
   display: flex;
   flex-direction: column;
-  gap: 4px
+  gap: 4px;
 }
 
 .nav__cta {
@@ -343,6 +348,50 @@ button {
 
 .nav__cta:hover {
   background: var(--gold-dark);
+}
+
+/* ─── Соцсети-иконки (VK, Telegram) — в шапке и подвале ────── */
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero__socials {
+  margin-top: 26px;
+  gap: 14px;
+  flex-wrap: wrap;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
+.footer__socials {
+  margin-top: 18px;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: var(--gold);
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.social:hover {
+  color: var(--cream);
+  transform: translateY(-2px);
+}
+
+.social__icon {
+  width: 30px;
+  height: 30px;
+  display: block;
 }
 
 .nav__burger {
@@ -416,6 +465,13 @@ button {
   letter-spacing: 0.08em;
 }
 
+/* Соцсети/контакты в мобильном меню — под кнопками с телефонами */
+.nav__mobile-socials {
+  justify-content: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+
 .logo {
   text-decoration: none;
   display: flex;
@@ -466,11 +522,11 @@ button {
 }
 
 .hero__content {
-  padding-top: 50px;
+  padding-top: 100px;
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 500px;
+  grid-template-columns: minmax(0, 1fr) 400px;
   gap: 48px;
   align-items: end;
 }
@@ -520,7 +576,7 @@ button {
   text-transform: uppercase;
   color: var(--gold);
 
-  @media(max-width: 900px) {
+  @media (max-width: 900px) {
     font-size: 11px;
   }
 }
@@ -575,6 +631,7 @@ button {
     grid-template-columns: 1fr;
     gap: 36px;
     align-items: start;
+    padding-top: 30px;
   }
 
   .booking {
@@ -734,7 +791,6 @@ button {
   align-items: stretch;
 }
 
-
 .combined-row--alt {
   background: var(--navy-800);
 }
@@ -755,10 +811,10 @@ button {
 }
 
 .combined-row__text-active-rest {
-    /* height: 700px; */
-    box-sizing: border-box;
-    padding-bottom: 40px;
-    justify-content: start;
+  /* height: 700px; */
+  box-sizing: border-box;
+  padding-bottom: 40px;
+  justify-content: start;
 }
 
 .combined-row__sub {
@@ -852,6 +908,10 @@ button {
   background: rgba(10, 40, 34, 0.6);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(200, 164, 108, 0.25);
+
+  @media (max-width: 600px) {
+    padding: 12px;
+  }
 }
 
 .stay-media__card.is-in {
@@ -875,6 +935,11 @@ button {
   font-weight: 500;
   color: var(--cream);
   margin: 0 0 8px;
+
+  @media (max-width: 600px) {
+    font-size: 24px;
+    margin: 0 0 4px;
+  }
 }
 
 .stay-media__caption {
@@ -882,6 +947,11 @@ button {
   font-weight: 300;
   color: var(--gold);
   margin: 0 0 10px;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+    margin: 0 0 4px;
+  }
 }
 
 .stay-media__desc {
@@ -890,6 +960,11 @@ button {
   line-height: 1.7;
   color: rgba(248, 245, 238, 0.7);
   margin: 0 0 14px;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+    margin: 0 0 4px;
+  }
 }
 
 .stay-media__price {
@@ -897,6 +972,10 @@ button {
   font-size: 24px;
   font-weight: 600;
   color: var(--gold);
+
+  @media (max-width: 600px) {
+    font-size: 20px;
+  }
 }
 
 /* ─── SPA: вкладки + слайдер (split-раскладка) ─────────────── */
@@ -1316,9 +1395,9 @@ button {
     background 0.2s,
     color 0.2s;
 
-    @media (max-width: 600px) {
-      padding: 8px 16px;
-    }
+  @media (max-width: 600px) {
+    padding: 8px 16px;
+  }
 }
 
 .season-btn.is-active {
@@ -2643,7 +2722,7 @@ body.is-modal-open {
   line-height: 1.1;
   color: var(--cream);
 
-  @media(max-width: 900px) {
+  @media (max-width: 900px) {
     margin: 0;
   }
 }
@@ -3676,7 +3755,9 @@ body.is-modal-open {
   height: 1.5px;
   background: var(--gold);
   transform: translate(-50%, -50%);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .faq-item__icon::after {
@@ -3901,8 +3982,6 @@ body.is-modal-open {
   .grid-4responsive {
     grid-template-columns: 1fr 1fr !important;
     gap: 24px !important;
-
-    
   }
 
   .events-grid {
