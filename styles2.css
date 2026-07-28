@@ -647,11 +647,35 @@ button {
   color: var(--cream);
   margin: 0 0 28px;
   letter-spacing: -0.01em;
+  align-items: center;
 }
 
 .hero__title em {
   font-style: italic;
   color: var(--gold);
+}
+
+/* Смена заголовков: обе надписи лежат в одной grid-ячейке,
+   поэтому высота блока = самой высокой и вёрстка не прыгает */
+.hero__title {
+  display: grid;
+}
+
+.hero__title-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  pointer-events: none;
+}
+
+.hero__title-slide.is-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__title-slide {
+    transition: opacity 0.2s linear;
+  }
 }
 
 .hero__lead {
@@ -2481,6 +2505,14 @@ body.is-modal-open {
   border-bottom: 1px solid rgba(200, 164, 108, 0.14);
 }
 
+.contact-item__phones {
+  display: flex;
+  flex-direction: column;
+  /* каждый номер шириной по своему тексту — наведение работает отдельно */
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .contact-item__label {
   font-size: 10px;
   font-weight: 400;
@@ -2496,18 +2528,13 @@ body.is-modal-open {
   font-weight: 400;
   line-height: 1.35;
   color: rgba(248, 245, 238, 0.85);
-  transition: color 0.2s;
+  transition: padding-left 0.25s ease, color 0.25s ease;
 }
 
-.contact-item--link {
-  transition: padding-left 0.2s;
-}
-
-.contact-item--link:hover {
-  padding-left: 12px;
-}
-
+/* Наведение на конкретный номер / на email-карточку */
+a.contact-item__value:hover,
 .contact-item--link:hover .contact-item__value {
+  padding-left: 12px;
   color: var(--gold);
 }
 
@@ -3822,6 +3849,11 @@ body.is-modal-open {
   margin-bottom: 20px;
 }
 
+.bonus__qrs-container {
+  display: flex;
+  justify-content: center;
+}
+
 .bonus__lead {
   font-size: 15px;
   font-weight: 300;
@@ -3906,10 +3938,12 @@ body.is-modal-open {
 
 /* — Карточка с QR — */
 .bonus__card {
+  display: flex;
   justify-self: center;
+  gap: 18px;
   width: 100%;
-  max-width: 340px;
-  padding: 36px 32px;
+  /* max-width: 400px; */
+  padding: 28px 24px;
   text-align: center;
   background: var(--navy-800);
   border: 1px solid rgba(200, 164, 108, 0.18);
@@ -3922,10 +3956,28 @@ body.is-modal-open {
   margin: 0 auto 26px;
 }
 
+/* Один QR: код + логотип по центру */
+.bonus__qr-item {
+  --qr-bg: #fff; /* фон самого QR — под «подложку» логотипа */
+
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.bonus__qr-item_uds {
+  --qr-bg: var(--cream);
+}
+
 .bonus__qr {
+  position: relative;
   display: block;
-  width: min(240px, 100%);
-  margin: 0 auto;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--qr-bg);
   border-radius: 4px;
   overflow: hidden;
   transition: transform 0.25s ease;
@@ -3935,10 +3987,32 @@ body.is-modal-open {
   transform: scale(1.03);
 }
 
-.bonus__qr img {
-  width: 100%;
-  height: auto;
+.bonus__qr-code {
   display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.bonus__qr-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24%;
+  height: 24%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  border-radius: 4px;
+  /* «тихая зона» вокруг логотипа, чтобы код читался */
+  box-shadow: 0 0 0 4px var(--qr-bg);
+}
+
+.bonus__qr-caption {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(248, 245, 238, 0.6);
 }
 
 .bonus__qr-note {

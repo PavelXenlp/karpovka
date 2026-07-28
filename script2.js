@@ -35,6 +35,50 @@
   });
 })();
 
+// ─── Hero: смена заголовка каждые 2 секунды ───────────────
+(() => {
+  const title = document.getElementById('heroTitle');
+  if (!title) return;
+
+  const slides = Array.from(title.querySelectorAll('.hero__title-slide'));
+  if (slides.length < 2) return;
+
+  const INTERVAL = 3000;
+  let current = slides.findIndex((s) => s.classList.contains('is-active'));
+  if (current < 0) current = 0;
+
+  const show = (index) => {
+    slides.forEach((slide, i) => {
+      const active = i === index;
+      slide.classList.toggle('is-active', active);
+      slide.setAttribute('aria-hidden', String(!active));
+    });
+  };
+
+  show(current);
+
+  let timer = null;
+  const start = () => {
+    if (timer) return;
+    timer = setInterval(() => {
+      current = (current + 1) % slides.length;
+      show(current);
+    }, INTERVAL);
+  };
+
+  start();
+
+  // На скрытой вкладке смысла крутить нет
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(timer);
+      timer = null;
+    } else {
+      start();
+    }
+  });
+})();
+
 // ─── Проживание: выбор варианта + смена фото и карточки ────
 (() => {
   const list = document.getElementById('stayList');
@@ -240,7 +284,8 @@
         {
           img: './assets/imgs/imgs/pool_6x18.jpg',
           title: 'Бассейн 6×18',
-          desc: 'Главная чаша спа-центра: просторная вода, финская сауна и зона отдыха рядом — можно провести здесь весь вечер.',
+          desc: 'Просторный бассейн с комфортной температурой воды, финской сауной и душевыми',
+          // desc: 'Главная чаша спа-центра: просторная вода, финская сауна и зона отдыха рядом — можно провести здесь весь вечер.',
           details: [
             'Финская сауна',
             'Душевые',
@@ -252,9 +297,9 @@
         {
           img: './assets/imgs/imgs/pool_outdoor.JPG',
           title: 'Уличный бассейн',
-          desc: 'Открытый подогреваемый бассейн под небом. Работает в тёплое время года и входит в посещение чаши 6×18.',
+          desc: 'Открытый подогреваемый бассейн под небом. Работает в тёплое время года и входит в посещение бассейна 6×18.',
           details: [
-            'Входит в посещение бассейна 6×18',
+            'Зона отдыха с шезлонгами и зонтиками',
             'Водопад',
             'Подводный массаж',
             'Подогрев, температура от 35 °C',
@@ -264,12 +309,12 @@
         {
           img: './assets/imgs/imgs/pool_10x4.jpg',
           title: 'Бассейн 10×4',
-          desc: 'Камерная чаша с водопадом и турецкой парной — формат для спокойного восстановления без суеты.',
+          desc: 'Камерный бассейн с водопадом и турецкой парной — формат для спокойного восстановления без суеты.',
           details: ['Водопад', 'Турецкая паровая', 'Комната отдыха', 'Температура воды 29–33 °C'],
         },
         {
           img: './assets/imgs/imgs/pool_afrodita.jpg',
-          title: 'Бассейн «Афродита»',
+          title: 'Бассейн 6×3 «Афродита»',
           desc: 'Самая насыщенная зона комплекса: джакузи, хамам и паровая в одном пространстве.',
           details: [
             'Джакузи на 75 форсунок',
