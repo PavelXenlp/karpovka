@@ -245,10 +245,13 @@
     const shots = Array.from(card.querySelectorAll('.ocard-shots__img'));
     if (shots.length < 2) return;
 
-    const descEl = card.querySelector('[data-ocard-desc]');
     const dotsEl = card.querySelector('[data-ocard-dots]');
 
-    let current = 0;
+    // Стартовое фото задаётся в разметке классом is-active
+    let current = Math.max(
+      0,
+      shots.findIndex((s) => s.classList.contains('is-active'))
+    );
     let dots = [];
 
     const show = (index) => {
@@ -258,8 +261,6 @@
         d.classList.toggle('is-active', i === current);
         d.setAttribute('aria-current', String(i === current));
       });
-      const desc = shots[current].dataset.desc;
-      if (descEl && desc) descEl.textContent = desc;
     };
 
     // Точки собираем из данных фото — их количество всегда совпадает
@@ -276,7 +277,7 @@
     card.querySelectorAll('[data-ocard-prev]').forEach((b) => b.addEventListener('click', () => show(current - 1)));
     card.querySelectorAll('[data-ocard-next]').forEach((b) => b.addEventListener('click', () => show(current + 1)));
 
-    show(0);
+    show(current);
   });
 })();
 
