@@ -3484,6 +3484,10 @@ a.contact-item__value:hover,
   display: flex;
   flex-direction: column;
   padding: 26px 28px 24px;
+
+  @media (max-width: 900px) {
+    padding: 15px;
+  }
 }
 
 .ocard__title {
@@ -3510,8 +3514,12 @@ a.contact-item__value:hover,
   font-size: 18px;
   font-weight: 300;
   line-height: 1.6;
-  color: rgba(248, 245, 238, 0.6);
+  color: rgba(248, 245, 238, 0.7);
   margin: 0;
+
+  @media (max-width: 900px) {
+    font-size: 14px;
+  }
 }
 
 /* Список мероприятий вместо описания — в две колонки, маркер-линия */
@@ -3520,8 +3528,12 @@ a.contact-item__value:hover,
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px 50px;
+
+  @media (max-width: 768px) {
+    gap: 10px 15px;
+  }
 }
 
 .ocard__list li {
@@ -3531,6 +3543,10 @@ a.contact-item__value:hover,
   font-size: 18px;
   font-weight: 300;
   color: rgba(248, 245, 238, 0.7);
+
+  @media (max-width: 900px) {
+    font-size: 14px;
+  }
 }
 
 .ocard__list li::before {
@@ -4032,7 +4048,6 @@ a.contact-item__value:hover,
 
   .bonus__card {
     justify-self: stretch;
-    max-width: 360px;
     margin: 0 auto;
   }
 }
