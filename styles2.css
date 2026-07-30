@@ -405,7 +405,7 @@ button {
 .nav__burger span {
   display: block;
   width: 24px;
-  height: 1.5px;
+  height: 2px;
   background: var(--gold);
   margin-bottom: 6px;
   transition:
@@ -3477,6 +3477,89 @@ a.contact-item__value:hover,
   display: block;
   object-fit: cover;
   opacity: 0.92;
+}
+
+/* Мини-слайдер фото внутри карточки услуги (беседки) */
+.ocard-shots {
+  position: absolute;
+  inset: 0;
+}
+
+/* Селектор с двумя классами — перебивает .ocard__media img { opacity: .92 } */
+.ocard__media .ocard-shots__img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.ocard__media .ocard-shots__img.is-active {
+  opacity: 0.92;
+}
+
+.ocard-shots__nav {
+  position: absolute;
+  top: 85%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(200, 164, 108, 0.4);
+  background: rgba(10, 40, 34);
+  backdrop-filter: blur(6px);
+  color: var(--gold);
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+
+  @media (max-width: 600px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.ocard-shots__nav:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.ocard-shots__nav .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.ocard-shots__nav_prev {
+  left: 14px;
+}
+
+.ocard-shots__nav_next {
+  right: 14px;
+}
+
+.ocard-shots__dots {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 7px;
+  background-color: var(--navy-900);
+}
+
+.ocard-shots__dot {
+  width: 26px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  background: rgba(248, 245, 238, 0.35);
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.ocard-shots__dot.is-active {
+  background: var(--gold);
 }
 
 .ocard__body {

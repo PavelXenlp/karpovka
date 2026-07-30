@@ -212,12 +212,14 @@
   const section = el.closest('.offers-section');
   const titleEl = section ? section.querySelector('.section-title') : null;
   const offsetBefore = () => (titleEl ? Math.max(0, Math.round(titleEl.getBoundingClientRect().left)) : 0);
+  const OFFSET_AFTER = 32; // «воздух» после последнего слайда до правого края экрана
 
   const sw = new Swiper(el, {
     slidesPerView: 'auto', // ширину карточек задаёт CSS → справа слайд «торчит»
     spaceBetween: 24,
     grabCursor: true, // курсор-«хват» + перетаскивание мышью/пальцем
     slidesOffsetBefore: offsetBefore(),
+    slidesOffsetAfter: OFFSET_AFTER,
     navigation: {
       prevEl: '[data-offers-prev]',
       nextEl: '[data-offers-next]',
@@ -234,6 +236,47 @@
   window.addEventListener('load', () => {
     sw.params.slidesOffsetBefore = offsetBefore();
     sw.update();
+  });
+})();
+
+// ─── Карточка услуги: переключение фото внутри карточки ────
+(() => {
+  document.querySelectorAll('[data-ocard-slider]').forEach((card) => {
+    const shots = Array.from(card.querySelectorAll('.ocard-shots__img'));
+    if (shots.length < 2) return;
+
+    const descEl = card.querySelector('[data-ocard-desc]');
+    const dotsEl = card.querySelector('[data-ocard-dots]');
+
+    let current = 0;
+    let dots = [];
+
+    const show = (index) => {
+      current = (index + shots.length) % shots.length;
+      shots.forEach((s, i) => s.classList.toggle('is-active', i === current));
+      dots.forEach((d, i) => {
+        d.classList.toggle('is-active', i === current);
+        d.setAttribute('aria-current', String(i === current));
+      });
+      const desc = shots[current].dataset.desc;
+      if (descEl && desc) descEl.textContent = desc;
+    };
+
+    // Точки собираем из данных фото — их количество всегда совпадает
+    dots = shots.map((shot, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'ocard-shots__dot';
+      dot.setAttribute('aria-label', shot.dataset.label || `Фото ${i + 1}`);
+      dot.addEventListener('click', () => show(i));
+      if (dotsEl) dotsEl.appendChild(dot);
+      return dot;
+    });
+
+    card.querySelectorAll('[data-ocard-prev]').forEach((b) => b.addEventListener('click', () => show(current - 1)));
+    card.querySelectorAll('[data-ocard-next]').forEach((b) => b.addEventListener('click', () => show(current + 1)));
+
+    show(0);
   });
 })();
 

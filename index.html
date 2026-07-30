@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="styles2.css?v=1.0.1" />
+    <link rel="stylesheet" href="styles2.css?v=1.0.2" />
 
     <!-- ─── Глобальный лоадер: критический CSS (в WP → wp_head) ── -->
     <style>
@@ -684,7 +684,7 @@
       <div class="combined-row">
         <div class="combined-row__text reveal">
           <p class="eyebrow">Проживание</p>
-          <h2 class="section-title">Ваш уголок в <em>в лесу</em></h2>
+          <h2 class="section-title">Ваш <em>комфорт</em> среди живописной природы</h2>
           <p class="section-sub combined-row__sub">От гостиничного номера до отдельного дома — каждый найдёт здесь свой идеальный сценарий отдыха</p>
 
           <ul class="stay-list" id="stayList">
@@ -993,15 +993,40 @@
             </div>
           </article>
 
-          <!-- Беседки -->
-          <article class="swiper-slide ocard">
+          <!-- Беседки: открытая и тёплая — переключаются внутри карточки -->
+          <article class="swiper-slide ocard" data-ocard-slider>
             <div class="ocard__media">
-              <img src="./assets/imgs/imgs/photo.jpg_2.jpeg" alt="Беседки" />
+              <div class="ocard-shots">
+                <img
+                  class="ocard-shots__img"
+                  src="./assets/imgs/imgs/besedka_warm.jpg"
+                  alt="Тёплая крытая беседка"
+                  data-desc="Тёплый банкетный зал для мероприятий в любое время года."
+                  data-label="Тёплая крытая беседка"
+                  loading="lazy"
+                />
+                <img
+                  class="ocard-shots__img is-active"
+                  src="./assets/imgs/imgs/besedka_outdoor.jpg"
+                  alt="Открытая беседка на берегу пруда"
+                  data-desc="Просторная открытая беседка на берегу живописного пруда."
+                  data-label="Открытая беседка"
+                />
+              </div>
+
+              <button class="ocard-shots__nav ocard-shots__nav_prev swiper-no-swiping" type="button" data-ocard-prev aria-label="Предыдущее фото беседки">
+                <svg class="icon"><use href="#icon-chevron-left"></use></svg>
+              </button>
+              <button class="ocard-shots__nav ocard-shots__nav_next swiper-no-swiping" type="button" data-ocard-next aria-label="Следующее фото беседки">
+                <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+              </button>
+
+              <div class="ocard-shots__dots swiper-no-swiping" data-ocard-dots></div>
             </div>
             <div class="ocard__body">
               <h3 class="ocard__title">Беседки</h3>
               <div class="ocard__foot">
-                <p class="ocard__desc">Уютная беседка — малый банкетный зал для ваших праздников и встреч.</p>
+                <p class="ocard__desc" data-ocard-desc>Просторная открытая беседка на берегу живописного пруда.</p>
                 <a
                   class="ocard__arrow"
                   href="https://shop.hotbot.ai/karpovka/eda-i-napitki-v-nomer/"
@@ -1377,7 +1402,7 @@
             </button>
             <div class="faq-item__a" data-faq-answer>
               <p>
-                Заселение — с 14:00, выселение — до 12:00 (единый расчётный час). Ранний заезд до 14:00 и поздний выезд возможны при наличии свободных мест за дополнительную плату.
+                Заселение — с 14:00, выселение — до 12:00 (единый расчётный час).
               </p>
             </div>
           </div>
@@ -1424,7 +1449,7 @@
 
           <div class="faq-item" data-faq-item>
             <button class="faq-item__q" type="button" data-faq-toggle aria-expanded="false">
-              <span>Возможен ли поздний заезд или выезд?</span>
+              <span>Возможен ли ранний заезд или поздний выезд?</span>
               <span class="faq-item__icon" aria-hidden="true"></span>
             </button>
             <div class="faq-item__a" data-faq-answer>
@@ -1742,6 +1767,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="script2.js?v=1.0.1"></script>
+    <script src="script2.js?v=1.0.2"></script>
   </body>
 </html>
