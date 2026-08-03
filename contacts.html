@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты — Парк-отель Карповка</title>
+  <meta name="description" content="Контактная информация парк-отеля Карповка: адрес, телефоны, email, мессенджеры, карта проезда и форма обратной связи.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles2.css?v=1.0.3">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ═══════════════════════════════════════════════
+       1. HERO
+       ═══════════════════════════════════════════════ */
+    .c-hero {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      color: var(--white);
+      overflow: hidden;
+    }
+    .c-hero__photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04);
+    }
+    .c-hero__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(18,61,52,0.9) 0%, rgba(18,61,52,0.6) 45%, rgba(18,61,52,0.18) 100%),
+        linear-gradient(0deg, rgba(18,61,52,0.7), rgba(18,61,52,0.15) 55%);
+    }
+    .c-hero__content {
+      position: relative;
+      z-index: 2;
+      padding: 160px 0 80px;
+      max-width: 700px;
+    }
+    .c-hero__content p {
+      margin-top: 0;
+      color: rgba(255,255,255,0.85);
+      font-size: 18px;
+      line-height: 1.65;
+      max-width: 540px;
+    }
+    .c-hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+    .c-hero__socials {
+      margin-top: 36px;
+    }
+
+    @media (max-width: 720px) {
+      .c-hero { min-height: 420px; }
+      .c-hero__content { padding: 120px 0 60px; }
+      .c-hero__content p { font-size: 16px; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       2. КОНТАКТНЫЕ ДАННЫЕ
+       ═══════════════════════════════════════════════ */
+    .c-contacts {
+      padding: 80px 0;
+      background: var(--pine);
+      color: var(--white);
+    }
+    .c-contacts .eyebrow {
+      border-color: rgba(200,164,108,0.5);
+      color: var(--sand);
+    }
+    .c-contacts h2 { color: var(--white); }
+    .c-contacts__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .c-contact-card {
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.2);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .c-contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    }
+    .c-contact-card__header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .c-contact-card__icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--sage);
+      color: var(--forest);
+      flex-shrink: 0;
+    }
+    .c-contact-card__icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .c-contact-card__label {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sand);
+    }
+    .c-contact-card__value {
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+    }
+    .c-contact-card__value a {
+      color: var(--warm-sand);
+      transition: color 0.2s;
+      display: block;
+    }
+    .c-contact-card__value a:hover {
+      color: var(--white);
+    }
+    .c-contact-card__phones {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .c-contact-card__phones a {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    /* Messengers block */
+    .c-messengers {
+      margin-top: 16px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .c-messengers__title {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sand);
+      margin-bottom: 14px;
+    }
+    .c-messengers__list {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .c-messenger {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .c-messenger:hover {
+      border-color: var(--sand);
+      background: rgba(255,255,255,0.12);
+    }
+    .c-messenger svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .c-messenger--vk svg { color: #0077FF; }
+    .c-messenger--tg svg { color: #26A5E4; }
+    .c-messenger--max svg { color: var(--pine); }
+
+    @media (max-width: 800px) {
+      .c-contacts__grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .c-contact-card { padding: 24px 20px; }
+      .c-contact-card__value { font-size: 16px; }
+      .c-contact-card__phones a { font-size: 17px; }
+      .c-contacts {
+        padding: 20px 0;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       3. ЯНДЕКС.КАРТА
+       ═══════════════════════════════════════════════ */
+    .c-map {
+      padding: 0 0 80px;
+      background: var(--pine);
+    }
+    .c-map .eyebrow {
+      border-color: rgba(200,164,108,0.5);
+      color: var(--sand);
+    }
+    .c-map h2 { color: var(--white); }
+    .c-map__wrap {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .c-map__frame {
+      display: block;
+      width: 100%;
+      height: 480px;
+      border: 0;
+    }
+    @media (max-width: 720px) {
+      .c-map__frame { height: 340px; }
+      .c-map { padding-bottom: 60px; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       4. КАК ДОБРАТЬСЯ
+       ═══════════════════════════════════════════════ */
+    .c-directions {
+      padding: 80px 0;
+      background: var(--pine);
+      color: var(--white);
+    }
+    .c-directions .eyebrow {
+      border-color: rgba(200,164,108,0.5);
+      color: var(--sand);
+    }
+    .c-directions h2 { color: var(--white); }
+    .c-directions__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .c-dir-card {
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .c-dir-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .c-dir-card__icon {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--pine);
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+    .c-dir-card__icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .c-dir-card h3 {
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: var(--white);
+    }
+    .c-dir-card p {
+      color: rgba(255,255,255,0.7);
+      font-size: 15px;
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+    .c-dir-card ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 14px;
+    }
+    .c-dir-card ul li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 10px;
+      color: rgba(255,255,255,0.85);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .c-dir-card ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sand);
+    }
+
+    @media (max-width: 900px) {
+      .c-directions__grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .c-directions {
+        padding: 20px 0;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       5. РЕКВИЗИТЫ
+       ═══════════════════════════════════════════════ */
+    .c-requisites {
+      padding: 80px 0;
+      background: var(--pine);
+      color: var(--white);
+    }
+    .c-requisites .section-head { margin-bottom: 40px; }
+    .c-requisites .eyebrow {
+      border-color: rgba(200,164,108,0.5);
+      color: var(--sand);
+    }
+    .c-requisites h2 { color: var(--white); }
+    .c-requisites__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .c-req-card {
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+    }
+    .c-req-card h4 {
+      color: var(--sand);
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .c-req-card p {
+      color: rgba(255,255,255,0.8);
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+    .c-req-card a {
+      color: var(--sand);
+      transition: color 0.2s;
+    }
+    .c-req-card a:hover { color: var(--warm-sand); }
+
+    @media (max-width: 720px) {
+      .c-requisites__grid { grid-template-columns: 1fr; }
+      .c-requisites {
+        padding: 20px 0;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       6. ФОРМА ОБРАТНОЙ СВЯЗИ
+       ═══════════════════════════════════════════════ */
+    .c-form-section {
+      padding: 80px 0;
+      background: var(--pine);
+      color: var(--white);
+    }
+    .c-form-section .eyebrow {
+      border-color: rgba(200,164,108,0.5);
+      color: var(--sand);
+    }
+    .c-form-section h2 { color: var(--white); }
+    .c-form-section .section-head--center {
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    .c-form-section .section-head--center p {
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      margin-top: 12px;
+    }
+    .c-form {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.2);
+    }
+    .c-form__row {
+      display: grid;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .c-form__row--2col {
+      grid-template-columns: 1fr 1fr;
+    }
+    .c-form__field {
+      display: grid;
+      gap: 8px;
+    }
+    .c-form__field label {
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.9);
+    }
+    .c-form__field input,
+    .c-form__field textarea,
+    .c-form__field select {
+      height: 50px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 0 16px;
+      color: var(--white);
+      background: rgba(255,255,255,0.08);
+      font-family: var(--serif);
+      font-size: 15px;
+      transition: border-color 0.2s;
+    }
+    .c-form__field select option {
+      background: var(--pine);
+      color: var(--white);
+    }
+    .c-form__field textarea {
+      height: 130px;
+      padding: 14px 16px;
+      resize: vertical;
+    }
+    .c-form__field input:focus,
+    .c-form__field textarea:focus,
+    .c-form__field select:focus {
+      outline: none;
+      border-color: var(--sand);
+    }
+    .c-form__field input::placeholder,
+    .c-form__field textarea::placeholder {
+      color: rgba(255,255,255,0.4);
+      font-family: var(--sans);
+      font-size: 14px;
+    }
+    .c-form__submit {
+      width: 100%;
+      margin-top: 8px;
+    }
+    .c-form__note {
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+    }
+    .c-form__note a {
+      color: var(--sand);
+      border-bottom: 1px solid currentColor;
+    }
+    .c-form__note a:hover { color: var(--warm-sand); }
+
+    @media (max-width: 600px) {
+      .c-form { padding: 28px 20px; }
+      .c-form__row--2col { grid-template-columns: 1fr; }
+      .c-form-section {
+        padding: 20px 0;
+      }
+    }
+
+    
+
+    /* ═══════════════════════════════════════════════
+       REVEAL ANIMATION
+       ═══════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══════════════════════════════════════════════
+       FORM SUCCESS STATE
+       ═══════════════════════════════════════════════ */
+    .c-form__success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 30px 0;
+    }
+    .c-form__success.is-shown { display: flex; }
+    .c-form__success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--sage);
+      color: var(--forest);
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+    }
+    .c-form__success-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .c-form__success h3 { margin-bottom: 8px; color: var(--white); }
+    .c-form__success p {
+      color: rgba(255,255,255,0.7);
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ ICON SPRITE ═══ -->
+  <svg class="icon-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" width="0" height="0">
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+    <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17h14"/><path d="M5 17a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-3h8l2 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2"/><circle cx="7.5" cy="11.5" r="1.5"/><circle cx="16.5" cy="11.5" r="1.5"/></symbol>
+    <symbol id="i-signpost" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M9 5h9a1 1 0 0 0 0-2H9v2z"/><path d="M9 9h9a1 1 0 0 1 0 2H9V9z"/><path d="M9 13h9a1 1 0 0 1 0 2H9v-2z"/></symbol>
+    <symbol id="i-parking" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M9 10v4"/><path d="M9 10h2.5a1.5 1.5 0 0 1 0 3H9"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  </svg>
+
+  <header class="nav" id="nav">
+      <nav class="nav__inner">
+        <a href="index.html" class="logo" aria-label="Карповка — парк-отель">
+          <img class="logo__img" src="./assets/imgs/logo.png" alt="Карповка" />
+        </a>
+
+        <ul class="nav__links hidden-mobile">
+          <li><a href="#accommodation">Проживание</a></li>
+          <li><a href="#spa">СПА</a></li>
+          <li><a href="#bath">Баня</a></li>
+          <li><a href="#dining">Кафе</a></li>
+          <li><a href="#recreation">Активный отдых</a></li>
+          <li><a href="#events">Мероприятия</a></li>
+          <li><a href="/contacts.html">Контакты</a></li>
+        </ul>
+
+        <div class="nav__tels">
+          <a href="tel:+79850200203" class="nav__cta hidden-mobile">+7 (985) 020-02-03</a>
+          <a href="tel:+79127813933" class="nav__cta hidden-mobile">+7 (912) 781-39-33</a>
+        </div>
+        <button class="nav__burger show-mobile" id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span><span></span></button>
+      </nav>
+
+      <nav class="nav__mobile" id="mobileMenu" hidden>
+        <a href="#accommodation" class="nav__mobile-link">Проживание</a>
+        <a href="#spa" class="nav__mobile-link">СПА</a>
+        <a href="#bath" class="nav__mobile-link">Баня</a>
+        <a href="#dining" class="nav__mobile-link">Кафе</a>
+        <a href="#recreation" class="nav__mobile-link">Активный отдых</a>
+        <a href="#events" class="nav__mobile-link">Мероприятия</a>
+        <a href="#contacts" class="nav__mobile-link">Контакты</a>
+        <a href="tel:+79850200203" class="nav__mobile-cta">+7 (985) 020-02-03</a>
+        <a href="tel:+79127813933" class="nav__mobile-cta">+7 (912) 781-39-33</a>
+
+        <div class="socials nav__mobile-socials">
+          <a class="social" href="tel:+79127813933" aria-label="Телефон">
+            <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-phone"></use></svg>
+          </a>
+          <a class="social" href="mailto:karpovka59ru@yandex.ru?subject=Здравствуйте!" target="_blank" rel="nofollow" aria-label="Электронная почта">
+            <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-email"></use></svg>
+          </a>
+          <a class="social" href="https://vk.com/baza_otdyha_spa_perm" target="_blank" rel="noopener" aria-label="ВКонтакте">
+            <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-vk"></use></svg>
+          </a>
+          <a class="social" href="https://t.me/karpovka59" target="_blank" rel="noopener" aria-label="Telegram">
+            <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-tg"></use></svg>
+          </a>
+          <a class="social" href="https://max.ru/id5981013014_biz" target="_blank" rel="nofollow noopener" aria-label="MAX Messenger">
+            <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-max"></use></svg>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+  <!-- ═══════════════════════════════════════════════════
+       1. HERO — КОНТАКТЫ
+       ═══════════════════════════════════════════════════ -->
+  <section class="c-hero">
+    <img class="c-hero__photo" src="./assets/imgs/imgs/1.jpg_1.jpeg" alt="Природа парк-отеля Карповка" loading="eager">
+    <div class="c-hero__overlay"></div>
+    <div class="container c-hero__content">
+      <p class="eyebrow">Свяжитесь с нами</p>
+      <h1>Как нас <em>найти</em></h1>
+      <p>Мы всегда на связи — звоните, пишите, приезжайте. Парк-отель «Карповка» расположен в живописном уголке Пермского края, в 90 км от города, на берегу Карпова пруда.</p>
+      <div class="c-hero__actions">
+        <a href="#contacts-data" class="btn btn--gold">Контактные данные</a>
+        <a href="#directions" class="btn btn--ghost">Как добраться</a>
+      </div>
+      <div class="socials c-hero__socials">
+        <a class="social" href="tel:+79127813933" aria-label="Телефон">
+          <svg class="social__icon" fill="currentColor" viewBox="0 0 100 100"><path fill-rule="evenodd" clip-rule="evenodd" d="M50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100ZM50.0089 29H51.618C56.4915 29.0061 61.1633 30.9461 64.6073 34.3938C68.0512 37.8415 69.9856 42.5151 69.9856 47.3879V48.9968C69.9338 49.5699 69.6689 50.1027 69.2433 50.49C68.8177 50.8772 68.2623 51.0908 67.6868 51.0884H67.5029C66.8966 51.0358 66.3359 50.745 65.9437 50.2796C65.5516 49.8143 65.36 49.2124 65.4109 48.6061V47.3879C65.4109 43.7303 63.9578 40.2225 61.3711 37.6362C58.7844 35.0499 55.2761 33.597 51.618 33.597H50.3997C49.79 33.6488 49.1847 33.4563 48.7169 33.0619C48.2492 32.6675 47.9573 32.1035 47.9054 31.4939C47.8536 30.8843 48.0461 30.279 48.4406 29.8114C48.835 29.3437 49.3992 29.0518 50.0089 29ZM56.889 49.0132C56.4579 48.5821 56.2157 47.9975 56.2157 47.3879C56.2157 46.1687 55.7313 44.9994 54.869 44.1373C54.0068 43.2752 52.8374 42.7909 51.618 42.7909C51.0083 42.7909 50.4236 42.5488 49.9925 42.1177C49.5614 41.6867 49.3192 41.102 49.3192 40.4924C49.3192 39.8828 49.5614 39.2982 49.9925 38.8672C50.4236 38.4361 51.0083 38.1939 51.618 38.1939C54.0568 38.1939 56.3956 39.1626 58.1201 40.8868C59.8445 42.611 60.8133 44.9495 60.8133 47.3879C60.8133 47.9975 60.5711 48.5821 60.14 49.0132C59.7089 49.4442 59.1242 49.6864 58.5145 49.6864C57.9048 49.6864 57.3201 49.4442 56.889 49.0132ZM66.4011 69.0663L66.401 69.0846C66.3999 69.5725 66.2967 70.0547 66.0981 70.5003C65.8998 70.9451 65.611 71.3435 65.2499 71.67C64.8674 72.0182 64.4123 72.2771 63.9176 72.428C63.4516 72.5702 62.9613 72.6132 62.4782 72.5546C58.2475 72.53 53.4102 70.5344 49.1802 68.1761C44.8871 65.7827 41.0444 62.915 38.8019 60.9903L38.7681 60.9613L38.7367 60.9299C32.3303 54.5198 28.2175 46.1735 27.0362 37.186C26.9623 36.6765 27.0018 36.157 27.1519 35.6645C27.3027 35.1695 27.5615 34.7142 27.9094 34.3314C28.2397 33.9658 28.6436 33.6742 29.0944 33.4757C29.5447 33.2775 30.0316 33.1766 30.5234 33.1796H37.4967C38.299 33.1636 39.0826 33.4244 39.7156 33.9184C40.3527 34.4156 40.7979 35.1184 40.9754 35.9071L41.0038 36.0335V36.1631C41.0038 36.4901 41.0787 36.795 41.1847 37.2268C41.2275 37.4012 41.2755 37.5965 41.3256 37.8221L41.326 37.8238C41.583 38.9896 41.925 40.1351 42.3491 41.251L42.7322 42.259L38.4899 44.26L38.4846 44.2625C38.204 44.3914 37.986 44.6263 37.8784 44.9157L37.8716 44.934L37.8642 44.952C37.7476 45.236 37.7476 45.5545 37.8642 45.8385L37.9144 45.9608L37.9359 46.0912C38.0802 46.9648 38.5603 48.0981 39.4062 49.4169C40.243 50.7215 41.3964 52.1437 42.808 53.5872C45.6206 56.4634 49.3981 59.3625 53.5798 61.5387C53.8533 61.6395 54.1552 61.6343 54.4257 61.5231L54.4437 61.5157L54.462 61.5089C54.7501 61.4016 54.9842 61.1848 55.1133 60.9057L55.1148 60.9023L57.0232 56.6591L58.0397 57.03C59.1934 57.4509 60.3737 57.7947 61.5729 58.0592L61.5785 58.0605L61.5841 58.0618C62.152 58.1929 62.7727 58.3042 63.3802 58.3942L63.4231 58.4006L63.4654 58.4101C64.2537 58.5877 64.956 59.0332 65.453 59.6706C65.9429 60.2991 66.2033 61.0758 66.1916 61.8721L66.4011 69.0663Z"/></svg>
+        </a>
+        <a class="social" href="mailto:karpovka59ru@yandex.ru?subject=Здравствуйте!" aria-label="Email">
+          <svg class="social__icon" fill="currentColor" viewBox="0 0 100 100"><path fill-rule="evenodd" clip-rule="evenodd" d="M50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100ZM51.8276 49.2076L74.191 33.6901C73.4347 32.6649 72.2183 32 70.8466 32H29.1534C27.8336 32 26.6576 32.6156 25.8968 33.5752L47.5881 49.172C48.8512 50.0802 50.5494 50.0945 51.8276 49.2076ZM75 63.6709V37.6286L53.4668 52.57C51.1883 54.151 48.1611 54.1256 45.9095 52.5066L25 37.4719V63.6709C25 65.9648 26.8595 67.8243 29.1534 67.8243H70.8466C73.1405 67.8243 75 65.9648 75 63.6709Z"/></svg>
+        </a>
+        <a class="social" href="https://vk.com/baza_otdyha_spa_perm" target="_blank" rel="noopener" aria-label="ВКонтакте">
+          <svg class="social__icon" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C18.627 0 24 5.373 24 12C24 18.627 18.627 24 12 24C5.373 24 0 18.627 0 12C0 5.373 5.373 0 12 0ZM11.77 16.43h.94s.28-.03.43-.19c.14-.14.13-.4.13-.4s-.02-1.26.56-1.45c.57-.18 1.31 1.22 2.09 1.75.59.4 1.04.31 1.04.31l2.09-.03s1.09-.07.57-.93c-.04-.07-.3-.64-1.57-1.82-1.32-1.23-1.15-1.03.45-3.16.97-1.3 1.36-2.09 1.24-2.43-.11-.32-.83-.24-.83-.24l-2.35.02s-.17-.02-.3.06c-.13.08-.21.26-.21.26s-.38 1.01-.89 1.87c-1.07 1.82-1.5 1.91-1.67 1.8-.4-.26-.3-1.05-.3-1.61 0-1.75.27-2.48-.52-2.67-.26-.06-.45-.1-1.12-.11-.85-.01-1.58 0-1.99.2-.27.14-.48.44-.36.46.16.02.51.1.7.35.24.33.23 1.05.23 1.05s.14 2.01-.32 2.26c-.32.17-.75-.18-1.71-1.83-.49-.85-.86-1.78-.86-1.78s-.07-.17-.2-.27c-.15-.11-.37-.14-.37-.14l-2.23.02s-.34.01-.46.16c-.11.13-.01.4-.01.4s1.75 4.09 3.73 6.15c1.82 1.89 3.88 1.76 3.88 1.76z"/></svg>
+        </a>
+        <a class="social" href="https://t.me/karpovka59" target="_blank" rel="noopener" aria-label="Telegram">
+          <svg class="social__icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.05-.2-.06-.06-.14-.04-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       2. КОНТАКТНЫЕ ДАННЫЕ
+       ═══════════════════════════════════════════════════ -->
+  <section class="c-contacts" id="contacts-data">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Контактная информация</p>
+        <h2>Свяжитесь с <em>нами</em></h2>
+      </div>
+
+      <div class="c-contacts__grid">
+        <!-- Адрес -->
+        <div class="c-contact-card reveal">
+          <div class="c-contact-card__header">
+            <div class="c-contact-card__icon">
+              <svg><use href="#i-map-pin"></use></svg>
+            </div>
+            <div class="c-contact-card__label">Адрес</div>
+          </div>
+          <div class="c-contact-card__value">
+            Пермский край, Карагайский район,<br>деревня Карповка
+          </div>
+        </div>
+
+        <!-- Телефон -->
+        <div class="c-contact-card reveal">
+          <div class="c-contact-card__header">
+            <div class="c-contact-card__icon">
+              <svg><use href="#i-phone"></use></svg>
+            </div>
+            <div class="c-contact-card__label">Телефон</div>
+          </div>
+          <div class="c-contact-card__phones">
+            <a href="tel:+79850200203">+7 (985) 020-02-03</a>
+            <a href="tel:+79127813933">+7 (912) 781-39-33</a>
+          </div>
+        </div>
+
+        <!-- E-mail -->
+        <div class="c-contact-card reveal">
+          <div class="c-contact-card__header">
+            <div class="c-contact-card__icon">
+              <svg><use href="#i-mail"></use></svg>
+            </div>
+            <div class="c-contact-card__label">E-mail</div>
+          </div>
+          <div class="c-contact-card__value">
+            <a href="mailto:karpovka59@yandex.ru">karpovka59@yandex.ru</a>
+          </div>
+        </div>
+
+        <!-- Мессенджеры -->
+        <div class="c-contact-card reveal">
+          <div class="c-contact-card__header">
+            <div class="c-contact-card__icon">
+              <svg><use href="#i-message"></use></svg>
+            </div>
+            <div class="c-contact-card__label">Мессенджеры</div>
+          </div>
+          <div class="c-contact-card__value" style="margin-bottom:16px;">Пишите в удобный мессенджер — ответим в ближайшее время</div>
+          <div class="c-messengers">
+            <div class="c-messengers__list">
+              <a class="c-messenger c-messenger--tg" href="https://t.me/karpovka59" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.05-.2-.06-.06-.14-.04-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+                Telegram
+              </a>
+              <a class="c-messenger c-messenger--vk" href="https://vk.com/baza_otdyha_spa_perm" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C18.627 0 24 5.373 24 12C24 18.627 18.627 24 12 24C5.373 24 0 18.627 0 12C0 5.373 5.373 0 12 0ZM11.77 16.43h.94s.28-.03.43-.19c.14-.14.13-.4.13-.4s-.02-1.26.56-1.45c.57-.18 1.31 1.22 2.09 1.75.59.4 1.04.31 1.04.31l2.09-.03s1.09-.07.57-.93c-.04-.07-.3-.64-1.57-1.82-1.32-1.23-1.15-1.03.45-3.16.97-1.3 1.36-2.09 1.24-2.43-.11-.32-.83-.24-.83-.24l-2.35.02s-.17-.02-.3.06c-.13.08-.21.26-.21.26s-.38 1.01-.89 1.87c-1.07 1.82-1.5 1.91-1.67 1.8-.4-.26-.3-1.05-.3-1.61 0-1.75.27-2.48-.52-2.67-.26-.06-.45-.1-1.12-.11-.85-.01-1.58 0-1.99.2-.27.14-.48.44-.36.46.16.02.51.1.7.35.24.33.23 1.05.23 1.05s.14 2.01-.32 2.26c-.32.17-.75-.18-1.71-1.83-.49-.85-.86-1.78-.86-1.78s-.07-.17-.2-.27c-.15-.11-.37-.14-.37-.14l-2.23.02s-.34.01-.46.16c-.11.13-.01.4-.01.4s1.75 4.09 3.73 6.15c1.82 1.89 3.88 1.76 3.88 1.76z"/></svg>
+                ВКонтакте
+              </a>
+              <a class="c-messenger c-messenger--max" href="https://max.ru/id5981013014_biz" target="_blank" rel="noopener">
+                <svg viewBox="0 0 48 48" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24C0 10.7452 10.7452 0 24 0ZM24.2314 12.5C17.8663 12.5 12.4942 17.4255 12.4941 23.9727C12.4941 26.714 13.0015 28.6059 13.4482 30.3047C13.8233 31.6836 14.1543 32.9467 14.1543 34.4414C14.3143 36.4326 17.9823 35.2685 19.1406 33.7793C20.9718 35.1031 22.0251 35.4346 24.292 35.4346C30.5586 35.4011 35.6151 30.2999 35.5938 24.0332C35.5937 17.6682 30.602 12.5 24.2314 12.5ZM24.3857 18.1592V18.165C27.5981 18.349 30.0709 21.0719 29.9453 24.2871C29.7296 27.4955 26.9854 29.9406 23.7734 29.7861C22.768 29.7055 21.8016 29.3614 20.9717 28.7881C20.4699 29.2899 19.6648 29.9402 19.3447 29.8633C18.6774 29.6868 17.8938 26.2951 18.335 23.5098C18.87 20.1452 21.2859 17.9993 24.3857 18.1592Z"/></svg>
+                MAX
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       3. ЯНДЕКС.КАРТА
+       ═══════════════════════════════════════════════════ -->
+  <section class="c-map reveal" id="map-section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">Расположение</p>
+        <h2>Мы на <em>карте</em></h2>
+      </div>
+    </div>
+    <div class="c-map__wrap">
+      <iframe
+        class="c-map__frame"
+        src="https://yandex.ru/map-widget/v1/?ll=54.869726%2C58.309505&mode=search&oid=1716447826&ol=biz&z=12"
+        title="Карта — Парк-отель «Карповка»"
+        allowfullscreen
+        loading="lazy"
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       4. КАК ДОБРАТЬСЯ
+       ═══════════════════════════════════════════════════ -->
+  <section class="c-directions" id="directions">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Маршрут</p>
+        <h2>Как <em>добраться</em></h2>
+      </div>
+
+      <div class="c-directions__grid">
+        <!-- На автомобиле -->
+        <div class="c-dir-card reveal">
+          <div class="c-dir-card__icon">
+            <svg><use href="#i-car"></use></svg>
+          </div>
+          <h3>На автомобиле</h3>
+          <p>Из Перми ехать по трассе Р-342 в направлении Ильинского / Кунгура. Примерное время в пути — 1 час 20 минут.</p>
+          <ul>
+            <li>Из Перми выехать на трассу Р-342 (Кунгурское направление)</li>
+            <li>Проехать через посёлок Ильинский (~65 км)</li>
+            <li>Далее по указателю на Карагай (~20 км)</li>
+            <li>В деревне Карповка повернуть по указателю «Парк-отель Карповка»</li>
+          </ul>
+          <p style="margin-top:16px; font-size:14px; color:var(--sand); font-weight:700;">~90 км от Перми</p>
+        </div>
+
+        <!-- Ориентиры -->
+        <div class="c-dir-card reveal">
+          <div class="c-dir-card__icon">
+            <svg><use href="#i-signpost"></use></svg>
+          </div>
+          <h3>Ориентиры</h3>
+          <p>Если вы используете навигатор, просто введите «Парк-отель Карповка» — нас найдёт Яндекс.Карты и Google Maps.</p>
+          <ul>
+            <li>Въезд в деревню Карповка — придорожный указатель</li>
+            <li>После въезда в деревню поверните на первую грунтовую дорогу вправо</li>
+            <li>Ещё ~1,5 км по лесной дороге до въезда на территорию</li>
+            <li>У въезда — информационный щит и шлагбаум</li>
+          </ul>
+        </div>
+
+        <!-- Парковка -->
+        <div class="c-dir-card reveal">
+          <div class="c-dir-card__icon">
+            <svg><use href="#i-parking"></use></svg>
+          </div>
+          <h3>Парковка</h3>
+          <p>Для гостей предусмотрена бесплатная охраняемая парковка на территории комплексного парка. Места всегда есть.</p>
+          <ul>
+            <li>Бесплатная парковка для всех гостей</li>
+            <li>Охраняемая территория круглосуточно</li>
+            <li>Парковка у главного корпуса и у эко-домов</li>
+            <li>Крупногабаритный транспорт по согласованию</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       5. РЕКВИЗИТЫ
+       ═══════════════════════════════════════════════════ -->
+  <section class="c-requisites" id="requisites">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>Реквизиты</h2>
+      </div>
+      <div class="c-requisites__grid">
+        <div class="c-req-card reveal">
+          <h4>Организация</h4>
+          <p>Парк-отель «Карповка»</p>
+          <p>Адрес: Пермский край, Карагайский район, д. Карповка</p>
+          <p>Телефон: <a href="tel:+79850200203">+7 (985) 020-02-03</a></p>
+          <p>Email: <a href="mailto:karpovka59@yandex.ru">karpovka59@yandex.ru</a></p>
+        </div>
+        <div class="c-req-card reveal">
+          <h4>Режим работы</h4>
+          <p>Администратор: круглосуточно</p>
+          <p>Ресепшен: 24/7</p>
+          <p>СПА-центр: ежедневно с 09:00 до 22:00</p>
+          <p>Кафе: ПН-ЧТ с 08:00 до 20:30, ПТ-СБ с 08:00 до 21:30</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       6. ФОРМА ОБРАТНОЙ СВЯЗИ
+       ═══════════════════════════════════════════════════ -->
+  <section class="c-form-section" id="feedback">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Напишите нам</p>
+        <h2>Остались <em>вопросы</em>?</h2>
+        <p>Оставьте заявку — мы перезвоним и поможем с бронированием, выбором номера или организацией мероприятия</p>
+      </div>
+
+      <div class="c-form reveal" id="callbackForm">
+        <form data-callback-form>
+          <div class="c-form__row c-form__row--2col">
+            <div class="c-form__field">
+              <label for="cf-name">Ваше имя</label>
+              <input type="text" id="cf-name" name="name" placeholder="Как к вам обращаться" required>
+            </div>
+            <div class="c-form__field">
+              <label for="cf-phone">Телефон</label>
+              <input type="tel" id="cf-phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+            </div>
+          </div>
+          <div class="c-form__row">
+            <div class="c-form__field">
+              <label for="cf-email">E-mail <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(необязательно)</span></label>
+              <input type="email" id="cf-email" name="email" placeholder="your@email.com">
+            </div>
+          </div>
+          <div class="c-form__row">
+            <div class="c-form__field">
+              <label for="cf-topic">Тема обращения</label>
+              <select id="cf-topic" name="topic">
+                <option value="booking">Бронирование проживания</option>
+                <option value="spa">СПА-услуги и баня</option>
+                <option value="event">Организация мероприятия</option>
+                <option value="cert">Подарочный сертификат</option>
+                <option value="other">Другой вопрос</option>
+              </select>
+            </div>
+          </div>
+          <div class="c-form__row">
+            <div class="c-form__field">
+              <label for="cf-message">Сообщение</label>
+              <textarea id="cf-message" name="message" placeholder="Расскажите, чем можем помочь..." rows="4"></textarea>
+            </div>
+          </div>
+          <button class="btn btn--gold c-form__submit" type="submit">Отправить заявку</button>
+        </form>
+
+        <div class="c-form__success" id="formSuccess">
+          <div class="c-form__success-icon">
+            <svg><use href="#i-check"></use></svg>
+          </div>
+          <h3>Спасибо за обращение!</h3>
+          <p>Мы свяжемся с вами в ближайшее время</p>
+        </div>
+      </div>
+
+      <p class="c-form__note reveal">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a></p>
+    </div>
+  </section>
+
+  <!-- ─── Footer ──────────────────────────────────────────── -->
+    <footer class="footer">
+      <!-- <div class="container"> -->
+      <div class="footer__grid grid-4responsive">
+        <div>
+          <a class="footer__logo" href="#" aria-label="Карповка — парк-отель">
+            <img class="footer__logo-img" src="./assets/imgs/logo.png" alt="Парк-отель Карповка" />
+          </a>
+          <p class="footer__about">Заповедная территория у живописного пруда в 90 км от Перми</p>
+
+          <div class="footer__phones">
+            <a href="tel:+79850200203" class="footer__phone">+7 (985) 020-02-03</a>
+            <a href="tel:+79127813933" class="footer__phone">+7 (912) 781-39-33</a>
+          </div>
+
+          <div class="socials footer__socials">
+            <a class="social" href="tel:+79127813933" aria-label="Телефон">
+              <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-phone"></use></svg>
+            </a>
+            <a
+              class="social"
+              href="mailto:karpovka59ru@yandex.ru?subject=Здравствуйте!"
+              target="_blank"
+              rel="nofollow"
+              aria-label="Электронная почта"
+            >
+              <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-email"></use></svg>
+            </a>
+            <a class="social" href="https://vk.com/baza_otdyha_spa_perm" target="_blank" rel="noopener" aria-label="ВКонтакте">
+              <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-vk"></use></svg>
+            </a>
+            <a class="social" href="https://t.me/karpovka59" target="_blank" rel="noopener" aria-label="Telegram">
+              <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-tg"></use></svg>
+            </a>
+            <a class="social" href="https://max.ru/id5981013014_biz" target="_blank" rel="nofollow noopener" aria-label="MAX Messenger">
+              <svg class="social__icon" fill="currentColor" aria-hidden="true"><use href="#icon-max"></use></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <div class="footer__col-title">Размещение</div>
+          <a href="#">Эко-дома</a>
+          <a href="#">Гостиничный комплекс</a>
+          <a href="#">Гостевые дома</a>
+        </div>
+
+        <div class="footer__col">
+          <div class="footer__col-title">Услуги</div>
+          <a href="#">СПА-центр</a>
+          <a href="#">Банный комплекс</a>
+          <a href="#">Кафе и банкет</a>
+          <a href="#">Активный отдых</a>
+        </div>
+
+        <div class="footer__col">
+          <div class="footer__col-title">Гостям</div>
+          <a href="#">Вопросы и ответы</a>
+          <a href="#">Как добраться</a>
+          <a href="#">Подарочные сертификаты</a>
+          <a href="#">Программа лояльности</a>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© 2025 Парк-отель Карповка. Все права защищены.</span>
+        <span>Пермский край, Карагайский район</span>
+      </div>
+      <!-- </div> -->
+    </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="script2.js?v=1.0.3"></script>
+</body>
+</html>

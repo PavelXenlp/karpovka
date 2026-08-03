@@ -343,3 +343,66 @@ document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
 
 
 
+// Страница контакты
+    // Nav scroll effect
+    (function() {
+      var nav = document.getElementById('nav');
+      window.addEventListener('scroll', function() {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+      }, { passive: true });
+    })();
+
+    // Mobile menu
+    (function() {
+      var burger = document.getElementById('burger');
+      var menu = document.getElementById('mobileMenu');
+      if (!burger || !menu) return;
+      burger.addEventListener('click', function() {
+        var open = burger.classList.toggle('is-open');
+        burger.setAttribute('aria-expanded', open);
+        menu.hidden = !open;
+        if (open) {
+          menu.classList.add('is-open');
+          document.body.classList.add('menu-open');
+        } else {
+          menu.classList.remove('is-open');
+          document.body.classList.remove('menu-open');
+        }
+      });
+      menu.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          burger.classList.remove('is-open');
+          burger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+          menu.classList.remove('is-open');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    })();
+
+    // Reveal on scroll
+    (function() {
+      var reveals = document.querySelectorAll('.reveal');
+      if (!reveals.length) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      reveals.forEach(function(el) { observer.observe(el); });
+    })();
+
+    // Form submission (demo)
+    (function() {
+      var form = document.querySelector('[data-callback-form]');
+      var success = document.getElementById('formSuccess');
+      if (!form || !success) return;
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        form.style.display = 'none';
+        success.classList.add('is-shown');
+      });
+    })();
