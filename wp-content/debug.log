@@ -1,0 +1,141 @@
+[12-Aug-2026 08:18:55 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:18:55 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:18:57 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:18:57 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:18:59 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:18:59 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:18:59 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:18:59 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:19:00 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:19:00 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/wp-content/themes/theme/includes/hero.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 12
+[12-Aug-2026 08:35:08 UTC] Automatic updates starting...
+[12-Aug-2026 08:35:08 UTC] Automatic updates complete.
+[12-Aug-2026 09:37:00 UTC] Automatic updates starting...
+[12-Aug-2026 09:37:00 UTC] Automatic updates complete.
+[12-Aug-2026 10:29:17 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/contacts.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 22
+[12-Aug-2026 10:29:17 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/contacts.php.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 22
+[12-Aug-2026 10:29:19 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/contacts.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 22
+[12-Aug-2026 10:29:19 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/contacts.php.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 22
+[12-Aug-2026 10:29:20 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/contacts.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 22
+[12-Aug-2026 10:29:20 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/contacts.php.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\index.php on line 22
+[12-Aug-2026 10:37:25 UTC] Automatic updates starting...
+[12-Aug-2026 10:37:27 UTC] Automatic updates complete.
+[13-Aug-2026 06:20:39 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/articles.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 22
+[13-Aug-2026 06:20:39 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/articles.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 22
+[13-Aug-2026 06:24:32 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/spa-reviews.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 21
+[13-Aug-2026 06:24:32 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/spa-reviews.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 21
+[13-Aug-2026 08:32:22 UTC] Automatic updates starting...
+[13-Aug-2026 08:32:24 UTC] Automatic updates complete.
+[14-Aug-2026 08:56:13 UTC] Automatic updates starting...
+[14-Aug-2026 08:56:15 UTC] Automatic updates complete.
+[16-Aug-2026 16:00:03 UTC] Automatic updates starting...
+[16-Aug-2026 16:00:05 UTC] Automatic updates complete.
+[17-Aug-2026 05:31:26 UTC] Automatic updates starting...
+[17-Aug-2026 05:31:29 UTC] Automatic updates complete.
+[17-Aug-2026 07:03:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_field() in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\includes\spa-detail.php:4
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php(15): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-includes\template-loader.php(132): include('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-blog-header.php(19): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\index.php(17): require('C:\\Users\\kosol\\...')
+#4 C:\Users\kosol\OneDrive\Документы\karpovka_wp\router.php(13): require_once('C:\\Users\\kosol\\...')
+#5 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\includes\spa-detail.php on line 4
+[17-Aug-2026 07:20:51 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:20:51 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:23:11 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:23:11 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:33:59 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\includes\spa-detail.php on line 4
+[17-Aug-2026 07:36:32 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:36:32 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:37:17 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:37:17 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:37:45 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:37:45 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:38:00 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:38:00 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:39:18 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:39:18 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:39:45 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:39:45 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:39:57 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:39:57 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:40:25 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 07:40:25 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 08:18:24 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 08:18:24 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 08:19:14 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 08:19:14 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\spa-page.php on line 19
+[17-Aug-2026 08:20:31 UTC] PHP Warning:  include(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\recreation.php on line 16
+[17-Aug-2026 08:20:31 UTC] PHP Warning:  include(): Failed opening 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/includes/section-price.php' for inclusion (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\recreation.php on line 16
+[17-Aug-2026 08:30:46 UTC] PHP Warning:  require(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:30:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php' (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php:27
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-settings.php(739): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-config.php(105): require_once('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-load.php(50): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-admin\admin-ajax.php(22): require_once('C:\\Users\\kosol\\...')
+#4 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:32:47 UTC] PHP Warning:  require(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:32:47 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php' (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php:27
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-settings.php(739): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-config.php(105): require_once('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-load.php(50): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-admin\admin-ajax.php(22): require_once('C:\\Users\\kosol\\...')
+#4 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:46 UTC] PHP Warning:  require(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php' (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php:27
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-settings.php(739): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-config.php(105): require_once('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-load.php(50): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-blog-header.php(13): require_once('C:\\Users\\kosol\\...')
+#4 C:\Users\kosol\OneDrive\Документы\karpovka_wp\index.php(17): require('C:\\Users\\kosol\\...')
+#5 C:\Users\kosol\OneDrive\Документы\karpovka_wp\router.php(13): require_once('C:\\Users\\kosol\\...')
+#6 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:46 UTC] PHP Warning:  require(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php' (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php:27
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-settings.php(739): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-config.php(105): require_once('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-load.php(50): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-blog-header.php(13): require_once('C:\\Users\\kosol\\...')
+#4 C:\Users\kosol\OneDrive\Документы\karpovka_wp\index.php(17): require('C:\\Users\\kosol\\...')
+#5 C:\Users\kosol\OneDrive\Документы\karpovka_wp\router.php(13): require_once('C:\\Users\\kosol\\...')
+#6 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:50 UTC] PHP Warning:  require(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:50 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php' (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php:27
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-settings.php(739): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-config.php(105): require_once('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-load.php(50): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-admin\admin-ajax.php(22): require_once('C:\\Users\\kosol\\...')
+#4 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:51 UTC] PHP Warning:  require(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:51 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php' (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php:27
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-settings.php(739): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-config.php(105): require_once('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-load.php(50): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-admin\admin.php(35): require_once('C:\\Users\\kosol\\...')
+#4 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-admin\post.php(12): require_once('C:\\Users\\kosol\\...')
+#5 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:51 UTC] PHP Warning:  require(C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php): Failed to open stream: No such file or directory in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:33:51 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme/inc/spa_massage.php.php' (include_path='.;C:\php\pear') in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php:27
+Stack trace:
+#0 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-settings.php(739): include()
+#1 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-config.php(105): require_once('C:\\Users\\kosol\\...')
+#2 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-load.php(50): require_once('C:\\Users\\kosol\\...')
+#3 C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-admin\admin-ajax.php(22): require_once('C:\\Users\\kosol\\...')
+#4 {main}
+  thrown in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 27
+[17-Aug-2026 08:35:16 UTC] Automatic updates starting...
+[17-Aug-2026 08:35:18 UTC] Automatic updates complete.
+[17-Aug-2026 09:19:40 UTC] PHP Parse error:  syntax error, unexpected end of file in C:\Users\kosol\OneDrive\Документы\karpovka_wp\wp-content\themes\theme\functions.php on line 30
