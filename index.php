@@ -1,17 +1,33 @@
 <?php
-/**
- * Front to the WordPress application. This file doesn't do anything, but loads
- * wp-blog-header.php which does and tells WordPress to load the theme.
- *
- * @package WordPress
- */
 
 /**
- * Tells WordPress to load the WordPress theme and output it.
+ * Template Name: Главная страница
  *
- * @var bool
+ * @package LOCAL THEME
+ * @since 1.0.0
  */
-define( 'WP_USE_THEMES', true );
+get_header();
+?>
 
-/** Loads the WordPress Environment and Template */
-require __DIR__ . '/wp-blog-header.php';
+<?php include __DIR__ . '/includes/hero.php'; ?>
+<?php include __DIR__ . '/includes/stats.php'; ?>
+<?php include __DIR__ . '/includes/accommodation.php'; ?>
+<?php include __DIR__ . '/includes/spa.php'; ?>
+
+<?php include __DIR__ . '/includes/services.php'; ?>
+<?php include __DIR__ . '/includes/map.php'; ?>
+<?php include __DIR__ . '/includes/advantages.php'; ?>
+<?php include __DIR__ . '/includes/promo.php'; ?>
+
+
+<?php include __DIR__ . '/includes/reviews.php'; ?>
+<?php include __DIR__ . '/includes/faq.php'; ?>
+<?php include __DIR__ . '/includes/cta.php'; ?>
+
+<?php include __DIR__ . '/includes/awards.php'; ?>
+
+
+<?php
+get_footer();
+wp_footer();
+?>
