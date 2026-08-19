@@ -59,3 +59,5 @@ require __DIR__ . '/inc/section_awards.php';
 require __DIR__ . '/inc/acc_objects.php';
 require __DIR__ . '/inc/acc_compare.php';
 require __DIR__ . '/inc/acc_booking.php';
+
+require __DIR__ . '/inc/section_stats.php';

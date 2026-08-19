@@ -1,93 +1,46 @@
+<?php
+// Template: Stories — слайдер форматов отдыха
+ $v = get_post_meta( get_the_ID(), 'stories', true );
+if ( empty( $v ) ) return;
+
+ $title  = $v['title'] ?? '';
+ $slides = $v['slides'] ?? [];
+if ( empty( $slides ) ) return;
+?>
+
 <section class="section stories-section" id="stories">
     <div class="container">
-        <h2 class="center-title reveal">Выберите формат отдыха</h2>
+        <?php if ( $title ) : ?>
+        <h2 class="center-title reveal"><?php echo esc_html( $title ); ?></h2>
+        <?php endif; ?>
     </div>
 
     <div class="stories-slider swiper reveal" data-stories>
         <div class="swiper-wrapper">
+            <?php foreach ( $slides as $slide ) :
+                $img      = $slide['img'] ?? '';
+                $img_alt  = $slide['img_alt'] ?? '';
+                $st_title = $slide['title'] ?? '';
+                $link     = $slide['link'] ?? '#';
+                $more     = $slide['more_text'] ?? 'Подробнее';
+            ?>
             <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#accommodation">
-                    <img
-                        src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg"
-                        alt="Семейный отдых" />
-                    <span class="story-slide__title">Семейный отдых</span>
-                    <span class="story-slide__more">Подробнее</span>
+                <a class="story-slide__card" href="<?php echo esc_url( $link ); ?>">
+                    <?php if ( $img ) : ?>
+                    <img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" />
+                    <?php endif; ?>
+                    <span class="story-slide__title"><?php echo esc_html( $st_title ); ?></span>
+                    <span class="story-slide__more"><?php echo esc_html( $more ); ?></span>
                 </a>
             </article>
-            <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#spa">
-                    <img
-                        src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg"
-                        alt="Отдых для двоих" />
-                    <span class="story-slide__title">Для двоих</span>
-                    <span class="story-slide__more">Подробнее</span>
-                </a>
-            </article>
-            <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#spa">
-                    <img
-                        src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg"
-                        alt="СПА-день" />
-                    <span class="story-slide__title">СПА-день</span>
-                    <span class="story-slide__more">Подробнее</span>
-                </a>
-            </article>
-            <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#bath">
-                    <img
-                        src="/wp-content/themes/theme/assets/img/imgs/tempImagewZbK0r.jpg.jpeg"
-                        alt="Отдых компанией" />
-                    <span class="story-slide__title">Компанией</span>
-                    <span class="story-slide__more">Подробнее</span>
-                </a>
-            </article>
-            <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#bath">
-                    <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Банный отдых" />
-                    <span class="story-slide__title">Индивидуальный</span>
-                    <span class="story-slide__more">Подробнее</span>
-                </a>
-            </article>
-            <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#events">
-                    <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Корпоративы" />
-                    <span class="story-slide__title">Корпоративы</span>
-                    <span class="story-slide__more">Подробнее</span>
-                </a>
-            </article>
-            <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#events">
-                    <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Мероприятия" />
-                    <span class="story-slide__title">Мероприятия</span>
-                    <span class="story-slide__more">Подробнее</span>
-                </a>
-            </article>
-            <article class="story-slide swiper-slide">
-                <a class="story-slide__card" href="#bath">
-                    <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Банный отдых" />
-                    <span class="story-slide__title">Банный</span>
-                    <span class="story-slide__more">Подробнее</span>
-                </a>
-            </article>
+            <?php endforeach; ?>
         </div>
 
-        <button
-            class="stories-nav stories-nav--prev"
-            type="button"
-            data-stories-prev
-            aria-label="Предыдущий слайд">
-            <svg class="icon">
-                <use href="#icon-arrow-left"></use>
-            </svg>
+        <button class="stories-nav stories-nav--prev" type="button" data-stories-prev aria-label="Предыдущий слайд">
+            <svg class="icon"><use href="#icon-arrow-left"></use></svg>
         </button>
-        <button
-            class="stories-nav stories-nav--next"
-            type="button"
-            data-stories-next
-            aria-label="Следующий слайд">
-            <svg class="icon">
-                <use href="#icon-arrow-right"></use>
-            </svg>
+        <button class="stories-nav stories-nav--next" type="button" data-stories-next aria-label="Следующий слайд">
+            <svg class="icon"><use href="#icon-arrow-right"></use></svg>
         </button>
     </div>
 </section>
