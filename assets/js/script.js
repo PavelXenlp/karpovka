@@ -1,3 +1,37 @@
+/* ===== ЗАБЛОКИРОВАТЬ СКРОЛЛ ПРИ ОТКРЫТЫХ ПОПАПАХ ===== */
+(function () {
+  let scrollY = 0;
+  const body = document.body;
+  let lockCount = 0;
+
+  window.__lockScroll = function () {
+    scrollY = window.scrollY;
+    body.style.position = 'fixed';
+    body.style.top = '-' + scrollY + 'px';
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.overflow = 'hidden';
+    lockCount++;
+  };
+
+  window.__unlockScroll = function () {
+    lockCount--;
+    if (lockCount <= 0) {
+      lockCount = 0;
+      body.style.position = '';
+      body.style.top = '';
+      body.style.left = '';
+      body.style.right = '';
+      body.style.overflow = '';
+      // Мгновенный возврат без анимации
+      window.scrollTo(0, scrollY);
+      scrollY = 0;
+    }
+  };
+})();
+
+
+
 // ─── Nav: фон при прокрутке ───────────────────────────────
 (() => {
   const nav = document.getElementById('nav');
@@ -802,7 +836,7 @@ document.querySelectorAll('[data-marquee]').forEach((track) => {
     if (mName) mName.textContent = name ? name.textContent : '';
     if (mDate) mDate.textContent = date ? date.textContent : '';
     modal.hidden = false;
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   };
 
   const closeModal = () => {
@@ -1205,7 +1239,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (mDesc) mDesc.textContent = marker.dataset.desc || '';
     if (mPrice) mPrice.textContent = marker.dataset.price || '';
     modal.hidden = false;
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   };
 
   const closeMarker = () => {
@@ -1255,7 +1289,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   function open() {
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
     /* Сбросить состояние */
     document.getElementById('callback-form-wrap').style.display = '';
     document.getElementById('callback-success').classList.remove('is-active');
@@ -1338,7 +1372,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   function open() {
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
     /* Сбросить состояние */
     document.getElementById('booking-form-wrap').style.display = '';
     document.getElementById('booking-success').classList.remove('is-active');
@@ -1631,7 +1665,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.hidden = false;
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   }
 
   function closeModal(modal) {
@@ -1688,7 +1722,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.hidden = false;
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   }
 
   function closeModal(modal) {
@@ -1762,7 +1796,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   }
 
   function closeModal(modal) {
@@ -1888,7 +1922,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.hidden = false;
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
     /* Фокус на диалог для доступности */
     const dialog = modal.querySelector('.act-modal__dialog');
     if (dialog) dialog.focus();
@@ -1968,7 +2002,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   }
 
   function closeModal(modal) {
@@ -2122,7 +2156,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   }
 
   function closeModal(modal) {
@@ -2190,7 +2224,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   function lockScroll() {
     scrollY = window.pageYOffset || document.documentElement.scrollTop;
     document.body.style.top = '-' + scrollY + 'px';
-    document.body.classList.add('is-modal-open');
+    document.window.__lockScroll();
   }
 
   function unlockScroll() {

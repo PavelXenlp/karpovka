@@ -61,3 +61,10 @@ require __DIR__ . '/inc/acc_compare.php';
 require __DIR__ . '/inc/acc_booking.php';
 
 require __DIR__ . '/inc/section_stats.php';
+require __DIR__ . '/inc/spa_programs.php';
+
+require __DIR__ . '/inc/recreation_seasons.php';
+require __DIR__ . '/inc/recreation_spa.php';
+
+require __DIR__ . '/inc/offers_current.php';
+require __DIR__ . '/inc/offers_acc.php';

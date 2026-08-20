@@ -15,7 +15,7 @@ get_header();
 <?php include __DIR__ . '/includes/spa-detail.php'; ?>
 <?php include __DIR__ . '/includes/events-includes.php'; ?>
 
-<?php include __DIR__ . '/includes/fishing-formats.php'; ?>
+<?php include __DIR__ . '/includes/offers-current.php'; ?>
 
 
 <?php include __DIR__ . '/includes/section-gallery.php'; ?>

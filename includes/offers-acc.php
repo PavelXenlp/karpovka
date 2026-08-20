@@ -1,63 +1,63 @@
+<?php
+ $data = get_post_meta(get_the_ID(), 'acc_offers', true);
+if (!is_array($data) || empty($data)) return;
+
+ $eyebrow      = $data['eyebrow'] ?? '';
+ $title_before = $data['title_before'] ?? '';
+ $title_em     = $data['title_em'] ?? '';
+ $sub          = $data['sub'] ?? '';
+ $cards        = $data['cards'] ?? [];
+?>
 <section class="c-offers-acc" id="acc-offers">
     <div class="container">
-      <div class="section-head section-head--center reveal">
-        <p class="eyebrow">Пакеты размещения</p>
-        <h2 class="section-title">Предложения для <span class="gold-header"><em>проживания</em></span></h2>
-        <p class="section-sub">Выгодные условия для длинных выходных, раннего бронирования и семейного отдыха</p>
-      </div>
-      <div class="c-offers-grid reveal">
-
-        <article class="c-offers-card">
-          <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/photo.jpg_2.jpeg" alt="Длинные выходные" loading="lazy">
-            <span class="c-offers-card__badge">−10%</span>
-          </div>
-          <div class="c-offers-card__body">
-            <h3 class="c-offers-card__title">Длинные выходные</h3>
-            <p class="c-offers-card__desc">Скидка 10% при бронировании от 3 ночей подряд. Действует на все типы размещения: эко-дома, гостиничные номера и VIP-дома.</p>
-            <div class="c-offers-card__conditions">
-              <span class="c-offers-card__cond"><i class="fa-solid fa-moon"></i> 3+ ночи</span>
-              <span class="c-offers-card__cond"><i class="fa-regular fa-calendar"></i> Круглый год</span>
-              <span class="c-offers-card__cond"><i class="fa-solid fa-house"></i> Все типы</span>
-            </div>
-            <a href="#cta" class="c-offers-card__link">Подробнее <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <article class="c-offers-card">
-          <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Раннее бронирование" loading="lazy">
-            <span class="c-offers-card__badge">−15%</span>
-          </div>
-          <div class="c-offers-card__body">
-            <h3 class="c-offers-card__title">Раннее бронирование</h3>
-            <p class="c-offers-card__desc">Забронируйте за 30 и более дней до заезда и получите скидку 15%. Идеально для планирования летнего отпуска и новогодних праздников.</p>
-            <div class="c-offers-card__conditions">
-              <span class="c-offers-card__cond"><i class="fa-solid fa-clock"></i> За 30 дней</span>
-              <span class="c-offers-card__cond"><i class="fa-regular fa-calendar"></i> Любой сезон</span>
-              <span class="c-offers-card__cond"><i class="fa-solid fa-house"></i> Все типы</span>
-            </div>
-            <a href="#cta" class="c-offers-card__link">Подробнее <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <article class="c-offers-card">
-          <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Семейный отдых" loading="lazy">
-            <span class="c-offers-card__badge c-offers-card__badge--hot">Хит</span>
-          </div>
-          <div class="c-offers-card__body">
-            <h3 class="c-offers-card__title">Семейный отдых</h3>
-            <p class="c-offers-card__desc">Дети до 6 лет — бесплатно. При бронировании от 2 ночей — complimentary завтрак для всей семьи и бесплатная аниматорская программа.</p>
-            <div class="c-offers-card__conditions">
-              <span class="c-offers-card__cond"><i class="fa-solid fa-child"></i> Дети ≤6 лет</span>
-              <span class="c-offers-card__cond"><i class="fa-solid fa-moon"></i> 2+ ночи</span>
-              <span class="c-offers-card__cond"><i class="fa-solid fa-utensils"></i> + Завтрак</span>
-            </div>
-            <a href="#cta" class="c-offers-card__link">Подробнее <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-      </div>
+        <div class="section-head section-head--center reveal">
+            <?php if (!empty($eyebrow)) : ?>
+                <p class="eyebrow"><?php echo esc_html($eyebrow); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($title_before) || !empty($title_em)) : ?>
+                <h2 class="section-title">
+                    <?php echo esc_html($title_before); ?>
+                    <?php if (!empty($title_em)) : ?>
+                        <span class="gold-header"><em><?php echo esc_html($title_em); ?></em></span>
+                    <?php endif; ?>
+                </h2>
+            <?php endif; ?>
+            <?php if (!empty($sub)) : ?>
+                <p class="section-sub"><?php echo esc_html($sub); ?></p>
+            <?php endif; ?>
+        </div>
+        <div class="c-offers-grid reveal">
+            <?php if (!empty($cards)) : foreach ($cards as $c) :
+                $badge_cls = 'c-offers-card__badge' . (($c['badge_hot'] ?? '') === '1' ? ' c-offers-card__badge--hot' : '');
+            ?>
+            <article class="c-offers-card">
+                <div class="c-offers-card__img">
+                    <?php if (!empty($c['image'])) : ?>
+                    <img src="<?php echo esc_url($c['image']); ?>" alt="<?php echo esc_attr($c['title'] ?? ''); ?>" loading="lazy">
+                    <?php endif; ?>
+                    <?php if (!empty($c['badge_text'])) : ?>
+                    <span class="<?php echo $badge_cls; ?>"><?php echo esc_html($c['badge_text']); ?></span>
+                    <?php endif; ?>
+                </div>
+                <div class="c-offers-card__body">
+                    <h3 class="c-offers-card__title"><?php echo esc_html($c['title'] ?? ''); ?></h3>
+                    <p class="c-offers-card__desc"><?php echo esc_html($c['desc'] ?? ''); ?></p>
+                    <?php if (!empty($c['conditions']) && is_array($c['conditions'])) : ?>
+                    <div class="c-offers-card__conditions">
+                        <?php foreach ($c['conditions'] as $cn) : ?>
+                        <span class="c-offers-card__cond">
+                            <?php if (!empty($cn['icon'])) : ?><i class="<?php echo esc_attr($cn['icon']); ?>"></i> <?php endif; ?>
+                            <?php echo esc_html($cn['text'] ?? ''); ?>
+                        </span>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (!empty($c['link'])) : ?>
+                    <a href="<?php echo esc_url($c['link']); ?>" class="c-offers-card__link">Подробнее <i class="fa-solid fa-arrow-right"></i></a>
+                    <?php endif; ?>
+                </div>
+            </article>
+            <?php endforeach; endif; ?>
+        </div>
     </div>
-  </section>
+</section>
