@@ -11,7 +11,10 @@ get_header();
 
 
 <?php include __DIR__ . '/includes/section-hero.php'; ?>
-<?php include __DIR__ . '/includes/section-gallery.php'; ?>
+
+<?php include __DIR__ . '/includes/inf-house.php'; ?>
+
+
 <?php include __DIR__ . '/includes/reviews.php'; ?>
 <?php include __DIR__ . '/includes/section-articles.php'; ?>
 <?php include __DIR__ . '/includes/faq.php'; ?>

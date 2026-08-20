@@ -2369,3 +2369,73 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (e.key === 'ArrowRight') next();
   });
 })();
+
+
+
+// ─── Дом: галерея Swiper + лайтбокс ─────────────────────────
+(() => {
+  // Лайтбокс
+  const lb     = document.getElementById('hi-lightbox');
+  if (!lb) return;
+  const lbImg  = document.getElementById('hi-lb-img');
+  const lbCnt  = document.getElementById('hi-lb-counter');
+
+  const imgs = [];
+  document.querySelectorAll('.c-house-info__gallery-item img, .c-house-info__main-img img').forEach(img => {
+    const src = img.getAttribute('src');
+    if (src) imgs.push(src);
+  });
+
+  let cur = 0;
+
+  function showImg() {
+    if (!imgs[cur]) return;
+    lbImg.src = imgs[cur];
+    lbCnt.textContent = (cur + 1) + ' / ' + imgs.length;
+  }
+
+  function openLB(index) {
+    cur = index;
+    showImg();
+    lb.classList.add('is-open');
+    window.__lockScroll();
+  }
+
+  function closeLB() {
+    lb.classList.remove('is-open');
+    window.__unlockScroll();
+  }
+
+  document.querySelector('.c-house-info__main-img')?.addEventListener('click', () => openLB(0));
+
+  document.querySelectorAll('.c-house-info__gallery-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const src = el.querySelector('img').getAttribute('src');
+      const idx = imgs.indexOf(src);
+      openLB(idx >= 0 ? idx : 0);
+    });
+  });
+
+  document.getElementById('hi-lb-close').addEventListener('click', closeLB);
+  lb.addEventListener('click', e => {
+    if (e.target === lb || e.target.classList.contains('hi-lightbox__img-wrap')) closeLB();
+  });
+  document.getElementById('hi-lb-prev').addEventListener('click', e => {
+    e.stopPropagation();
+    cur = (cur - 1 + imgs.length) % imgs.length;
+    showImg();
+  });
+  document.getElementById('hi-lb-next').addEventListener('click', e => {
+    e.stopPropagation();
+    cur = (cur + 1) % imgs.length;
+    showImg();
+  });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLB();
+    if (e.key === 'ArrowLeft')  { cur = (cur - 1 + imgs.length) % imgs.length; showImg(); }
+    if (e.key === 'ArrowRight') { cur = (cur + 1) % imgs.length; showImg(); }
+  });
+
+  
+})();

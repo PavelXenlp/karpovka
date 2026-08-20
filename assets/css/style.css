@@ -16178,3 +16178,403 @@ body.is-modal-open {
     font-size: 24px;
   }
 }
+
+
+/* ═══════════════════════════════════════════════
+   HOUSE INFO — Информация о доме
+   ═══════════════════════════════════════════════ */
+.hi-adv-row{display:flex;gap:6px;margin-bottom:4px;align-items:center;}
+.hi-adv-row input{flex:1;}
+/* Сброс скруглений */
+.c-house-info,
+.c-house-info *,
+.hi-lightbox,
+.hi-lightbox * {
+  border-radius: 0 !important;
+}
+
+/* Секция */
+.c-house-info {
+  padding: 100px 0;
+  background: var(--navy-900);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Двухколоночная сетка */
+.c-house-info__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Левая колонка */
+.c-house-info__images {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Главное изображение */
+.c-house-info__main-img {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.c-house-info__main-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.c-house-info__main-img:hover img {
+  transform: scale(1.03);
+}
+
+/* Обёртка галереи */
+.c-house-info__gallery-wrap {
+  position: relative;
+}
+
+/* ═══ SWIPER — минимальные стили ═══ */
+.c-house-info .swiper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.c-house-info .swiper-wrapper {
+  display: flex;
+  transition-property: transform;
+  box-sizing: content-box;
+}
+
+.c-house-info .swiper-slide {
+  flex-shrink: 0;
+  width: calc((100% - 24px) / 3);
+}
+
+.c-house-info .swiper-slide + .swiper-slide {
+  margin-left: 12px;
+}
+
+/* Элемент галереи */
+.c-house-info__gallery-item {
+  overflow: hidden;
+  cursor: pointer;
+  line-height: 0;
+  position: relative;
+}
+
+.c-house-info__gallery-item img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+  opacity: 0.7;
+}
+
+.c-house-info__gallery-item:hover img {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+/* Стрелки навигации */
+.hi-gal-prev,
+.hi-gal-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 22, 40, 0.7);
+  border: 1px solid rgba(200, 169, 110, 0.3);
+  color: var(--gold, #c8a96e);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.hi-gal-prev:hover,
+.hi-gal-next:hover {
+  background: rgba(200, 169, 110, 0.15);
+  border-color: var(--gold, #c8a96e);
+  color: #fff;
+}
+
+.hi-gal-prev { left: 8px; }
+.hi-gal-next { right: 8px; }
+
+.hi-gal-prev.swiper-button-disabled,
+.hi-gal-next.swiper-button-disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Правая колонка */
+.c-house-info__content {
+  padding-top: 8px;
+}
+
+.c-house-info__title {
+  font-family: var(--serif, 'Playfair Display', serif);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 20px;
+  line-height: 1.15;
+}
+
+.c-house-info__desc {
+  font-family: var(--sans, 'Manrope', sans-serif);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 32px;
+}
+
+/* Характеристики */
+.c-house-info__features {
+  list-style: none;
+  margin: 0 0 36px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.c-house-info__feat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--sans, 'Manrope', sans-serif);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.c-house-info__feat i {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: var(--gold, #c8a96e);
+  background: rgba(200, 169, 110, 0.08);
+  border: 1px solid rgba(200, 169, 110, 0.15);
+}
+
+/* CTA кнопка */
+.c-house-info .btn--gold {
+  border-radius: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans, 'Manrope', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--navy-900, #0a1628);
+  background: var(--gold, #c8a96e);
+  border: none;
+  padding: 16px 36px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.c-house-info .btn--gold:hover {
+  background: #d4b876;
+  transform: translateY(-1px);
+}
+
+/* Обёртка галереи */
+.c-house-info__gallery-wrap {
+  position: relative;
+}
+
+/* Галерея — горизонтальный скролл */
+.c-house-info [data-house-gallery] {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 2px;
+}
+
+.c-house-info [data-house-gallery]::-webkit-scrollbar {
+  display: none;
+}
+
+.c-house-info [data-house-gallery] > div {
+  display: contents;
+}
+
+.c-house-info__gallery-item {
+  flex: 0 0 calc((100% - 24px) / 3);
+  overflow: hidden;
+  cursor: pointer;
+  line-height: 0;
+  position: relative;
+  scroll-snap-align: start;
+  transition: opacity 0.3s;
+}
+
+.c-house-info__gallery-item img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+  opacity: 0.7;
+}
+
+.c-house-info__gallery-item:hover img {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+/* Стрелки навигации */
+.hi-gal-prev,
+.hi-gal-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 22, 40, 0.85);
+  border: 1px solid rgba(200, 169, 110, 0.3);
+  color: var(--gold, #c8a96e);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.hi-gal-prev:hover,
+.hi-gal-next:hover {
+  background: rgba(200, 169, 110, 0.2);
+  border-color: var(--gold, #c8a96e);
+  color: #fff;
+}
+
+.hi-gal-prev { left: 4px; }
+.hi-gal-next { right: 4px; }
+
+/* ═══ АДАПТИВ — планшеты ═══ */
+@media (max-width: 1024px) {
+  .c-house-info__grid { gap: 36px; }
+  .c-house-info__gallery-item img { height: 120px; }
+}
+
+/* ═══ АДАПТИВ — мобильные ═══ */
+@media (max-width: 768px) {
+  .c-house-info { padding: 60px 0; }
+  .c-house-info__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .c-house-info__gallery-item {
+    flex: 0 0 calc((100% - 12px) / 2);
+  }
+  .c-house-info [data-house-gallery] {
+    gap: 12px;
+  }
+  .c-house-info__gallery-item img { height: 100px; }
+  .hi-gal-prev, .hi-gal-next {
+    width: 30px; height: 30px; font-size: 12px;
+  }
+  .hi-lightbox__prev, .hi-lightbox__next {
+    width: 40px; height: 40px; font-size: 24px;
+  }
+}
+
+/* ═══ АДАПТИВ — маленькие экраны ═══ */
+@media (max-width: 480px) {
+  .c-house-info__title { font-size: 24px; margin-bottom: 16px; }
+  .c-house-info__desc { font-size: 14px; margin-bottom: 24px; }
+  .c-house-info__feat { font-size: 14px; gap: 10px; }
+  .c-house-info__feat i { width: 30px; height: 30px; font-size: 12px; }
+  .c-house-info .btn--gold { padding: 14px 28px; font-size: 12px; }
+  .hi-lightbox__prev { left: 10px; }
+  .hi-lightbox__next { right: 10px; }
+}
+
+.c-house-info__title em {
+  color: var(--gold, #c8a96e);
+  font-style: normal;
+}
+
+/* ── Преимущества (pills) ── */
+.c-house-info__advantages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 36px;
+}
+
+.c-house-info__adv {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sans, 'Manrope', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold, #c8a96e);
+  background: rgba(200, 169, 110, 0.1);
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  padding: 9px 18px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.c-house-info__adv::before {
+  content: '\2713';
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.c-house-info__adv:hover {
+  background: rgba(200, 169, 110, 0.18);
+  border-color: rgba(200, 169, 110, 0.35);
+}
+
+@media (max-width: 768px) {
+  .c-house-info__adv {
+    font-size: 12px;
+    padding: 7px 14px;
+  }
+}
+
+/* ── Выделенный факт ── */
+.c-house-info__highlight {
+  padding: 24px;
+  background: rgba(200, 169, 110, 0.04);
+  border-left: 3px solid var(--gold, #c8a96e);
+  margin: 0 0 36px;
+  font-family: var(--sans, 'Manrope', sans-serif);
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.c-house-info__highlight strong {
+  color: var(--gold, #c8a96e);
+  font-weight: 600;
+}
