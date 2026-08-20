@@ -7908,29 +7908,70 @@ body.is-modal-open {
 /* =============================================
    МАССАЖИ — split-layout
    ============================================= */
-.c-spa-massage {
-  padding: 100px 0 80px;
-  position: relative;
-  overflow: hidden;
-  background: var(--navy-900);
-}
-.c-spa-massage__bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 80%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  z-index: 0;
-  opacity: 0.35;
-  -webkit-mask-image: linear-gradient(to right, black 0%, black 60%, transparent 100%);
-  mask-image: linear-gradient(to right, black 0%, black 60%, transparent 100%);
+/* ========================================
+   Wedding Gallery — Фон секции
+   ======================================== */
+
+.wg-section {
+    padding: 100px 0 80px;
+    position: relative;
+    overflow: hidden;
+    background: var(--navy-900, #0a1a12);
 }
 
-.c-spa-massage__bg img {
-  width: 100%;
-  height: 100%;
+/* Фоновая картинка — как c-spa-massage */
+.wg-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+    /* Маска: сверху прозрачная → к низу видимая */
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.3) 20%,
+        rgba(0, 0, 0, 0.7) 45%,
+        black 70%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.3) 20%,
+        rgba(0, 0, 0, 0.7) 45%,
+        black 70%
+    );
+    pointer-events: none;
+}
+
+.wg-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Зелёный градиент-оверлей — ваш текущий, без изменений */
+.wg-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(26, 60, 41, 0) 0%,
+        rgba(26, 60, 41, 0.5) 30%,
+        rgba(26, 60, 41, 0.79) 55%,
+        rgba(10, 26, 18, 0.92) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Контент поверх фона */
+.wg-section__inner {
+    position: relative;
+    z-index: 2;
 }
 .c-spa-massage > .container {
   position: relative;
@@ -16577,4 +16618,198 @@ body.is-modal-open {
 .c-house-info__highlight strong {
   color: var(--gold, #c8a96e);
   font-weight: 600;
+}
+
+
+
+
+
+/* === Секция: Галерея с описанием (wg-) === */
+
+/* Фон секции */
+.wg-section--bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+}
+.wg-bg-overlay {
+    position: absolute;
+    inset: 0;
+    /* прозрачный сверху → зелёный градиент к низу */
+    background: linear-gradient(180deg,
+        rgba(26, 60, 41, 0) 0%,
+        rgba(26, 60, 41, 0.5) 30%,
+        rgba(26, 60, 41, 0.79) 55%,
+        rgba(10, 26, 18, 0.92) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+.wg-section__inner {
+    position: relative;
+    z-index: 2;
+}
+
+/* Надзаголовок */
+.wg-section .section-over {
+    color: var(--gold, #c8a96e);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Заголовок */
+.wg-section .section-title em {
+    color: var(--gold, #c8a96e);
+    font-style: normal;
+}
+
+/* Слайдер */
+.wg-slider {
+    width: 100%;
+    padding: 0 var(--container-offset, 20px);
+    margin-bottom: 0;
+}
+.wg-slide {
+    border-radius: 0;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+}
+.wg-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+.wg-slide:hover img {
+    transform: scale(1.03);
+}
+
+/* Навигация свайпера */
+.wg-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(200, 169, 110, 0.15);
+    border: 1px solid rgba(200, 169, 110, 0.3);
+    color: var(--gold);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+    backdrop-filter: blur(8px);
+}
+.wg-nav:hover {
+    background: rgba(200, 169, 110, 0.25);
+    border-color: rgba(200, 169, 110, 0.5);
+}
+.wg-nav--prev { left: calc(var(--container-offset, 20px) + 8px); }
+.wg-nav--next { right: calc(var(--container-offset, 20px) + 8px); }
+.wg-nav .icon {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Двухколоночный контент */
+.wg-content {
+    padding: 48px 0 60px;
+}
+.wg-content--cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+/* Выделенный блок (intro) */
+.wg-intro {
+    border-left: 3px solid var(--gold, #c8a96e);
+    background: rgba(200, 169, 110, 0.06);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    color: var(--cream, #f5f0e8);
+    font-size: 16px;
+    line-height: 1.7;
+    font-style: italic;
+    border-radius: 0;
+}
+
+/* Подробное описание */
+.wg-desc {
+    color: var(--secondary-text-color, rgba(245, 240, 232, 0.7));
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+/* Преимущества — pills как в house-info, но в колонку */
+.wg-advantages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 28px;
+}
+.wg-adv {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans, 'Manrope', sans-serif);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold, #c8a96e);
+    background: rgba(200, 169, 110, 0.1);
+    border: 1px solid rgba(200, 169, 110, 0.2);
+    padding: 9px 18px;
+    transition: background 0.3s, border-color 0.3s;
+}
+.wg-adv::before {
+    content: '\2713';
+    font-size: 11px;
+    font-weight: 700;
+}
+.wg-adv:hover {
+    background: rgba(200, 169, 110, 0.18);
+    border-color: rgba(200, 169, 110, 0.35);
+}
+
+/* Особенности — непрозрачный золотой фон */
+.wg-features {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.wg-feature {
+    background: var(--gold, #c8a96e);
+    border: 1px solid var(--gold, #c8a96e);
+    border-radius: 0;
+    padding: 18px 22px;
+    color: var(--navy, #0a1628);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .wg-content--cols {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+    .wg-nav {
+        width: 36px;
+        height: 36px;
+    }
+    .wg-nav--prev { left: calc(var(--container-offset, 20px) + 4px); }
+    .wg-nav--next { right: calc(var(--container-offset, 20px) + 4px); }
 }
