@@ -73,3 +73,12 @@ require __DIR__ . '/inc/offers_acc.php';
 require __DIR__ . '/inc/inf_house.php';
 require __DIR__ . '/inc/wedding_page.php';
 require __DIR__ . '/inc/section_discount.php';
+
+
+
+
+require __DIR__ . '/inc/articles_popular.php';
+require __DIR__ . '/inc/articles_all.php';
+require __DIR__ . '/inc/article_meta.php';
+
+require __DIR__ . '/inc/article_body.php';

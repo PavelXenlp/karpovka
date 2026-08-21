@@ -14,7 +14,7 @@ get_header();
 
 <?php include __DIR__ . '/includes/article-meta.php'; ?>
 <?php include __DIR__ . '/includes/article-body.php'; ?>
-<?php include __DIR__ . '/includes/article-related.php'; ?>
+<?php include __DIR__ . '/includes/articles-popular.php'; ?>
 
 <?php include __DIR__ . '/includes/cta.php'; ?>
 

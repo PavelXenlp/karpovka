@@ -14237,6 +14237,8 @@ body.is-modal-open {
 /* --- Article Images --- */
 .c-article-img {
   width: 100%;
+  max-width: 600px;
+    max-height: 400px;
   margin: 36px 0;
   object-fit: cover;
 }
