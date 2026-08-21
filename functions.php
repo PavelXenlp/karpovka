@@ -72,3 +72,4 @@ require __DIR__ . '/inc/offers_acc.php';
 // Дополнительные страницы
 require __DIR__ . '/inc/inf_house.php';
 require __DIR__ . '/inc/wedding_page.php';
+require __DIR__ . '/inc/section_discount.php';

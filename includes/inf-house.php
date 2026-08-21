@@ -45,7 +45,7 @@ if (!is_array($d) || (empty($d['title']) && empty($d['desc']))) return;
       <div class="c-house-info__content">
         <?php if ($title || $gold_text) : ?>
         <h2 class="c-house-info__title">
-          <?php echo esc_html($title); ?><?php if ($title && $gold_text) : ?><br><?php endif; ?>
+          <?php echo esc_html($title); ?><?php if ($title && $gold_text) : ?><?php endif; ?>
           <?php if ($gold_text) : ?><em><?php echo esc_html($gold_text); ?></em><?php endif; ?>
         </h2>
         <?php endif; ?>
