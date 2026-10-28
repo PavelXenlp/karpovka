@@ -98,3 +98,41 @@ if ( empty( $v ) || empty( $v['reviews'] ) ) return;
         </div><!-- /c-reviews__list -->
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const filterContainer = document.getElementById('filters');
+    const reviewsList = document.getElementById('reviewsList');
+
+    // Если секции нет на странице, ничего не делаем
+    if (!filterContainer || !reviewsList) return;
+
+    const filterButtons = filterContainer.querySelectorAll('.c-reviews__filter');
+    const reviewCards = reviewsList.querySelectorAll('.c-review');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 1. Управление активным классом на кнопках
+            filterButtons.forEach(btn => btn.classList.remove('is-active'));
+            this.classList.add('is-active');
+
+            // 2. Получаем значение фильтра (например, 'all' или конкретный slug)
+            const selectedFilter = this.getAttribute('data-filter');
+
+            // 3. Перебираем все карточки отзывов
+            reviewCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+
+                // Если нажали "Все" (slug обычно 'all') ИЛИ категория совпадает с фильтром
+                if (selectedFilter === 'all' || cardCategory === selectedFilter) {
+                    card.style.display = ''; // Показываем (возвращаем дефолтное display)
+                    card.classList.remove('is-hidden'); // Если используете CSS класс для скрытия
+                } else {
+                    card.style.display = 'none'; // Скрываем
+                    card.classList.add('is-hidden'); // Если используете CSS класс для скрытия
+                }
+            });
+        });
+    });
+});
+</script>

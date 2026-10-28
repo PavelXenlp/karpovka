@@ -88,8 +88,7 @@ function bath_types_mb_callback( $post ) {
 
             <div class="field-group">
                 <label>Изображение</label>
-                <input type="text" name="bath_types[cards][<?php echo $i; ?>][card_image]" class="bath-card-img" value="<?php echo esc_attr( $c['card_image'] ?? '' ); ?>" />
-                <button type="button" class="button bath-card-img-btn">Выбрать</button>
+                <input type="hidden" name="bath_types[cards][<?php echo $i; ?>][card_image]" class="bath-card-img" value="<?php echo esc_attr( $c['card_image'] ?? '' ); ?>" data-kp-media />
             </div>
 
             <div class="field-group">
@@ -125,14 +124,6 @@ function bath_types_mb_callback( $post ) {
     <script>
     jQuery(function($){
 
-        /* Upload card image */
-        $('#bath_cards_wrap').on('click', '.bath-card-img-btn', function(){
-            var input = $(this).prev('input');
-            var frame = wp.media({ title:'Выберите изображение карточки', multiple:false, library:{type:'image'} });
-            frame.on('select', function(){ input.val(frame.state().get('selection').first().toJSON().url); });
-            frame.open();
-        });
-
         /* Add card */
         var idx = $('#bath_cards_wrap .card-block').length;
         $('#add_bath_card').on('click', function(){
@@ -142,7 +133,7 @@ function bath_types_mb_callback( $post ) {
                 '<div class="card-block">' +
                     '<div class="head-row"><strong>Новая баня</strong><button type="button" class="remove-card button button-small">Удалить</button></div>' +
                     '<div class="field-group"><label>Якорь (ID секции bath_details)</label><input type="text" name="bath_types[cards][' + i + '][link]" value="" placeholder="russian-bath" /></div>' +
-                    '<div class="field-group"><label>Изображение</label><input type="text" name="bath_types[cards][' + i + '][card_image]" class="bath-card-img" value="" /><button type="button" class="button bath-card-img-btn">Выбрать</button></div>' +
+                    '<div class="field-group"><label>Изображение</label><input type="hidden" name="bath_types[cards][' + i + '][card_image]" class="bath-card-img" value="" data-kp-media /></div>' +
                     '<div class="field-group"><label>Тег</label><input type="text" name="bath_types[cards][' + i + '][card_tag]" value="" /></div>' +
                     '<div class="field-group"><label>Название</label><input type="text" name="bath_types[cards][' + i + '][card_title]" value="" /></div>' +
                     '<div class="field-group"><label>Описание</label><input type="text" name="bath_types[cards][' + i + '][card_desc]" value="" /></div>' +

@@ -1,5 +1,5 @@
 <section class="acc-hero">
-        <img class="acc-hero__photo" src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="" aria-hidden="true" />
+        <img class="acc-hero__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="" aria-hidden="true" />
         <div class="acc-hero__overlay"></div>
 
         <div class="container acc-hero__content">

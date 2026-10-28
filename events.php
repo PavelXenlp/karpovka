@@ -10,20 +10,7 @@ get_header();
 ?>
 
 
-<?php include __DIR__ . '/includes/section-hero.php'; ?>
-<?php include __DIR__ . '/includes/bath-types.php'; ?>
-<?php include __DIR__ . '/includes/bath-detail.php'; ?>
-
-<?php include __DIR__ . '/includes/events-weekend.php'; ?>
-<?php include __DIR__ . '/includes/events-includes.php'; ?>
-
-
-
-<?php include __DIR__ . '/includes/section-gallery.php'; ?>
-<?php include __DIR__ . '/includes/reviews.php'; ?>
-<?php include __DIR__ . '/includes/section-articles.php'; ?>
-<?php include __DIR__ . '/includes/faq.php'; ?>
-<?php include __DIR__ . '/includes/cta.php'; ?>
+<?php karpovka_render_page_sections(); ?>
 
 
 <?php

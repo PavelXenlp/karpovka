@@ -3,6 +3,7 @@
 if ( empty( $v ) ) return;
 
  $bg_img        = esc_url( $v['bg_img'] ?? '' );
+ $bg_video      = esc_url( $v['bg_video'] ?? '' );
  $eyebrow       = esc_html( $v['eyebrow'] ?? '' );
  $slides        = $v['slides'] ?? [];
  $lead          = esc_html( $v['lead'] ?? '' );
@@ -12,7 +13,6 @@ if ( empty( $v ) ) return;
  $bk_checkin_l  = esc_html( $v['bk_checkin_l'] ?? 'Заезд' );
  $bk_checkout_l = esc_html( $v['bk_checkout_l'] ?? 'Выезд' );
  $bk_guests_l   = esc_html( $v['bk_guests_l'] ?? 'Гости' );
- $bk_guests_raw = $v['bk_guests_opts'] ?? '';
  $bk_submit     = esc_html( $v['bk_submit'] ?? 'Показать' );
 // Modal
  $m_badge       = esc_html( $v['m_badge'] ?? '' );
@@ -38,19 +38,15 @@ if ( empty( $v ) ) return;
  $m_ok_title    = esc_html( $v['m_ok_title'] ?? '' );
  $m_ok_text     = esc_html( $v['m_ok_text'] ?? '' );
 
-// Гости: разбиваем по строкам
- $guests_opts = [];
-if ( $bk_guests_raw ) {
-    foreach ( explode( "\n", $bk_guests_raw ) as $line ) {
-        $line = trim( $line );
-        if ( $line ) $guests_opts[] = $line;
-    }
-}
 ?>
 
 <section class="hero">
     <div class="hero__bg">
-        <?php if ( $bg_img ) : ?>
+        <?php if ( $bg_video ) : ?>
+            <video autoplay muted loop playsinline preload="metadata"<?php echo $bg_img ? ' poster="' . esc_attr( $bg_img ) . '"' : ''; ?> aria-hidden="true">
+                <source src="<?php echo $bg_video; ?>">
+            </video>
+        <?php elseif ( $bg_img ) : ?>
             <img src="<?php echo $bg_img; ?>" alt="" />
         <?php endif; ?>
         <div class="hero__overlay"></div>
@@ -84,8 +80,14 @@ if ( $bk_guests_raw ) {
                 <div class="hero__actions">
                     <?php foreach ( $buttons as $b ) :
                         $cls = ( $b['style'] ?? '' ) === 'ghost' ? 'btn btn--ghost' : 'btn btn--gold';
+                        $link = (string) ( $b['link'] ?? '#' );
+                        $is_booking_modal = in_array( $link, [ '#booking', '#booking-modal', 'modal:booking' ], true );
                     ?>
-                        <a href="<?php echo esc_url( $b['link'] ?? '#' ); ?>" class="<?php echo $cls; ?>"><?php echo esc_html( $b['text'] ?? '' ); ?></a>
+                        <?php if ( $is_booking_modal ) : ?>
+                            <button type="button" class="<?php echo esc_attr( $cls . ' js-open-modal-booking' ); ?>"><?php echo esc_html( $b['text'] ?? '' ); ?></button>
+                        <?php else : ?>
+                            <a href="<?php echo esc_url( $link ?: '#' ); ?>" class="<?php echo esc_attr( $cls ); ?>"><?php echo esc_html( $b['text'] ?? '' ); ?></a>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -118,13 +120,25 @@ if ( $bk_guests_raw ) {
                     <label for="booking-checkout"><?php echo $bk_checkout_l; ?></label>
                     <input id="booking-checkout" name="checkout" type="date" />
                 </div>
-                <div class="booking__field">
-                    <label for="booking-guests"><?php echo $bk_guests_l; ?></label>
-                    <select id="booking-guests" name="guests">
-                        <?php foreach ( $guests_opts as $opt ) : ?>
-                            <option><?php echo esc_html( $opt ); ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                <div class="booking__field booking__field--guests" data-booking-guests>
+                    <label id="booking-guests-label"><?php echo $bk_guests_l; ?></label>
+                    <button class="booking__guests-trigger" type="button" aria-expanded="false" aria-controls="booking-guests-panel" aria-labelledby="booking-guests-label booking-guests-summary" data-booking-guests-toggle>
+                        <span id="booking-guests-summary" data-booking-guests-summary>2 взрослых, 1 номер</span>
+                        <span class="booking__guests-chevron" aria-hidden="true"></span>
+                    </button>
+                    <div class="booking-guests" id="booking-guests-panel" hidden data-booking-guests-panel>
+                        <div class="booking-guests__head">
+                            <strong>Количество гостей</strong>
+                            <button type="button" class="booking-guests__close" aria-label="Закрыть выбор гостей" data-booking-guests-close>×</button>
+                        </div>
+                        <div class="booking-guests__rooms" data-booking-rooms></div>
+                        <div class="booking-guests__footer">
+                            <button type="button" class="booking-guests__add" data-booking-room-add>Добавить номер</button>
+                            <button type="button" class="booking-guests__done" data-booking-guests-done>Готово</button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="guests" value="2 взрослых, 1 номер" data-booking-guests-value>
+                    <input type="hidden" name="rooms_count" value="1" data-booking-rooms-count>
                 </div>
                 <button class="btn btn--gold" type="submit"><?php echo $bk_submit; ?></button>
             </form>

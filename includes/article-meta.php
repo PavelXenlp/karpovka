@@ -1,50 +1,37 @@
 <?php
-/**
- * Шаблон «Мета статьи»
- * Подключить: include __DIR__ . '/includes/section-article-meta.php';
- */
-
- $am_parent_text = get_post_meta(get_the_ID(), 'am_parent_text', true);
- $am_parent_url  = get_post_meta(get_the_ID(), 'am_parent_url', true);
- $am_category    = get_post_meta(get_the_ID(), 'am_category', true);
- $am_date        = get_post_meta(get_the_ID(), 'am_date', true);
- $am_read_time   = get_post_meta(get_the_ID(), 'am_read_time', true);
-
-if (!$am_category && !$am_date && !$am_read_time) return;
+$categories = get_the_terms(get_the_ID(), 'category');
+$categories = is_array($categories) ? $categories : array();
+$category   = $categories ? $categories[0] : null;
+$legacy_category = $category ? '' : trim((string) get_post_meta(get_the_ID(), 'am_category', true));
+$date       = get_the_date('j F Y');
+$read_time  = karpovka_article_reading_time();
 ?>
 
 <section class="c-article-meta">
     <div class="container">
-        <?php if ($am_parent_text) : ?>
-        <nav class="c-article-breadcrumb reveal">
-            <a href="<?php echo $am_parent_url ? esc_url($am_parent_url) : '#'; ?>"><?php echo esc_html($am_parent_text); ?></a>
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-            <?php if ($am_category) : ?>
-                <span><?php echo esc_html($am_category); ?></span>
-            <?php endif; ?>
+        <nav class="c-article-breadcrumb reveal" aria-label="Хлебные крошки">
+            <a href="<?php echo esc_url(karpovka_articles_page_url()); ?>">Статьи</a>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            <span><?php echo esc_html(get_the_title()); ?></span>
         </nav>
-        <?php endif; ?>
 
         <div class="c-article-info reveal">
             <div class="c-article-info__left">
-                <?php if ($am_category) : ?>
-                    <span class="c-article-info__cat"><?php echo esc_html($am_category); ?></span>
-                <?php endif; ?>
-                <?php if ($am_category && $am_date) : ?>
+                <?php if ($category) : ?>
+                    <a class="c-article-info__cat" href="<?php echo esc_url(get_term_link($category)); ?>"><?php echo esc_html($category->name); ?></a>
+                    <span class="c-article-info__sep">·</span>
+                <?php elseif ($legacy_category) : ?>
+                    <span class="c-article-info__cat"><?php echo esc_html($legacy_category); ?></span>
                     <span class="c-article-info__sep">·</span>
                 <?php endif; ?>
-                <?php if ($am_date) : ?>
-                    <span class="c-article-info__date"><?php echo esc_html($am_date); ?></span>
-                <?php endif; ?>
+                <time class="c-article-info__date" datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html($date); ?></time>
             </div>
-            <?php if ($am_read_time) : ?>
             <div class="c-article-info__right">
                 <span class="c-article-info__read">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <?php echo esc_html($am_read_time); ?>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <?php echo esc_html($read_time . ' мин чтения'); ?>
                 </span>
             </div>
-            <?php endif; ?>
         </div>
     </div>
 </section>

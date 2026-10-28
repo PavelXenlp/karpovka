@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="c-spa-detail__media">
-          <img src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Карпов пруд ранним утром" loading="lazy">
+          <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Карпов пруд ранним утром" loading="lazy">
         </div>
       </div>
     </div>

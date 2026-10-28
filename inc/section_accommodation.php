@@ -21,7 +21,6 @@ function combined_section_box( $post ) {
     $rec_sub        = $v['rec_sub'] ?? '';
     $rec_img        = $v['rec_img'] ?? '';
     $seasons        = $v['seasons'] ?? [];
-    $activities     = $v['activities'] ?? [];
     ?>
     <style>
         .cb-field{margin-bottom:10px}
@@ -37,11 +36,11 @@ function combined_section_box( $post ) {
         .cb-item .cb-row label{margin-bottom:2px}
         .cb-btn{padding:4px 12px;cursor:pointer;margin:3px 2px}
         .cb-btn--del{color:#a00;border-color:#a00}
-        .cb-upload{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-        .cb-upload input[type="text"]{flex:1}
-        .cb-upload button{padding:3px 8px;cursor:pointer;font-size:12px}
-        .cb-upload img.prev{max-width:80px;height:auto;border:1px solid #ccc;border-radius:3px;display:none}
         .cb-check{display:flex;align-items:center;gap:4px;font-weight:normal;font-size:12px;margin:4px 0}
+        .cb-season-block{border:2px solid #2271b1;margin:14px 0;padding:14px;background:#f0f6fc;border-radius:6px}
+        .cb-season-block>h4{color:#2271b1;margin-top:0}
+        .cb-activity-row{display:flex;gap:8px;align-items:center;margin:6px 0}
+        .cb-activity-row input{flex:1}
     </style>
 
     <div class="cb-field">
@@ -57,7 +56,7 @@ function combined_section_box( $post ) {
         <div class="cb-field"><label>Подзаголовок</label><input type="text" name="combined_section[stay_sub]" value="<?php echo esc_attr( $stay_sub ); ?>"></div>
 
         <h4 style="margin-top:12px">Варианты размещения (табы)</h4>
-        <p style="font-size:11px;color:#888">Картинка каждого варианта показывается справа при клике (через data-атрибуты + JS). Галочка «Активный» = первый отображаемый.</p>
+        <p style="font-size:11px;color:#888">Картинка каждого варианта показывается справа при клике. Галочка «Активный» = первый отображаемый.</p>
         <div id="cb-stay-opts">
             <?php if ( ! empty( $stay_options ) ) : ?>
                 <?php foreach ( $stay_options as $oi => $o ) : ?>
@@ -66,10 +65,9 @@ function combined_section_box( $post ) {
                             <div><label>Название (в списке)</label><input type="text" name="combined_section[stay_options][<?php echo $oi; ?>][name]" value="<?php echo esc_attr( $o['name'] ?? '' ); ?>"></div>
                             <div><label>Цена (в списке)</label><input type="text" name="combined_section[stay_options][<?php echo $oi; ?>][price]" value="<?php echo esc_attr( $o['price'] ?? '' ); ?>"></div>
                         </div>
-                        <div class="cb-upload">
-                            <button type="button" class="cb-btn cb-upload-stay">📁 Фото</button>
-                            <input type="text" name="combined_section[stay_options][<?php echo $oi; ?>][img]" value="<?php echo esc_attr( $o['img'] ?? '' ); ?>">
-                            <img class="prev" src="<?php echo esc_url( $o['img'] ?? '' ); ?>" alt="">
+                        <div class="cb-field">
+                            <label>Фото</label>
+                            <input type="hidden" name="combined_section[stay_options][<?php echo $oi; ?>][img]" value="<?php echo esc_attr( $o['img'] ?? '' ); ?>" data-kp-media>
                         </div>
                         <div class="cb-row">
                             <div><label>Заголовок (в карточке)</label><input type="text" name="combined_section[stay_options][<?php echo $oi; ?>][card_title]" value="<?php echo esc_attr( $o['card_title'] ?? '' ); ?>"></div>
@@ -98,18 +96,20 @@ function combined_section_box( $post ) {
         <div class="cb-field"><label>Заголовок (HTML: &lt;em&gt;)</label><textarea name="combined_section[rec_title]" rows="2"><?php echo esc_textarea( $rec_title ); ?></textarea></div>
         <div class="cb-field"><label>Подзаголовок</label><input type="text" name="combined_section[rec_sub]" value="<?php echo esc_attr( $rec_sub ); ?>"></div>
 
-        <div class="cb-upload">
-            <button type="button" class="cb-btn cb-upload-rec">📁 Фото</button>
-            <input type="text" name="combined_section[rec_img]" value="<?php echo esc_attr( $rec_img ); ?>">
-            <img class="prev cb-rec-prev" src="<?php echo esc_url( $rec_img ); ?>" alt="">
+        <div class="cb-field">
+            <label>Фото</label>
+            <input type="hidden" name="combined_section[rec_img]" value="<?php echo esc_attr( $rec_img ); ?>" data-kp-media>
         </div>
 
-        <h4 style="margin-top:12px">Кнопки сезонов</h4>
-        <p style="font-size:11px;color:#888">data-season определяет фильтрацию активностей. Галочка = активная по умолчанию.</p>
+        <h4 style="margin-top:12px">Сезоны со своими списками активностей</h4>
+        <p style="font-size:11px;color:#888">У каждого сезона — свой список активностей. Галочка = активный по умолчанию.</p>
         <div id="cb-seasons">
             <?php if ( ! empty( $seasons ) ) : ?>
-                <?php foreach ( $seasons as $si => $s ) : ?>
-                    <div class="cb-item" style="padding:10px">
+                <?php foreach ( $seasons as $si => $s ) : 
+                    $s_activities = $s['activities'] ?? [];
+                ?>
+                    <div class="cb-season-block" data-season-index="<?php echo $si; ?>">
+                        <h4>Сезон #<?php echo $si + 1; ?></h4>
                         <div class="cb-row" style="margin-bottom:0">
                             <div><label>Текст кнопки</label><input type="text" name="combined_section[seasons][<?php echo $si; ?>][text]" value="<?php echo esc_attr( $s['text'] ?? '' ); ?>"></div>
                             <div style="flex:0 0 140px"><label>data-season</label><input type="text" name="combined_section[seasons][<?php echo $si; ?>][slug]" value="<?php echo esc_attr( $s['slug'] ?? '' ); ?>"></div>
@@ -117,54 +117,31 @@ function combined_section_box( $post ) {
                                 <label class="cb-check"><input type="checkbox" name="combined_section[seasons][<?php echo $si; ?>][is_active]" value="1" <?php checked( $s['is_active'] ?? 0, 1 ); ?>> Активный</label>
                             </div>
                         </div>
-                        <button type="button" class="cb-btn cb-btn--del" onclick="this.closest('.cb-item').remove()">Удалить</button>
+                        
+                        <div style="margin-top:12px">
+                            <label style="font-weight:600;font-size:12px;display:block;margin-bottom:6px">Активности этого сезона:</label>
+                            <div class="cb-season-activities" data-season-activities="<?php echo $si; ?>">
+                                <?php if ( ! empty( $s_activities ) ) : foreach ( $s_activities as $ai => $a ) : ?>
+                                    <div class="cb-activity-row">
+                                        <input type="text" name="combined_section[seasons][<?php echo $si; ?>][activities][<?php echo $ai; ?>][text]" value="<?php echo esc_attr( $a['text'] ?? '' ); ?>" placeholder="Активность">
+                                        <button type="button" class="cb-btn cb-btn--del" onclick="this.closest('.cb-activity-row').remove()">✕</button>
+                                    </div>
+                                <?php endforeach; endif; ?>
+                            </div>
+                            <button type="button" class="cb-btn cb-add-activity" data-season-idx="<?php echo $si; ?>">+ Добавить активность</button>
+                        </div>
+                        
+                        <button type="button" class="cb-btn cb-btn--del" style="margin-top:10px" onclick="this.closest('.cb-season-block').remove()">Удалить сезон целиком</button>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
         <button type="button" class="cb-btn" id="cb-add-season">+ Добавить сезон</button>
-
-        <h4 style="margin-top:14px">Активности</h4>
-        <p style="font-size:11px;color:#888">data-season привязывает активность к сезону (summer/winter/year)</p>
-        <div id="cb-activities">
-            <?php if ( ! empty( $activities ) ) : ?>
-                <?php foreach ( $activities as $ai => $a ) : ?>
-                    <div class="cb-item" style="padding:10px">
-                        <div class="cb-row" style="margin-bottom:0">
-                            <div><label>Текст</label><input type="text" name="combined_section[activities][<?php echo $ai; ?>][text]" value="<?php echo esc_attr( $a['text'] ?? '' ); ?>"></div>
-                            <div style="flex:0 0 140px"><label>data-season</label><input type="text" name="combined_section[activities][<?php echo $ai; ?>][season]" value="<?php echo esc_attr( $a['season'] ?? '' ); ?>"></div>
-                        </div>
-                        <button type="button" class="cb-btn cb-btn--del" onclick="this.closest('.cb-item').remove()">Удалить</button>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-        <button type="button" class="cb-btn" id="cb-add-activity">+ Добавить активность</button>
     </div>
 
     <script>
     jQuery(function($){
-
-        /* ── Загрузка картинок ── */
-        function uploadImg(btn){
-            var frame = wp.media({title:'Выберите изображение',multiple:false,library:{type:'image'}});
-            frame.on('select',function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                $(btn).closest('.cb-upload').find('input[type="text"]').val(url);
-                $(btn).closest('.cb-upload').find('img.prev').attr('src',url).show();
-            });
-            frame.open();
-        }
-        // Делегированные обработчики для динамически добавляемых кнопок
-        $(document).on('click','.cb-upload-stay,.cb-upload-rec',function(e){
-            e.preventDefault();
-            uploadImg(this);
-        });
-
-        /* Превью при загрузке */
-        $('.cb-upload img.prev').each(function(){
-            if($(this).attr('src')) $(this).show();
-        });
+        var seasonCounter = $('#cb-seasons .cb-season-block').length;
 
         /* ── Варианты проживания ── */
         $('#cb-add-stay').on('click',function(){
@@ -172,34 +149,49 @@ function combined_section_box( $post ) {
             box.append(
                 '<div class="cb-item">' +
                 '<div class="cb-row"><div><label>Название (в списке)</label><input type="text" name="combined_section[stay_options]['+i+'][name]"></div><div><label>Цена (в списке)</label><input type="text" name="combined_section[stay_options]['+i+'][price]"></div></div>' +
-                '<div class="cb-upload"><button type="button" class="cb-btn cb-upload-stay">\uD83D\uDCC1 \u0424\u043E\u0442\u043E</button><input type="text" name="combined_section[stay_options]['+i+'][img]"><img class="prev" src="" alt=""></div>' +
-                '<div class="cb-row"><div><label>\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A (\u0432 \u043A\u0430\u0440\u0442\u043E\u0447\u043A\u0435)</label><input type="text" name="combined_section[stay_options]['+i+'][card_title]"></div><div><label>\u0426\u0435\u043D\u0430 \u043F\u043E\u043B\u043D\u0430\u044F</label><input type="text" name="combined_section[stay_options]['+i+'][card_price]"></div></div>' +
+                '<div class="cb-field"><label>Фото</label><input type="hidden" name="combined_section[stay_options]['+i+'][img]" value="" data-kp-media></div>' +
+                '<div class="cb-row"><div><label>Заголовок (в карточке)</label><input type="text" name="combined_section[stay_options]['+i+'][card_title]"></div><div><label>Цена полная</label><input type="text" name="combined_section[stay_options]['+i+'][card_price]"></div></div>' +
                 '<div class="cb-field"><label>Подпись (caption)</label><input type="text" name="combined_section[stay_options]['+i+'][caption]"></div>' +
                 '<div class="cb-field"><label>Описание</label><textarea name="combined_section[stay_options]['+i+'][desc]" rows="2"></textarea></div>' +
-                '<label class="cb-check"><input type="checkbox" name="combined_section[stay_options]['+i+'][is_active]" value="1"> \u0410\u043A\u0442\u0438\u0432\u043D\u044B\u0439 \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E</label>' +
-                '<button type="button" class="cb-btn cb-btn--del" onclick="this.closest(\'.cb-item\').remove()">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0430\u0440\u0438\u0430\u043D\u0442</button>' +
+                '<label class="cb-check"><input type="checkbox" name="combined_section[stay_options]['+i+'][is_active]" value="1"> Активный по умолчанию</label>' +
+                '<button type="button" class="cb-btn cb-btn--del" onclick="this.closest(\'.cb-item\').remove()">Удалить вариант</button>' +
                 '</div>'
             );
         });
 
-        /* ── Сезоны ── */
+        /* ── Добавить сезон ── */
         $('#cb-add-season').on('click',function(){
-            var box=$('#cb-seasons'), i=box.find('.cb-item').length;
-            box.append(
-                '<div class="cb-item" style="padding:10px">' +
-                '<div class="cb-row" style="margin-bottom:0"><div><label>Текст кнопки</label><input type="text" name="combined_section[seasons]['+i+'][text]"></div><div style="flex:0 0 140px"><label>data-season</label><input type="text" name="combined_section[seasons]['+i+'][slug]"></div><div style="flex:0 0 120px;display:flex;align-items:flex-end;padding-bottom:2px"><label class="cb-check"><input type="checkbox" name="combined_section[seasons]['+i+'][is_active]" value="1"> \u0410\u043A\u0442\u0438\u0432\u043D\u044B\u0439</label></div></div>' +
-                '<button type="button" class="cb-btn cb-btn--del" onclick="this.closest(\'.cb-item\').remove()">\u0423\u0434\u0430\u043B\u0438\u0442\u044C</button>' +
-                '</div>'
-            );
+            var i = seasonCounter;
+            var html =
+                '<div class="cb-season-block" data-season-index="'+i+'">' +
+                '<h4>Сезон #'+(i+1)+'</h4>' +
+                '<div class="cb-row" style="margin-bottom:0">' +
+                    '<div><label>Текст кнопки</label><input type="text" name="combined_section[seasons]['+i+'][text]"></div>' +
+                    '<div style="flex:0 0 140px"><label>data-season</label><input type="text" name="combined_section[seasons]['+i+'][slug]"></div>' +
+                    '<div style="flex:0 0 120px;display:flex;align-items:flex-end;padding-bottom:2px">' +
+                        '<label class="cb-check"><input type="checkbox" name="combined_section[seasons]['+i+'][is_active]" value="1"> Активный</label>' +
+                    '</div>' +
+                '</div>' +
+                '<div style="margin-top:12px">' +
+                    '<label style="font-weight:600;font-size:12px;display:block;margin-bottom:6px">Активности этого сезона:</label>' +
+                    '<div class="cb-season-activities" data-season-activities="'+i+'"></div>' +
+                    '<button type="button" class="cb-btn cb-add-activity" data-season-idx="'+i+'">+ Добавить активность</button>' +
+                '</div>' +
+                '<button type="button" class="cb-btn cb-btn--del" style="margin-top:10px" onclick="this.closest(\'.cb-season-block\').remove()">Удалить сезон целиком</button>' +
+                '</div>';
+            $('#cb-seasons').append(html);
+            seasonCounter++;
         });
 
-        /* ── Активности ── */
-        $('#cb-add-activity').on('click',function(){
-            var box=$('#cb-activities'), i=box.find('.cb-item').length;
-            box.append(
-                '<div class="cb-item" style="padding:10px">' +
-                '<div class="cb-row" style="margin-bottom:0"><div><label>Текст</label><input type="text" name="combined_section[activities]['+i+'][text]"></div><div style="flex:0 0 140px"><label>data-season</label><input type="text" name="combined_section[activities]['+i+'][season]"></div></div>' +
-                '<button type="button" class="cb-btn cb-btn--del" onclick="this.closest(\'.cb-item\').remove()">\u0423\u0434\u0430\u043B\u0438\u0442\u044C</button>' +
+        /* ── Добавить активность в конкретный сезон ── */
+        $(document).on('click', '.cb-add-activity', function(){
+            var si = $(this).data('season-idx');
+            var wrap = $('[data-season-activities="'+si+'"]');
+            var k = wrap.find('.cb-activity-row').length;
+            wrap.append(
+                '<div class="cb-activity-row">' +
+                '<input type="text" name="combined_section[seasons]['+si+'][activities]['+k+'][text]" placeholder="Активность">' +
+                '<button type="button" class="cb-btn cb-btn--del" onclick="this.closest(\'.cb-activity-row\').remove()">✕</button>' +
                 '</div>'
             );
         });
@@ -237,29 +229,26 @@ add_action( 'save_post', function ( $post_id ) {
         }
     }
 
-    // Сезоны
+    // Сезоны СО СВОИМИ АКТИВНОСТЯМИ
     $seasons = [];
     if ( ! empty( $raw['seasons'] ) && is_array( $raw['seasons'] ) ) {
         foreach ( $raw['seasons'] as $s ) {
-            $seasons[] = [
-                'text'     => sanitize_text_field( $s['text'] ?? '' ),
-                'slug'     => sanitize_text_field( $s['slug'] ?? '' ),
-                'is_active'=> ! empty( $s['is_active'] ) ? 1 : 0,
-            ];
-        }
-    }
-
-    // Активности
-    $activities = [];
-    if ( ! empty( $raw['activities'] ) && is_array( $raw['activities'] ) ) {
-        foreach ( $raw['activities'] as $a ) {
-            $t = sanitize_text_field( $a['text'] ?? '' );
-            if ( $t ) {
-                $activities[] = [
-                    'text'   => $t,
-                    'season' => sanitize_text_field( $a['season'] ?? '' ),
-                ];
+            // Активности текущего сезона
+            $s_activities = [];
+            if ( ! empty( $s['activities'] ) && is_array( $s['activities'] ) ) {
+                foreach ( $s['activities'] as $a ) {
+                    $t = sanitize_text_field( $a['text'] ?? '' );
+                    if ( $t ) {
+                        $s_activities[] = [ 'text' => $t ];
+                    }
+                }
             }
+            $seasons[] = [
+                'text'       => sanitize_text_field( $s['text'] ?? '' ),
+                'slug'       => sanitize_text_field( $s['slug'] ?? '' ),
+                'is_active'  => ! empty( $s['is_active'] ) ? 1 : 0,
+                'activities' => $s_activities,
+            ];
         }
     }
 
@@ -276,7 +265,6 @@ add_action( 'save_post', function ( $post_id ) {
         'rec_sub'       => sanitize_text_field( $raw['rec_sub'] ?? '' ),
         'rec_img'       => esc_url_raw( $raw['rec_img'] ?? '' ),
         'seasons'       => $seasons,
-        'activities'    => $activities,
     ];
 
     update_post_meta( $post_id, 'combined_section', $data );

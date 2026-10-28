@@ -8,6 +8,7 @@ function hero_main_section_box( $post ) {
     $v = get_post_meta( $post->ID, 'hero_main', true );
 
     $bg_img         = $v['bg_img'] ?? '';
+    $bg_video       = $v['bg_video'] ?? '';
     $eyebrow        = $v['eyebrow'] ?? '';
     $slides         = $v['slides'] ?? [];
     $lead           = $v['lead'] ?? '';
@@ -17,7 +18,6 @@ function hero_main_section_box( $post ) {
     $bk_checkin_l   = $v['bk_checkin_l'] ?? '';
     $bk_checkout_l  = $v['bk_checkout_l'] ?? '';
     $bk_guests_l    = $v['bk_guests_l'] ?? '';
-    $bk_guests_opts = $v['bk_guests_opts'] ?? '';
     $bk_submit      = $v['bk_submit'] ?? '';
     // Modal
     $m_badge       = $v['m_badge'] ?? '';
@@ -57,18 +57,24 @@ function hero_main_section_box( $post ) {
         .hm-item .hm-row label{margin-bottom:2px}
         .hm-btn{padding:4px 12px;cursor:pointer;margin:3px 2px}
         .hm-btn--del{color:#a00;border-color:#a00}
-        .hm-upload{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-        .hm-upload input[type="text"]{flex:1}
-        .hm-upload button{padding:4px 10px;cursor:pointer}
-        .hm-upload img.preview{max-width:120px;height:auto;border:1px solid #ccc;border-radius:4px;display:none}
         .hm-item textarea.svg-area{font-family:monospace;font-size:11px;min-height:80px}
     </style>
 
     <!-- ФОН -->
-    <div class="hm-upload">
-        <button type="button" class="hm-btn hm-upload-bg">📁 Фон Hero</button>
-        <input type="text" name="hero_main[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>">
-        <img class="preview hm-bg-prev" src="<?php echo esc_url( $bg_img ); ?>" alt="">
+    <div class="hm-group">
+        <h4>Фон Hero</h4>
+        <div class="kp-field-grid">
+            <div class="hm-field">
+                <label>Фоновое изображение</label>
+                <input type="hidden" name="hero_main[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>" data-kp-media>
+                <p class="description">Используется как основной фон и постер до загрузки видео.</p>
+            </div>
+            <div class="hm-field">
+                <label>Фоновое видео</label>
+                <input type="hidden" name="hero_main[bg_video]" value="<?php echo esc_attr( $bg_video ); ?>" data-kp-media data-kp-media-type="video">
+                <p class="description">MP4 или WebM. На сайте воспроизводится без звука, по кругу.</p>
+            </div>
+        </div>
     </div>
 
     <div class="hm-field">
@@ -78,7 +84,7 @@ function hero_main_section_box( $post ) {
 
     <!-- СЛАЙДЫ ЗАГОЛОВКА -->
     <h3>Слайды заголовка (ротация)</h3>
-    <p style="font-size:12px;color:#666">Первый слайд автоматически получает класс is-active. HTML разрешён (&lt;br&gt;, &lt;em&gt;)</p>
+    <p class="description">Заголовки сменяют друг друга автоматически. Перенос строки — &lt;br&gt;, выделение — &lt;em&gt;текст&lt;/em&gt;.</p>
     <div id="hm-slides">
         <?php if ( ! empty( $slides ) ) : ?>
             <?php foreach ( $slides as $si => $s ) : ?>
@@ -106,7 +112,7 @@ function hero_main_section_box( $post ) {
                     <div class="hm-row">
                         <div><label>Текст</label><input type="text" name="hero_main[buttons][<?php echo $bi; ?>][text]" value="<?php echo esc_attr( $b['text'] ?? '' ); ?>"></div>
                         <div><label>Ссылка</label><input type="text" name="hero_main[buttons][<?php echo $bi; ?>][link]" value="<?php echo esc_attr( $b['link'] ?? '' ); ?>"></div>
-                        <div style="flex:0 0 140px"><label>Стиль</label><select name="hero_main[buttons][<?php echo $bi; ?>][style]"><option value="gold" <?php selected( $b['style'] ?? 'gold', 'gold' ); ?>>btn--gold</option><option value="ghost" <?php selected( $b['style'] ?? '', 'ghost' ); ?>>btn--ghost</option></select></div>
+                        <div><label>Оформление</label><select name="hero_main[buttons][<?php echo $bi; ?>][style]"><option value="gold" <?php selected( $b['style'] ?? 'gold', 'gold' ); ?>>Акцентная кнопка</option><option value="ghost" <?php selected( $b['style'] ?? '', 'ghost' ); ?>>Контурная кнопка</option></select></div>
                     </div>
                     <button type="button" class="hm-btn hm-btn--del" onclick="this.closest('.hm-item').remove()">Удалить</button>
                 </div>
@@ -146,10 +152,6 @@ function hero_main_section_box( $post ) {
             <div style="flex:1"><label style="font-size:12px">Лейбл «Заезд»</label><input type="text" name="hero_main[bk_checkin_l]" value="<?php echo esc_attr( $bk_checkin_l ); ?>"></div>
             <div style="flex:1"><label style="font-size:12px">Лейбл «Выезд»</label><input type="text" name="hero_main[bk_checkout_l]" value="<?php echo esc_attr( $bk_checkout_l ); ?>"></div>
             <div style="flex:1"><label style="font-size:12px">Лейбл «Гости»</label><input type="text" name="hero_main[bk_guests_l]" value="<?php echo esc_attr( $bk_guests_l ); ?>"></div>
-        </div>
-        <div class="hm-field">
-            <label>Варианты гостей (каждый с новой строки)</label>
-            <textarea name="hero_main[bk_guests_opts]" rows="4"><?php echo esc_textarea( $bk_guests_opts ); ?></textarea>
         </div>
         <div class="hm-field"><label>Текст кнопки</label><input type="text" name="hero_main[bk_submit]" value="<?php echo esc_attr( $bk_submit ); ?>"></div>
     </div>
@@ -201,21 +203,6 @@ function hero_main_section_box( $post ) {
     <script>
 jQuery(function($){
 
-    /* Загрузка изображения */
-    $('.hm-upload-bg').on('click',function(){
-        var btn = this;
-        var frame = wp.media({title:'Выберите фоновое изображение',multiple:false,library:{type:'image'}});
-        frame.on('select',function(){
-            var url = frame.state().get('selection').first().toJSON().url;
-            $(btn).closest('.hm-upload').find('input[type="text"]').val(url);
-            $(btn).closest('.hm-upload').find('img.preview').attr('src',url).show();
-        });
-        frame.open();
-    });
-    $('.hm-upload img.preview').each(function(){
-        if($(this).attr('src')) $(this).show();
-    });
-
     /* Слайды */
     $('#hm-add-slide').on('click',function(){
         var box=$('#hm-slides'), i=box.find('.hm-item').length;
@@ -225,7 +212,7 @@ jQuery(function($){
     /* Кнопки */
     $('#hm-add-btn').on('click',function(){
         var box=$('#hm-buttons'), i=box.find('.hm-item').length;
-        box.append('<div class="hm-item"><div class="hm-row"><div><label>Текст</label><input type="text" name="hero_main[buttons]['+i+'][text]"></div><div><label>Ссылка</label><input type="text" name="hero_main[buttons]['+i+'][link]"></div><div style="flex:0 0 140px"><label>Стиль</label><select name="hero_main[buttons]['+i+'][style]"><option value="gold">btn--gold</option><option value="ghost">btn--ghost</option></select></div></div><button type="button" class="hm-btn hm-btn--del" onclick="this.closest(\'.hm-item\').remove()">Удалить</button></div>');
+        box.append('<div class="hm-item"><div class="hm-row"><div><label>Текст</label><input type="text" name="hero_main[buttons]['+i+'][text]"></div><div><label>Ссылка</label><input type="text" name="hero_main[buttons]['+i+'][link]"></div><div><label>Оформление</label><select name="hero_main[buttons]['+i+'][style]"><option value="gold">Акцентная кнопка</option><option value="ghost">Контурная кнопка</option></select></div></div><button type="button" class="hm-btn hm-btn--del" onclick="this.closest(\'.hm-item\').remove()">Удалить</button></div>');
     });
 
     /* Соцсети */
@@ -293,6 +280,7 @@ add_action( 'save_post', function ( $post_id ) {
 
     $data = [
         'bg_img'         => esc_url_raw( $raw['bg_img'] ?? '' ),
+        'bg_video'       => esc_url_raw( $raw['bg_video'] ?? '' ),
         'eyebrow'        => sanitize_text_field( $raw['eyebrow'] ?? '' ),
         'slides'         => $slides,
         'lead'           => sanitize_textarea_field( $raw['lead'] ?? '' ),
@@ -302,7 +290,6 @@ add_action( 'save_post', function ( $post_id ) {
         'bk_checkin_l'   => sanitize_text_field( $raw['bk_checkin_l'] ?? '' ),
         'bk_checkout_l'  => sanitize_text_field( $raw['bk_checkout_l'] ?? '' ),
         'bk_guests_l'    => sanitize_text_field( $raw['bk_guests_l'] ?? '' ),
-        'bk_guests_opts' => sanitize_textarea_field( $raw['bk_guests_opts'] ?? '' ),
         'bk_submit'      => sanitize_text_field( $raw['bk_submit'] ?? '' ),
         'm_badge'       => sanitize_text_field( $raw['m_badge'] ?? '' ),
         'm_title'       => sanitize_text_field( $raw['m_title'] ?? '' ),

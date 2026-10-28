@@ -89,33 +89,6 @@ function spa_detail_render_box($post) {
       margin-top: 6px;
     }
     .spa-add-feature:hover { background: #135e96; }
-    .spa-img-preview {
-      margin-top: 8px;
-      max-width: 300px;
-    }
-    .spa-img-preview img {
-      max-width: 100%;
-      height: auto;
-      border: 1px solid #dcdcde;
-      border-radius: 4px;
-    }
-    .spa-img-btn {
-      display: inline-block;
-      margin-top: 6px;
-    }
-    .spa-img-btn button {
-      background: #2271b1;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 5px 12px;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .spa-img-btn .spa-remove-img {
-      background: #d63638;
-      margin-left: 6px;
-    }
   </style>
 
   <!-- Eyebrow -->
@@ -177,16 +150,7 @@ function spa_detail_render_box($post) {
   <!-- Изображение -->
   <div class="spa-detail-field">
     <label>Изображение</label>
-    <input type="hidden" name="spa_detail_img" id="spa_detail_img_input" value="<?php echo esc_attr($img); ?>">
-    <div class="spa-img-btn">
-      <button type="button" id="spa-upload-img-btn">Выбрать изображение</button>
-      <button type="button" class="spa-remove-img" id="spa-remove-img-btn">Удалить</button>
-    </div>
-    <?php if ($img) : ?>
-      <div class="spa-img-preview">
-        <img src="<?php echo esc_url($img); ?>" alt="preview">
-      </div>
-    <?php endif; ?>
+    <input type="hidden" name="spa_detail_img" id="spa_detail_img_input" value="<?php echo esc_attr($img); ?>" data-kp-media>
   </div>
 
   <!-- ID секции -->
@@ -199,33 +163,6 @@ function spa_detail_render_box($post) {
   <!-- Media uploader script -->
   <script>
     jQuery(document).ready(function($) {
-
-      // Загрузка изображения
-      var frame;
-      $('#spa-upload-img-btn').on('click', function(e) {
-        e.preventDefault();
-        if (frame) { frame.open(); return; }
-        frame = wp.media({
-          title: 'Выбрать изображение для секции',
-          button: { text: 'Использовать это изображение' },
-          multiple: false
-        });
-        frame.on('select', function() {
-          var attachment = frame.state().get('selection').first().toJSON();
-          $('#spa_detail_img_input').val(attachment.url);
-          // Превью
-          $('.spa-img-preview').remove();
-          $('<div class="spa-img-preview"><img src="' + attachment.url + '" alt="preview"></div>').insertAfter('#spa-remove-img-btn').parent();
-        });
-        frame.open();
-      });
-
-      // Удаление изображения
-      $('#spa-remove-img-btn').on('click', function(e) {
-        e.preventDefault();
-        $('#spa_detail_img_input').val('');
-        $('.spa-img-preview').remove();
-      });
 
       // Добавить блок преимущества
       var featureIndex = <?php echo count($features); ?>;

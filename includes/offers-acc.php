@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/offer-card.php';
  $data = get_post_meta(get_the_ID(), 'acc_offers', true);
 if (!is_array($data) || empty($data)) return;
 
@@ -6,7 +7,7 @@ if (!is_array($data) || empty($data)) return;
  $title_before = $data['title_before'] ?? '';
  $title_em     = $data['title_em'] ?? '';
  $sub          = $data['sub'] ?? '';
- $cards        = $data['cards'] ?? [];
+ $cards        = !empty($data['cards']) && is_array($data['cards']) ? $data['cards'] : [];
 ?>
 <section class="c-offers-acc" id="acc-offers">
     <div class="container">
@@ -27,37 +28,13 @@ if (!is_array($data) || empty($data)) return;
             <?php endif; ?>
         </div>
         <div class="c-offers-grid reveal">
-            <?php if (!empty($cards)) : foreach ($cards as $c) :
-                $badge_cls = 'c-offers-card__badge' . (($c['badge_hot'] ?? '') === '1' ? ' c-offers-card__badge--hot' : '');
-            ?>
-            <article class="c-offers-card">
-                <div class="c-offers-card__img">
-                    <?php if (!empty($c['image'])) : ?>
-                    <img src="<?php echo esc_url($c['image']); ?>" alt="<?php echo esc_attr($c['title'] ?? ''); ?>" loading="lazy">
-                    <?php endif; ?>
-                    <?php if (!empty($c['badge_text'])) : ?>
-                    <span class="<?php echo $badge_cls; ?>"><?php echo esc_html($c['badge_text']); ?></span>
-                    <?php endif; ?>
-                </div>
-                <div class="c-offers-card__body">
-                    <h3 class="c-offers-card__title"><?php echo esc_html($c['title'] ?? ''); ?></h3>
-                    <p class="c-offers-card__desc"><?php echo esc_html($c['desc'] ?? ''); ?></p>
-                    <?php if (!empty($c['conditions']) && is_array($c['conditions'])) : ?>
-                    <div class="c-offers-card__conditions">
-                        <?php foreach ($c['conditions'] as $cn) : ?>
-                        <span class="c-offers-card__cond">
-                            <?php if (!empty($cn['icon'])) : ?><i class="<?php echo esc_attr($cn['icon']); ?>"></i> <?php endif; ?>
-                            <?php echo esc_html($cn['text'] ?? ''); ?>
-                        </span>
-                        <?php endforeach; ?>
-                    </div>
-                    <?php endif; ?>
-                    <?php if (!empty($c['link'])) : ?>
-                    <a href="<?php echo esc_url($c['link']); ?>" class="c-offers-card__link">Подробнее <i class="fa-solid fa-arrow-right"></i></a>
-                    <?php endif; ?>
-                </div>
-            </article>
-            <?php endforeach; endif; ?>
+            <?php foreach ($cards as $index => $card) :
+                $modal_id = 'offer-' . get_the_ID() . '-acc-' . $index;
+                karpovka_offer_card($card, $modal_id);
+            endforeach; ?>
         </div>
     </div>
 </section>
+<?php foreach ($cards as $index => $card) :
+    karpovka_offer_modal($card, 'offer-' . get_the_ID() . '-acc-' . $index);
+endforeach; ?>

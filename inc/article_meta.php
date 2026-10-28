@@ -5,7 +5,7 @@
  */
 
 add_action('add_meta_boxes', function () {
-    add_meta_box('am_box', 'Мета статьи', 'am_box_cb', 'page', 'normal', 'high');
+    add_meta_box('am_box', 'Мета статьи', 'am_box_cb', ['page', 'articles'], 'normal', 'high');
 });
 
 function am_box_cb($post) {

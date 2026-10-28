@@ -12,12 +12,21 @@
  $vk        = get_post_meta(get_the_ID(), 'hero_vk', true);
  $tg        = get_post_meta(get_the_ID(), 'hero_tg', true);
 
+if ('articles' === get_post_type()) {
+ $eyebrow   = !empty($eyebrow)   ? $eyebrow   : 'Статья';
+ $title     = !empty($title)     ? $title     : get_the_title();
+ $subtitle  = !empty($subtitle)  ? $subtitle  : get_the_excerpt();
+ $photo     = !empty($photo)     ? $photo     : get_the_post_thumbnail_url(get_the_ID(), 'full');
+ $btn1_text = !empty($btn1_text) ? $btn1_text : 'Все статьи';
+ $btn1_link = !empty($btn1_link) ? $btn1_link : karpovka_articles_page_url();
+} else {
  $eyebrow   = !empty($eyebrow)   ? $eyebrow   : 'Традиции банной культуры';
  $title     = !empty($title)     ? $title     : 'Банный комплекс';
  $gold      = !empty($gold)      ? $gold      : 'комплекс';
  $subtitle  = !empty($subtitle)  ? $subtitle  : 'Русская баня, финская сауна, турецкий хаммам и купель — четыре зоны для настоящего банного ритуала в сосновом лесу на берегу Карпова пруда';
  $btn1_text = !empty($btn1_text) ? $btn1_text : 'Виды бань';
  $btn1_link = !empty($btn1_link) ? $btn1_link : '#types';
+}
  $btn2_text = !empty($btn2_text) ? $btn2_text : 'Забронировать';
  $phone     = !empty($phone)     ? $phone     : '+79127813933';
  $email     = !empty($email)     ? $email     : 'karpovka59ru@yandex.ru';
@@ -27,7 +36,7 @@
 
 <section class="c-hero" id="hero" style="--hero-next: var(--navy-900)">
   <?php if ($photo) : ?>
-    <img class="c-hero__photo" src="<?php echo esc_url($photo); ?>" alt="Банный комплекс Карповка" loading="eager">
+    <img class="c-hero__photo" src="<?php echo esc_url($photo); ?>" alt="<?php echo esc_attr($title); ?>" loading="eager">
   <?php endif; ?>
   <div class="c-hero__overlay"></div>
   <div class="container c-hero__content">

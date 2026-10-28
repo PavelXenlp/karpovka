@@ -10,11 +10,7 @@ get_header();
 ?>
 
 
-<?php include __DIR__ . '/includes/section-hero.php'; ?>
-<?php include __DIR__ . '/includes/contacts-section.php'; ?>
-<?php include __DIR__ . '/includes/directions.php'; ?>
-<?php include __DIR__ . '/includes/requisites.php'; ?>
-<?php include __DIR__ . '/includes/feedback.php'; ?>
+<?php karpovka_render_page_sections(); ?>
 
 
 

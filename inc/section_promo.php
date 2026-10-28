@@ -25,10 +25,7 @@ function promo_section_cb( $post ) {
 
             <p>
                 <label><b>Фоновое изображение</b></label><br>
-                <img class="promo-bg-preview" src="<?php echo esc_url( $panel['bg'] ?? '' ); ?>" style="max-width:300px;height:auto;display:<?php echo ( $panel['bg'] ?? '' ) ? 'block' : 'none'; ?>;margin:6px 0;border:1px solid #ddd;">
-                <input type="hidden" name="promo_panels[panels][<?php echo $i; ?>][bg]" value="<?php echo esc_attr( $panel['bg'] ?? '' ); ?>" class="promo-bg-input">
-                <button type="button" class="button promo-upload-bg">📁 Загрузить</button>
-                <button type="button" class="button promo-remove-bg" style="<?php echo ( $panel['bg'] ?? '' ) ? '' : 'display:none;'; ?>">✕ Удалить</button>
+                <input type="hidden" name="promo_panels[panels][<?php echo $i; ?>][bg]" value="<?php echo esc_attr( $panel['bg'] ?? '' ); ?>" data-kp-media>
             </p>
 
             <p>
@@ -92,10 +89,7 @@ function promo_section_cb( $post ) {
                 + '<option value="loyalty">Лояльность (promo__panel--loyalty)</option>'
                 + '<option value="gift">Подарок (promo__panel--gift)</option></select></p>'
                 + '<p><label><b>Фоновое изображение</b></label><br>'
-                + '<img class="promo-bg-preview" src="" style="max-width:300px;height:auto;display:none;margin:6px 0;border:1px solid #ddd;">'
-                + '<input type="hidden" name="promo_panels[panels][' + idx + '][bg]" value="" class="promo-bg-input">'
-                + '<button type="button" class="button promo-upload-bg">📁 Загрузить</button> '
-                + '<button type="button" class="button promo-remove-bg" style="display:none;">✕ Удалить</button></p>'
+                + '<input type="hidden" name="promo_panels[panels][' + idx + '][bg]" value="" data-kp-media></p>'
                 + '<p><label><b>Позиция фона</b></label><br>'
                 + '<select name="promo_panels[panels][' + idx + '][bg_pos]">'
                 + '<option value="">По умолчанию</option>'
@@ -125,27 +119,6 @@ function promo_section_cb( $post ) {
             if( confirm('Удалить эту панель?') ) $(this).closest('.promo-panel-block').remove();
         });
 
-        // Загрузка изображения
-        $(document).on('click', '.promo-upload-bg', function(){
-            var btn = this;
-            var block = $(btn).closest('.promo-panel-block');
-            var frame = wp.media({ title: 'Выбрать фоновое изображение', multiple: false, library: { type: 'image' } });
-            frame.on('select', function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                block.find('.promo-bg-input').val(url);
-                block.find('.promo-bg-preview').attr('src', url).show();
-                block.find('.promo-remove-bg').show();
-            });
-            frame.open();
-        });
-
-        // Удалить изображение
-        $(document).on('click', '.promo-remove-bg', function(){
-            var block = $(this).closest('.promo-panel-block');
-            block.find('.promo-bg-input').val('');
-            block.find('.promo-bg-preview').hide().attr('src', '');
-            $(this).hide();
-        });
     })(jQuery);
     </script>
     <?php

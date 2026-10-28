@@ -46,8 +46,7 @@ function acc_offers_mb($post) {
             <h5>Карточка <?php echo $ci + 1; ?></h5>
 
             <p><label>Изображение:</label><br>
-            <input type="text" name="acc_offers[cards][<?php echo $ci; ?>][image]" value="<?php echo esc_url($c['image'] ?? ''); ?>" class="widefat ao-card-img">
-            <button type="button" class="button ao-card-upload">Выбрать</button></p>
+            <input type="hidden" name="acc_offers[cards][<?php echo $ci; ?>][image]" value="<?php echo esc_url($c['image'] ?? ''); ?>" class="ao-card-img" data-kp-media></p>
 
             <p><label>Текст бейджа:</label><br>
             <input type="text" name="acc_offers[cards][<?php echo $ci; ?>][badge_text]" value="<?php echo esc_attr($c['badge_text'] ?? ''); ?>" class="widefat" placeholder="−10%"></p>
@@ -60,7 +59,10 @@ function acc_offers_mb($post) {
             <p><label>Описание:</label><br>
             <textarea name="acc_offers[cards][<?php echo $ci; ?>][desc]" rows="3" class="widefat"><?php echo esc_textarea($c['desc'] ?? ''); ?></textarea></p>
 
-            <p><label>Ссылка «Подробнее»:</label><br>
+            <p><label>Подробное описание в попапе:</label><br>
+            <textarea name="acc_offers[cards][<?php echo $ci; ?>][modal_text]" rows="5" class="widefat" placeholder="Если пусто, используется описание карточки"><?php echo esc_textarea($c['modal_text'] ?? ''); ?></textarea></p>
+
+            <p><label>Ссылка кнопки в попапе (необязательно):</label><br>
             <input type="text" name="acc_offers[cards][<?php echo $ci; ?>][link]" value="<?php echo esc_attr($c['link'] ?? ''); ?>" class="widefat" placeholder="/offers/weekday"></p>
 
             <p><strong>Условия (иконка + текст):</strong></p>
@@ -92,8 +94,7 @@ function acc_offers_mb($post) {
             return '<div class="ao-card"><span class="ao-card-del">Удалить карточку</span>'
                 +'<h5>Карточка '+(ci+1)+'</h5>'
                 +'<p><label>Изображение:</label><br>'
-                +'<input type="text" name="acc_offers[cards]['+ci+'][image]" class="widefat ao-card-img">'
-                +' <button type="button" class="button ao-card-upload">Выбрать</button></p>'
+                +'<input type="hidden" name="acc_offers[cards]['+ci+'][image]" class="ao-card-img" data-kp-media></p>'
                 +'<p><label>Текст бейджа:</label><br>'
                 +'<input type="text" name="acc_offers[cards]['+ci+'][badge_text]" class="widefat" placeholder="\u221210%"></p>'
                 +'<p><label><input type="checkbox" name="acc_offers[cards]['+ci+'][badge_hot]" value="1"> Бейдж \u00ABХит\u00BB (красный)</label></p>'
@@ -101,7 +102,9 @@ function acc_offers_mb($post) {
                 +'<input type="text" name="acc_offers[cards]['+ci+'][title]" class="widefat"></p>'
                 +'<p><label>Описание:</label><br>'
                 +'<textarea name="acc_offers[cards]['+ci+'][desc]" rows="3" class="widefat"></textarea></p>'
-                +'<p><label>Ссылка \u00ABПодробнее\u00BB:</label><br>'
+                +'<p><label>Подробное описание в попапе:</label><br>'
+                +'<textarea name="acc_offers[cards]['+ci+'][modal_text]" rows="5" class="widefat" placeholder="Если пусто, используется описание карточки"></textarea></p>'
+                +'<p><label>Ссылка кнопки в попапе (необязательно):</label><br>'
                 +'<input type="text" name="acc_offers[cards]['+ci+'][link]" class="widefat" placeholder="/offers/weekday"></p>'
                 +'<p><strong>Условия:</strong></p>'
                 +'<div class="ao-conds-wrap"></div>'
@@ -126,15 +129,6 @@ function acc_offers_mb($post) {
 
         $(document).on('click', '.ao-cond-del', function(){ $(this).closest('.ao-cond-row').remove(); });
 
-        $(document).on('click', '.ao-card-upload', function(){
-            var btn = this;
-            var frame = wp.media({title:'Выбрать изображение', multiple:false, library:{type:'image'}});
-            frame.on('select', function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                $(btn).prev('.ao-card-img').val(url);
-            });
-            frame.open();
-        });
     })(jQuery);
     </script>
     <?php
@@ -164,6 +158,7 @@ add_action('save_post', function ($pid) {
                 'badge_hot'  => !empty($c['badge_hot']) ? '1' : '',
                 'title'      => sanitize_text_field($c['title'] ?? ''),
                 'desc'       => sanitize_textarea_field($c['desc'] ?? ''),
+                'modal_text' => sanitize_textarea_field($c['modal_text'] ?? ''),
                 'link'       => sanitize_text_field($c['link'] ?? ''),
                 'conditions' => $conditions,
             ];

@@ -41,14 +41,6 @@ function aa_box_cb($post) {
             gap: 0 16px;
         }
         .aa-card-grid .aa-field.full { grid-column: 1 / -1; }
-        .aa-img-row { display: flex; gap: 10px; align-items: flex-start; }
-        .aa-img-preview {
-            width: 100px; height: 66px;
-            background: #f0f0f0; border: 1px solid #ddd;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; overflow: hidden;
-        }
-        .aa-img-preview img { max-width: 100%; max-height: 100%; object-fit: cover; }
         .aa-remove { color: #a00; cursor: pointer; font-size: 18px; font-weight: 700; flex-shrink: 0; }
         .aa-remove:hover { color: #f00; }
         .aa-hint { color: #888; font-size: 12px; margin: 4px 0 0; }
@@ -66,18 +58,7 @@ function aa_box_cb($post) {
             <div class="aa-card-grid">
                 <div class="aa-field full">
                     <label>Изображение</label>
-                    <div class="aa-img-row">
-                        <div class="aa-img-preview">
-                            <?php if (!empty($card['image'])) : ?>
-                                <img src="<?php echo esc_url($card['image']); ?>" alt="">
-                            <?php endif; ?>
-                        </div>
-                        <div style="flex:1">
-                            <input type="text" class="aa-card-image" value="<?php echo esc_attr(!empty($card['image']) ? $card['image'] : ''); ?>" style="width:100%;margin-bottom:6px;padding:7px">
-                            <button type="button" class="button aa-upload-btn">Загрузить</button>
-                            <button type="button" class="button aa-clear-btn" style="margin-left:6px">Очистить</button>
-                        </div>
-                    </div>
+                    <input type="hidden" class="aa-card-image" value="<?php echo esc_attr(!empty($card['image']) ? $card['image'] : ''); ?>" data-kp-media>
                 </div>
                 <div class="aa-field">
                     <label>Slug категории (для фильтра)</label>
@@ -114,14 +95,7 @@ function aa_box_cb($post) {
             <div class="aa-card-grid">
                 <div class="aa-field full">
                     <label>Изображение</label>
-                    <div class="aa-img-row">
-                        <div class="aa-img-preview"></div>
-                        <div style="flex:1">
-                            <input type="text" class="aa-card-image" value="" style="width:100%;margin-bottom:6px;padding:7px">
-                            <button type="button" class="button aa-upload-btn">Загрузить</button>
-                            <button type="button" class="button aa-clear-btn" style="margin-left:6px">Очистить</button>
-                        </div>
-                    </div>
+                    <input type="hidden" class="aa-card-image" value="" data-kp-media>
                 </div>
                 <div class="aa-field">
                     <label>Slug категории (для фильтра)</label>
@@ -136,9 +110,9 @@ function aa_box_cb($post) {
                     <input type="text" class="aa-card-title" value="">
                 </div>
                 <div class="aa-field">
-                    <label>Ссылка «Подробнее»</label>
-                    <input type="text" class="aa-card-link" value="" placeholder="/nazvanie-stranicy">
-                </div>
+    <label>Статья (выбрать из списка)</label>
+    <?php kp_articles_dropdown(!empty($card['article_id']) ? (int)$card['article_id'] : 0, 'aa_cards_data_article_id[' . $i . ']'); ?>
+</div>
                 <div class="aa-field full">
                     <label>Описание</label>
                     <textarea class="aa-card-desc"></textarea>
@@ -166,45 +140,18 @@ function aa_box_cb($post) {
             renumber();
         });
 
-        var frame;
-        $(document).on('click', '.aa-upload-btn', function(e) {
-            e.preventDefault();
-            var $card = $(this).closest('.aa-card');
-            var $input = $card.find('.aa-card-image');
-            var $preview = $card.find('.aa-img-preview');
-
-            if (frame) { frame.open(); return; }
-            frame = wp.media({
-                title: 'Выбрать изображение',
-                button: { text: 'Использовать' },
-                multiple: false
-            });
-            frame.on('select', function() {
-                var att = frame.state().get('selection').first().toJSON();
-                $input.val(att.url);
-                $preview.html('<img src="' + att.url + '" alt="">');
-                frame = null;
-            });
-            frame.open();
-        });
-
-        $(document).on('click', '.aa-clear-btn', function() {
-            var $card = $(this).closest('.aa-card');
-            $card.find('.aa-card-image').val('');
-            $card.find('.aa-img-preview').html('');
-        });
-
         $(document).on('submit', '#post', function() {
             var cards = [];
             $('#aa-cards-wrap .aa-card').each(function() {
                 cards.push({
-                    image:    $(this).find('.aa-card-image').val(),
-                    cat_slug: $(this).find('.aa-card-cat-slug').val(),
-                    title:    $(this).find('.aa-card-title').val(),
-                    desc:     $(this).find('.aa-card-desc').val(),
-                    read:     $(this).find('.aa-card-read').val(),
-                    link:     $(this).find('.aa-card-link').val()
-                });
+    image:      $(this).find('.aa-card-image').val(),
+    cat_slug:   $(this).find('.aa-card-cat-slug').val(),
+    title:      $(this).find('.aa-card-title').val(),
+    desc:       $(this).find('.aa-card-desc').val(),
+    read:       $(this).find('.aa-card-read').val(),
+    link:       $(this).find('.aa-card-link').val(),
+    article_id: $(this).find('.kp-article-select').val()
+});
             });
             $('<input>').attr({ type: 'hidden', name: 'aa_cards_data', value: JSON.stringify(cards) }).appendTo('#post');
         });
@@ -230,8 +177,9 @@ add_action('save_post', function ($post_id) {
                 $desc     = isset($c['desc'])     ? sanitize_textarea_field($c['desc'])  : '';
                 $read     = isset($c['read'])     ? sanitize_text_field($c['read'])      : '';
                 $link     = isset($c['link'])     ? sanitize_text_field($c['link'])      : '';
+                 $article_id = isset($c['article_id']) ? absint($c['article_id']) : 0;
                 if ($title || $image) {
-                    $cards[] = compact('image', 'cat_slug', 'title', 'desc', 'read', 'link');
+                    $cards[] = compact('image', 'cat_slug', 'title', 'desc', 'read', 'link', 'article_id');
                 }
             }
         }

@@ -40,7 +40,6 @@ function directions_section_mb_callback( $post ) {
         #directions_section_mb .ds-step { background: #f9f9f9; border: 1px solid #e0e0e0; padding: 14px; margin-bottom: 12px; }
         #directions_section_mb .ds-step .ds-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         #directions_section_mb .ds-step .ds-head strong { font-size: 13px; color: #555; }
-        #directions_section_mb .dir-img-preview { max-width: 150px; max-height: 100px; margin-top: 6px; border: 1px solid #ddd; display: none; }
     </style>
 
     <!-- Шапка -->
@@ -66,9 +65,7 @@ function directions_section_mb_callback( $post ) {
 
     <div class="field-group">
         <label>Фото справа</label>
-        <input type="text" name="directions_section[side_image]" id="dir_side_img" value="<?php echo esc_attr( $side_image ); ?>" />
-        <img class="dir-img-preview" src="<?php echo esc_url( $side_image ); ?>" alt="" />
-        <button type="button" class="button" id="dir_side_img_btn" style="margin-top:4px;">📁 Выбрать</button>
+        <input type="hidden" name="directions_section[side_image]" value="<?php echo esc_attr( $side_image ); ?>" data-kp-media />
     </div>
 
     <hr />
@@ -172,17 +169,6 @@ function directions_section_mb_callback( $post ) {
 
     <script>
     jQuery(function($){
-
-        /* Upload side image */
-        $('#dir_side_img_btn').on('click', function(){
-            var input = $('#dir_side_img');
-            var preview = input.next('.dir-img-preview');
-            var frame = wp.media({ title:'Выберите фото', multiple:false, library:{type:'image'} });
-            frame.on('select', function(){ var u = frame.state().get('selection').first().toJSON().url; input.val(u); preview.attr('src',u).show(); });
-            frame.open();
-        });
-
-        if( $('#dir_side_img').val() ) $('#dir_side_img').next('.dir-img-preview').show();
 
         /* Primary list */
         var pliCount = 0;

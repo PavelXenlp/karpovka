@@ -37,11 +37,6 @@ function spa_salt_render_box($post) {
     .spa-remove-salt { position: absolute; top: 8px; right: 8px; background: #d63638; color: #fff; border: none; border-radius: 3px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
     .spa-add-salt { background: #2271b1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-size: 13px; cursor: pointer; margin-top: 6px; }
     .spa-add-salt:hover { background: #135e96; }
-    .spa-salt-preview { margin-top: 8px; max-width: 300px; }
-    .spa-salt-preview img { max-width: 100%; height: auto; border: 1px solid #dcdcde; border-radius: 4px; }
-    .spa-salt-img-btn { display: inline-block; margin-top: 6px; }
-    .spa-salt-img-btn button { background: #2271b1; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 13px; cursor: pointer; }
-    .spa-salt-img-btn .spa-remove-salt-img { background: #d63638; margin-left: 6px; }
   </style>
 
   <div class="spa-salt-field">
@@ -86,14 +81,7 @@ function spa_salt_render_box($post) {
   </div>
   <div class="spa-salt-field">
     <label>Изображение</label>
-    <input type="hidden" name="spa_salt_img" id="spa_salt_img_input" value="<?php echo esc_attr($img); ?>">
-    <div class="spa-salt-img-btn">
-      <button type="button" id="spa-upload-salt-btn">Выбрать</button>
-      <button type="button" class="spa-remove-salt-img" id="spa-remove-salt-btn">Удалить</button>
-    </div>
-    <?php if ($img) : ?>
-      <div class="spa-salt-preview"><img src="<?php echo esc_url($img); ?>" alt="preview"></div>
-    <?php endif; ?>
+    <input type="hidden" name="spa_salt_img" id="spa_salt_img_input" value="<?php echo esc_attr($img); ?>" data-kp-media>
   </div>
   <div class="spa-salt-field">
     <label>ID секции (якорь)</label>
@@ -102,24 +90,6 @@ function spa_salt_render_box($post) {
 
   <script>
   jQuery(document).ready(function($) {
-    var saltFrame;
-    $('#spa-upload-salt-btn').on('click', function(e) {
-      e.preventDefault();
-      if (saltFrame) { saltFrame.open(); return; }
-      saltFrame = wp.media({ title: 'Выбрать изображение', button: { text: 'Использовать' }, multiple: false });
-      saltFrame.on('select', function() {
-        var a = saltFrame.state().get('selection').first().toJSON();
-        $('#spa_salt_img_input').val(a.url);
-        $('.spa-salt-preview').remove();
-        $('<div class="spa-salt-preview"><img src="'+a.url+'" alt="preview"></div>').insertAfter('#spa-remove-salt-btn').parent();
-      });
-      saltFrame.open();
-    });
-    $('#spa-remove-salt-btn').on('click', function(e) {
-      e.preventDefault();
-      $('#spa_salt_img_input').val('');
-      $('.spa-salt-preview').remove();
-    });
     var si = <?php echo count($features); ?>;
     $('#spa-add-salt-btn').on('click', function() {
       var h = '<div class="spa-salt-feature">' +

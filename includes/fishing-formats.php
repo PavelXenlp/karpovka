@@ -9,7 +9,7 @@
 
         <article class="c-offers-card" data-fishing-format-modal="fishing-modal-stay">
           <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Будни в тишине" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Будни в тишине" loading="lazy">
             <span class="c-offers-card__badge">Для гостей</span>
           </div>
           <div class="c-offers-card__body">
@@ -26,7 +26,7 @@
 
         <article class="c-offers-card" data-fishing-format-modal="fishing-modal-day">
           <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="SPA-день для двоих" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="SPA-день для двоих" loading="lazy">
             <span class="c-offers-card__badge">Дневной визит</span>
           </div>
           <div class="c-offers-card__body">
@@ -43,7 +43,7 @@
 
         <article class="c-offers-card" data-fishing-format-modal="fishing-modal-family">
           <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Семейные каникулы" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Семейные каникулы" loading="lazy">
             <span class="c-offers-card__badge c-offers-card__badge--hot">Семейный</span>
           </div>
           <div class="c-offers-card__body">
@@ -71,7 +71,7 @@
     <button class="fishing-modal__close" type="button" data-fishing-modal-close aria-label="Закрыть">
       <svg class="icon"><use href="#icon-close"></use></svg>
     </button>
-    <img class="fishing-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Рыбалка для проживающих">
+    <img class="fishing-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Рыбалка для проживающих">
     <div class="fishing-modal__body">
       <span class="fishing-modal__badge">Бесплатно для гостей</span>
       <h2 class="fishing-modal__title">Для проживающих</h2>
@@ -107,7 +107,7 @@
     <button class="fishing-modal__close" type="button" data-fishing-modal-close aria-label="Закрыть">
       <svg class="icon"><use href="#icon-close"></use></svg>
     </button>
-    <img class="fishing-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Рыбалка на день">
+    <img class="fishing-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Рыбалка на день">
     <div class="fishing-modal__body">
       <span class="fishing-modal__badge">Прокат снастей</span>
       <h2 class="fishing-modal__title">Рыбалка на день</h2>
@@ -143,7 +143,7 @@
     <button class="fishing-modal__close" type="button" data-fishing-modal-close aria-label="Закрыть">
       <svg class="icon"><use href="#icon-close"></use></svg>
     </button>
-    <img class="fishing-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Семейная рыбалка">
+    <img class="fishing-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Семейная рыбалка">
     <div class="fishing-modal__body">
       <span class="fishing-modal__badge">Мастер-класс</span>
       <h2 class="fishing-modal__title">Семейный формат</h2>

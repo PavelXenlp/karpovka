@@ -32,9 +32,6 @@ function promo_page_box_cb($post) {
         .promo-field textarea { width: 100%; padding: 8px 10px; box-sizing: border-box; }
         .promo-field textarea { min-height: 100px; }
         .promo-group-title { font-size: 15px; font-weight: 700; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #ddd; }
-        .promo-img-row { display: flex; gap: 12px; align-items: flex-start; }
-        .promo-img-preview { width: 120px; height: 80px; background: #f0f0f0; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-        .promo-img-preview img { max-width: 100%; max-height: 100%; object-fit: cover; }
         .promo-repeatable { margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
         .promo-repeatable input { flex: 1; padding: 8px 10px; }
         .promo-repeatable textarea { flex: 1; padding: 8px 10px; min-height: 60px; }
@@ -80,16 +77,7 @@ function promo_page_box_cb($post) {
     </div>
     <div class="promo-field">
         <label>Изображение (загрузить файлом)</label>
-        <div class="promo-img-row">
-            <div class="promo-img-preview" id="promo-img-preview">
-                <?php if ($image) : ?><img src="<?php echo esc_url($image); ?>" alt=""><?php endif; ?>
-            </div>
-            <div style="flex:1">
-                <input type="text" name="promo_image" id="promo-image-input" value="<?php echo esc_attr($image); ?>" style="width:100%;margin-bottom:8px;padding:8px">
-                <button type="button" class="button" id="promo-upload-btn">Загрузить</button>
-                <button type="button" class="button" id="promo-clear-btn" style="margin-left:6px">Очистить</button>
-            </div>
-        </div>
+        <input type="hidden" name="promo_image" value="<?php echo esc_attr($image); ?>" data-kp-media>
     </div>
 
     <div class="promo-group-title">Описание акции</div>
@@ -124,26 +112,6 @@ function promo_page_box_cb($post) {
 
         <script>
     (function($) {
-        var frame;
-        $('#promo-upload-btn').on('click', function(e) {
-            e.preventDefault();
-            if (frame) { frame.open(); return; }
-            frame = wp.media({
-                title: 'Выбрать изображение',
-                button: { text: 'Использовать' },
-                multiple: false
-            });
-            frame.on('select', function() {
-                var attachment = frame.state().get('selection').first().toJSON();
-                $('#promo-image-input').val(attachment.url);
-                $('#promo-img-preview').html('<img src="' + attachment.url + '" alt="">');
-            });
-            frame.open();
-        });
-        $('#promo-clear-btn').on('click', function() {
-            $('#promo-image-input').val('');
-            $('#promo-img-preview').html('');
-        });
         $('.promo-add').on('click', function() {
             var target = $(this).data('target');
             var html;

@@ -38,7 +38,6 @@ function bath_details_mb_callback( $post ) {
         #bath_details_mb .slide-block .slide-row { display: flex; gap: 8px; align-items: flex-start; }
         #bath_details_mb .slide-block .slide-row .slide-img-field { flex: 1; }
         #bath_details_mb .slide-block .slide-row .slide-alt-field { max-width: 200px; }
-        #bath_details_mb .slide-block .slide-img-preview { max-width: 120px; max-height: 80px; margin-top: 8px; border: 1px solid #ddd; display: none; }
         #bath_details_mb .feat-block { background: #f9f9f9; border: 1px solid #e0e0e0; padding: 12px; margin-bottom: 8px; }
         #bath_details_mb .feat-block .feat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
     </style>
@@ -97,11 +96,9 @@ function bath_details_mb_callback( $post ) {
                 <div class="slide-block">
                     <div class="slide-row">
                         <div class="slide-img-field">
-                            <input type="text" name="bath_details[items][<?php echo $i; ?>][gallery][<?php echo $j; ?>][img]" value="<?php echo esc_attr( $g['img'] ?? '' ); ?>" placeholder="URL или выберите файл" />
-                            <img class="slide-img-preview" src="<?php echo esc_url( $g['img'] ?? '' ); ?>" alt="" />
+                            <input type="hidden" name="bath_details[items][<?php echo $i; ?>][gallery][<?php echo $j; ?>][img]" value="<?php echo esc_attr( $g['img'] ?? '' ); ?>" data-kp-media />
                         </div>
                         <input type="text" class="slide-alt-field" name="bath_details[items][<?php echo $i; ?>][gallery][<?php echo $j; ?>][alt]" value="<?php echo esc_attr( $g['alt'] ?? '' ); ?>" placeholder="Alt" />
-                        <button type="button" class="button slide-upload-btn">📁</button>
                         <button type="button" class="button button-small remove-slide">✕</button>
                     </div>
                 </div>
@@ -201,11 +198,9 @@ function bath_details_mb_callback( $post ) {
             var h = '<div class="slide-block">' +
                 '<div class="slide-row">' +
                     '<div class="slide-img-field">' +
-                        '<input type="text" name="bath_details[items][' + si + '][gallery][' + j + '][img]" value="" placeholder="URL или выберите файл" />' +
-                        '<img class="slide-img-preview" src="" alt="" />' +
+                        '<input type="hidden" name="bath_details[items][' + si + '][gallery][' + j + '][img]" value="" data-kp-media />' +
                     '</div>' +
                     '<input type="text" class="slide-alt-field" name="bath_details[items][' + si + '][gallery][' + j + '][alt]" value="" placeholder="Alt" />' +
-                    '<button type="button" class="button slide-upload-btn">📁</button>' +
                     '<button type="button" class="button button-small remove-slide">✕</button>' +
                 '</div>' +
             '</div>';
@@ -215,33 +210,6 @@ function bath_details_mb_callback( $post ) {
         /* Remove slide */
         $('#bd_items_wrap').on('click', '.remove-slide', function(){
             $(this).closest('.slide-block').remove();
-        });
-
-        /* Upload slide image — ИСПРАВЛЕНО: пишет в поле img, а не alt */
-        $('#bd_items_wrap').on('click', '.slide-upload-btn', function(){
-            var btn = $(this);
-            var block = btn.closest('.slide-block');
-            var input = block.find('input[name*="[img]"]');
-            var preview = block.find('.slide-img-preview');
-
-            var frame = wp.media({
-                title: 'Выберите или загрузите фото слайда',
-                multiple: false,
-                library: { type: 'image' }
-            });
-            frame.on('select', function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                input.val(url);
-                preview.attr('src', url).show();
-            });
-            frame.open();
-        });
-
-        /* Show preview for existing images */
-        $('#bd_items_wrap .slide-img-preview').each(function(){
-            if( $(this).attr('src') && $(this).attr('src') !== '' ){
-                $(this).show();
-            }
         });
 
         /* Add feature */

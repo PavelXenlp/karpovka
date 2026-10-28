@@ -44,9 +44,6 @@ function wedding_gallery_render_box($post) {
         .wg-remove { position: absolute; top: 8px; right: 8px; background: #d63638; color: #fff; border: none; border-radius: 3px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
         .wg-add { background: #2271b1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-size: 13px; cursor: pointer; margin-top: 6px; }
         .wg-add:hover { background: #135e96; }
-        .wg-img-preview { max-width: 200px; max-height: 120px; border-radius: 4px; margin-top: 6px; display: block; border: 1px solid #dcdcde; }
-        .wg-img-row { display: flex; align-items: center; gap: 8px; }
-        .wg-img-row input { flex: 1; }
     </style>
 
     <!-- Заголовки -->
@@ -72,16 +69,7 @@ function wedding_gallery_render_box($post) {
     <div class="wg-group-title">Фон секции</div>
     <div class="wg-field">
         <label>Фоновое изображение</label>
-        <div class="wg-img-row">
-            <input type="text" name="wg_bg_image" value="<?php echo esc_attr($bg_image); ?>" class="wg-bg-input" placeholder="Выберите файл ниже">
-            <button type="button" class="button wg-bg-btn">Выбрать</button>
-            <?php if ($bg_image) : ?>
-                <button type="button" class="button wg-bg-clear" style="color:#b00;">Очистить</button>
-            <?php endif; ?>
-        </div>
-        <?php if ($bg_image) : ?>
-            <img src="<?php echo esc_url($bg_image); ?>" class="wg-img-preview" alt="">
-        <?php endif; ?>
+        <input type="hidden" name="wg_bg_image" value="<?php echo esc_attr($bg_image); ?>" class="wg-bg-input" data-kp-media>
         <p class="description">Будет отображаться как фон секции с тёмным затемняющим слоем</p>
     </div>
 
@@ -93,13 +81,7 @@ function wedding_gallery_render_box($post) {
             <button type="button" class="wg-remove" onclick="this.closest('.wg-repeatable').remove();">Удалить</button>
             <div class="wg-field">
                 <label>Изображение</label>
-                <div class="wg-img-row">
-                    <input type="text" name="wg_images[<?php echo $i; ?>]" value="<?php echo esc_attr($img); ?>" class="wg-img-input" placeholder="Выберите файл ниже">
-                    <button type="button" class="button wg-img-btn">Выбрать</button>
-                </div>
-                <?php if ($img) : ?>
-                    <img src="<?php echo esc_url($img); ?>" class="wg-img-preview" alt="">
-                <?php endif; ?>
+                <input type="hidden" name="wg_images[<?php echo $i; ?>]" value="<?php echo esc_attr($img); ?>" class="wg-img-input" data-kp-media>
             </div>
         </div>
         <?php endforeach; ?>
@@ -152,55 +134,14 @@ function wedding_gallery_render_box($post) {
     <script>
     (function($) {
 
-        /* ── Фоновое изображение ── */
-        $('.wg-bg-btn').on('click', function() {
-            var input = $(this).prev('input.wg-bg-input');
-            var row   = input.closest('.wg-field');
-            var frame = wp.media({ title: 'Выберите фоновое изображение', multiple: false, library: { type: 'image' } });
-            frame.on('select', function() {
-                var url = frame.state().get('selection').first().toJSON().url;
-                input.val(url);
-                row.find('.wg-img-preview').remove();
-                $('<img>').attr({ src: url, class: 'wg-img-preview', alt: '' }).insertAfter(input.parent());
-                /* показать кнопку «Очистить» */
-                if (!row.find('.wg-bg-clear').length) {
-                    $('<button type="button" class="button wg-bg-clear" style="color:#b00;">Очистить</button>').insertAfter($('.wg-bg-btn'));
-                }
-            });
-            frame.open();
-        });
-        $(document).on('click', '.wg-bg-clear', function() {
-            var row = $(this).closest('.wg-field');
-            row.find('.wg-bg-input').val('');
-            row.find('.wg-img-preview').remove();
-            $(this).remove();
-        });
-
-        /* ── Медиазагрузчик для изображений галереи ── */
-        $('#wg-images-list').on('click', '.wg-img-btn', function() {
-            var btn   = $(this);
-            var input = btn.prev('input.wg-img-input');
-            var row   = btn.closest('.wg-repeatable');
-            var frame = wp.media({ title: 'Выберите изображение для галереи', multiple: false, library: { type: 'image' } });
-            frame.on('select', function() {
-                var url = frame.state().get('selection').first().toJSON().url;
-                input.val(url);
-                row.find('.wg-img-preview').remove();
-                $('<img>').attr({ src: url, class: 'wg-img-preview', alt: '' }).insertAfter(btn.parent());
-            });
-            frame.open();
-        });
-
         /* ── Добавить изображение ── */
         var imgI = <?php echo count($images); ?>;
         $('#wg-add-img').on('click', function() {
             var i = imgI; imgI++;
             var h = '<div class="wg-repeatable"><button type="button" class="wg-remove" onclick="this.closest(\'.wg-repeatable\').remove();">Удалить</button>' +
                 '<div class="wg-field"><label>Изображение</label>' +
-                '<div class="wg-img-row">' +
-                '<input type="text" name="wg_images[' + i + ']" value="" class="wg-img-input" placeholder="Выберите файл ниже">' +
-                '<button type="button" class="button wg-img-btn">Выбрать</button>' +
-                '</div></div></div>';
+                '<input type="hidden" name="wg_images[' + i + ']" value="" class="wg-img-input" data-kp-media>' +
+                '</div></div>';
             $('#wg-images-list').append(h);
         });
 

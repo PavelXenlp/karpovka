@@ -1,6 +1,6 @@
 <?php
 add_action( 'add_meta_boxes', function () {
-    add_meta_box( 'articles_seo_section', 'Секция: О загородном отдыхе + Попап заявки', 'articles_seo_section_box', 'page', 'normal', 'high' );
+    add_meta_box('articles_seo_section', 'Секция: О загородном отдыхе + Попап заявки', 'articles_seo_section_box', 'page', 'normal', 'high');
 } );
 
 function articles_seo_section_box( $post ) {
@@ -48,10 +48,6 @@ function articles_seo_section_box( $post ) {
         .as-field input[type="text"],.as-field textarea{width:100%;max-width:600px}
         .as-group{border:1px solid #c0c0c0;margin:14px 0;padding:14px;background:#fafafa;border-radius:4px}
         .as-group>h4{margin-top:0}
-        .as-upload{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-        .as-upload input[type="text"]{flex:1}
-        .as-upload button{padding:4px 10px;cursor:pointer}
-        .as-upload img.preview{max-width:120px;height:auto;border:1px solid #ccc;border-radius:4px;display:none}
     </style>
 
     <p><strong>Секция «О загородном отдыхе»</strong></p>
@@ -69,16 +65,8 @@ function articles_seo_section_box( $post ) {
         <input type="text" name="articles_seo_section[section_id]" value="<?php echo esc_attr( $section_id ); ?>">
     </div>
 
-    <div class="as-upload">
-        <button type="button" class="as-btn as-upload-bg">📁 Фон</button>
-        <input type="text" name="articles_seo_section[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>">
-        <img class="preview as-bg-prev" src="<?php echo esc_url( $bg_img ); ?>" alt="">
-    </div>
-    <div class="as-upload">
-        <button type="button" class="as-btn as-upload-media">📁 Фото справа</button>
-        <input type="text" name="articles_seo_section[media_img]" value="<?php echo esc_attr( $media_img ); ?>">
-        <img class="preview as-media-prev" src="<?php echo esc_url( $media_img ); ?>" alt="">
-    </div>
+    <input type="hidden" name="articles_seo_section[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>" data-kp-media>
+    <input type="hidden" name="articles_seo_section[media_img]" value="<?php echo esc_attr( $media_img ); ?>" data-kp-media>
 
     <div class="as-field">
         <label>Текст (абзацы разделяйте пустой строкой — двойным переносом)</label>
@@ -141,30 +129,11 @@ function articles_seo_section_box( $post ) {
         </div>
     </div>
 
-    <script>
-    jQuery(function($){
-        function upload(btn){
-            var frame = wp.media({title:'Выберите изображение',multiple:false,library:{type:'image'}});
-            frame.on('select',function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                var wrap = $(btn).closest('.as-upload');
-                wrap.find('input[type="text"]').val(url);
-                var img = wrap.find('img.preview');
-                img.attr('src',url).show();
-            });
-            frame.open();
-        }
-        $('.as-upload-bg').on('click',function(){ upload(this); });
-        $('.as-upload-media').on('click',function(){ upload(this); });
-        $('.as-upload img.preview').each(function(){
-            if($(this).attr('src')) $(this).show();
-        });
-    });
-    </script>
     <?php
 }
 
 add_action( 'save_post', function ( $post_id ) {
+    if ( 'page' !== get_post_type( $post_id ) ) return;
     if ( ! isset( $_POST['articles_seo_section_nonce_field'] ) ) return;
     if ( ! wp_verify_nonce( $_POST['articles_seo_section_nonce_field'], 'articles_seo_section_nonce' ) ) return;
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;

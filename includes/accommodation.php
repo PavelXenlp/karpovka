@@ -1,26 +1,25 @@
 <?php
-$v = get_post_meta(get_the_ID(), 'combined_section', true);
+ $v = get_post_meta(get_the_ID(), 'combined_section', true);
 
 if (empty($v) || (empty($v['stay_options']) && empty($v['rec_title']))) return;
 
-$section_id   = esc_attr($v['section_id'] ?? 'accommodation');
+ $section_id   = esc_attr($v['section_id'] ?? 'accommodation');
 // Проживание
-$stay_eyebrow = esc_html($v['stay_eyebrow'] ?? '');
-$stay_title   = $v['stay_title'] ?? '';
-$stay_sub     = esc_html($v['stay_sub'] ?? '');
-$stay_options = $v['stay_options'] ?? [];
-$stay_btn_txt = esc_html($v['stay_btn_text'] ?? '');
-$stay_btn_lnk = esc_url($v['stay_btn_link'] ?? '#');
+ $stay_eyebrow = esc_html($v['stay_eyebrow'] ?? '');
+ $stay_title   = $v['stay_title'] ?? '';
+ $stay_sub     = esc_html($v['stay_sub'] ?? '');
+ $stay_options = $v['stay_options'] ?? [];
+ $stay_btn_txt = esc_html($v['stay_btn_text'] ?? '');
+ $stay_btn_lnk = esc_url($v['stay_btn_link'] ?? '#');
 // Активный отдых
-$rec_eyebrow  = esc_html($v['rec_eyebrow'] ?? '');
-$rec_title    = $v['rec_title'] ?? '';
-$rec_sub      = esc_html($v['rec_sub'] ?? '');
-$rec_img      = esc_url($v['rec_img'] ?? '');
-$seasons      = $v['seasons'] ?? [];
-$activities   = $v['activities'] ?? '';
+ $rec_eyebrow  = esc_html($v['rec_eyebrow'] ?? '');
+ $rec_title    = $v['rec_title'] ?? '';
+ $rec_sub      = esc_html($v['rec_sub'] ?? '');
+ $rec_img      = esc_url($v['rec_img'] ?? '');
+ $seasons      = $v['seasons'] ?? [];
 
 // Определяем активный вариант проживания (для начального отображения)
-$active_stay = null;
+ $active_stay = null;
 foreach ($stay_options as $o) {
   if (! empty($o['is_active'])) {
     $active_stay = $o;
@@ -90,7 +89,7 @@ if (! $active_stay && ! empty($stay_options)) $active_stay = $stay_options[0];
   <?php endif; ?>
 
   <!-- ═══ Активный отдых ═══ -->
-  <?php if ($rec_title || ! empty($seasons) || ! empty($activities)) : ?>
+  <?php if ($rec_title || ! empty($seasons)) : ?>
     <div class="combined-row" id="recreation">
       <div class="combined-row__media season-media reveal">
         <?php if ($rec_img) : ?>
@@ -123,26 +122,52 @@ if (! $active_stay && ! empty($stay_options)) $active_stay = $stay_options[0];
           </div>
         <?php endif; ?>
 
-                    <?php if ( ! empty( $activities ) ) : ?>
-                <ul class="activity-list" id="activityList"></ul>
-
-                <script>
-                window.wpSeasonActivities = <?php
-                    $json = [];
-                    foreach ( $activities as $a ) {
-                        $json[] = [
-                            'text'   => $a['text'] ?? '',
-                            'season' => $a['season'] ?? '',
-                        ];
-                    }
-                    echo wp_json_encode( $json, JSON_UNESCAPED_UNICODE );
-                ?>;
-                </script>
-            <?php else : ?>
-                <ul class="activity-list" id="activityList"></ul>
-            <?php endif; ?>
+        <?php if (! empty($seasons)) : ?>
+          <?php foreach ($seasons as $s_idx => $s) : 
+            $list_cls = 'activity-list';
+            if (! empty($s['is_active'])) $list_cls .= ' is-active';
+          ?>
+            <ul 
+              class="<?php echo $list_cls; ?>" 
+              data-activity-list="<?php echo esc_attr($s['slug'] ?? ''); ?>"
+              <?php echo empty($s['is_active']) ? 'style="display:none;"' : ''; ?>
+            >
+              <?php if (! empty($s['activities'])) : foreach ($s['activities'] as $a) : ?>
+                <li><?php echo esc_html($a['text'] ?? ''); ?></li>
+              <?php endforeach; endif; ?>
+            </ul>
+          <?php endforeach; ?>
+        <?php else : ?>
+          <ul class="activity-list" id="activityList"></ul>
+        <?php endif; ?>
       </div>
     </div>
   <?php endif; ?>
 
 </section>
+<script>
+  document.querySelectorAll('.season-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var season = btn.getAttribute('data-season');
+    
+    // Переключаем активную кнопку
+    document.querySelectorAll('.season-btn').forEach(function(b) {
+      b.classList.remove('is-active');
+    });
+    btn.classList.add('is-active');
+    
+    // Скрываем все списки активностей
+    document.querySelectorAll('[data-activity-list]').forEach(function(list) {
+      list.style.display = 'none';
+      list.classList.remove('is-active');
+    });
+    
+    // Показываем список нужного сезона
+    var activeList = document.querySelector('[data-activity-list="' + season + '"]');
+    if (activeList) {
+      activeList.style.display = '';
+      activeList.classList.add('is-active');
+    }
+  });
+});
+</script>

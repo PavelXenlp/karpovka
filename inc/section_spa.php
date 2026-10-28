@@ -23,10 +23,6 @@ function spa_interactive_section_box( $post ) {
         .si-item .si-row label{margin-bottom:2px}
         .si-btn{padding:4px 12px;cursor:pointer;margin:3px 2px}
         .si-btn--del{color:#a00;border-color:#a00}
-        .si-upload{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-        .si-upload input[type="text"]{flex:1}
-        .si-upload button{padding:3px 8px;cursor:pointer;font-size:12px}
-        .si-upload img.prev{max-width:100px;height:auto;border:1px solid #ccc;border-radius:3px;display:none}
     </style>
 
     <div class="si-field">
@@ -38,13 +34,14 @@ function spa_interactive_section_box( $post ) {
         <input type="text" name="spa_interactive[section_id]" value="<?php echo esc_attr( $section_id ); ?>">
     </div>
 
-    <h3>Слайды / Табы</h3>
+    <h3>Вкладки и слайды</h3>
+    <p class="description">Слайды с одинаковым названием вкладки показываются вместе. Порядок вкладок и слайдов соответствует порядку ниже.</p>
     <div id="si-slides">
         <?php if ( ! empty( $slides ) ) : ?>
             <?php foreach ( $slides as $si => $s ) : ?>
                 <div class="si-item">
                     <div class="si-row">
-                        <div style="flex:0 0 200px"><label>Текст таба (коротко)</label><input type="text" name="spa_interactive[slides][<?php echo $si; ?>][tab]" value="<?php echo esc_attr( $s['tab'] ?? '' ); ?>"></div>
+                        <div style="flex:0 0 200px"><label>Название вкладки</label><input type="text" name="spa_interactive[slides][<?php echo $si; ?>][tab]" value="<?php echo esc_attr( $s['tab'] ?? '' ); ?>"></div>
                         <div><label>Заголовок (H2)</label><input type="text" name="spa_interactive[slides][<?php echo $si; ?>][title]" value="<?php echo esc_attr( $s['title'] ?? '' ); ?>"></div>
                     </div>
                     <div class="si-field">
@@ -55,10 +52,9 @@ function spa_interactive_section_box( $post ) {
                         <label>Детали (HTML: списки, абзацы)</label>
                         <textarea name="spa_interactive[slides][<?php echo $si; ?>][details]" rows="5"><?php echo esc_textarea( $s['details'] ?? '' ); ?></textarea>
                     </div>
-                    <div class="si-upload">
-                        <button type="button" class="si-btn si-upload-slide">📁 Фото</button>
-                        <input type="text" name="spa_interactive[slides][<?php echo $si; ?>][img]" value="<?php echo esc_attr( $s['img'] ?? '' ); ?>">
-                        <img class="prev" src="<?php echo esc_url( $s['img'] ?? '' ); ?>" alt="">
+                    <div class="si-field">
+                        <label>Фото</label>
+                        <input type="hidden" name="spa_interactive[slides][<?php echo $si; ?>][img]" value="<?php echo esc_attr( $s['img'] ?? '' ); ?>" data-kp-media>
                     </div>
                     <button type="button" class="si-btn si-btn--del" onclick="this.closest('.si-item').remove()">Удалить слайд</button>
                 </div>
@@ -70,32 +66,15 @@ function spa_interactive_section_box( $post ) {
     <script>
     jQuery(function($){
 
-        /* Загрузка картинок */
-        $(document).on('click','.si-upload-slide',function(e){
-            e.preventDefault();
-            var btn = this;
-            var frame = wp.media({title:'Выберите изображение',multiple:false,library:{type:'image'}});
-            frame.on('select',function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                $(btn).closest('.si-upload').find('input[type="text"]').val(url);
-                $(btn).closest('.si-upload').find('img.prev').attr('src',url).show();
-            });
-            frame.open();
-        });
-
-        $('.si-upload img.prev').each(function(){
-            if($(this).attr('src')) $(this).show();
-        });
-
-        /* Добавить слайд */
+        var nextSlideIndex = <?php echo count( $slides ); ?>;
         $('#si-add-slide').on('click',function(){
-            var box=$('#si-slides'), i=box.find('.si-item').length;
+            var box=$('#si-slides'), i=nextSlideIndex++;
             box.append(
                 '<div class="si-item">' +
-                '<div class="si-row"><div style="flex:0 0 200px"><label>Текст таба</label><input type="text" name="spa_interactive[slides]['+i+'][tab]"></div><div><label>Заголовок (H2)</label><input type="text" name="spa_interactive[slides]['+i+'][title]"></div></div>' +
+                '<div class="si-row"><div style="flex:0 0 200px"><label>Название вкладки</label><input type="text" name="spa_interactive[slides]['+i+'][tab]"></div><div><label>Заголовок (H2)</label><input type="text" name="spa_interactive[slides]['+i+'][title]"></div></div>' +
                 '<div class="si-field"><label>Описание</label><textarea name="spa_interactive[slides]['+i+'][desc]" rows="3"></textarea></div>' +
                 '<div class="si-field"><label>Детали (HTML)</label><textarea name="spa_interactive[slides]['+i+'][details]" rows="5"></textarea></div>' +
-                '<div class="si-upload"><button type="button" class="si-btn si-upload-slide">\uD83D\uDCC1 \u0424\u043E\u0442\u043E</button><input type="text" name="spa_interactive[slides]['+i+'][img]"><img class="prev" src="" alt=""></div>' +
+                '<div class="si-field"><label>Фото</label><input type="hidden" name="spa_interactive[slides]['+i+'][img]" value="" data-kp-media></div>' +
                 '<button type="button" class="si-btn si-btn--del" onclick="this.closest(\'.si-item\').remove()">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u043B\u0430\u0439\u0434</button>' +
                 '</div>'
             );

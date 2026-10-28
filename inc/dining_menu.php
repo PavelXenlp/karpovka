@@ -1,7 +1,7 @@
 <?php
 /**
  * Meta box: Dining Menu Section (dining_menu)
- * Cards repeater + modal для каждой карточки с позициями и ценами
+ * Cards repeater + modal для каждой карточки + PDF-кнопка
  */
 
 add_action( 'add_meta_boxes', function () {
@@ -39,7 +39,7 @@ function dining_menu_mb_callback( $post ) {
         #dining_menu_mb .mi-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 6px; }
         #dining_menu_mb .mi-row .mi-text { flex: 1; }
         #dining_menu_mb .mi-row .mi-price { max-width: 140px; }
-        #dining_menu_mb .dm-img-preview { max-width: 120px; max-height: 80px; margin-top: 6px; border: 1px solid #ddd; display: none; }
+        #dining_menu_mb .description { font-size: 12px; color: #646970; margin-top: 4px; }
     </style>
 
     <!-- Шапка секции -->
@@ -90,9 +90,7 @@ function dining_menu_mb_callback( $post ) {
 
             <div class="field-group">
                 <label>Изображение</label>
-                <input type="text" name="dining_menu[cards][<?php echo $i; ?>][card_image]" class="dm-card-img" value="<?php echo esc_attr( $c['card_image'] ?? '' ); ?>" />
-                <img class="dm-img-preview dm-card-preview" src="<?php echo esc_url( $c['card_image'] ?? '' ); ?>" alt="" />
-                <button type="button" class="button dm-card-img-btn" style="margin-top:4px;">📁 Выбрать</button>
+                <input type="hidden" name="dining_menu[cards][<?php echo $i; ?>][card_image]" class="dm-card-img" value="<?php echo esc_attr( $c['card_image'] ?? '' ); ?>" data-kp-media />
             </div>
 
             <div class="field-group">
@@ -133,9 +131,7 @@ function dining_menu_mb_callback( $post ) {
 
             <div class="field-group">
                 <label>Фото в попапе</label>
-                <input type="text" name="dining_menu[cards][<?php echo $i; ?>][modal_photo]" class="dm-modal-img" value="<?php echo esc_attr( $c['modal_photo'] ?? '' ); ?>" />
-                <img class="dm-img-preview dm-modal-preview" src="<?php echo esc_url( $c['modal_photo'] ?? '' ); ?>" alt="" />
-                <button type="button" class="button dm-modal-img-btn" style="margin-top:4px;">📁 Выбрать</button>
+                <input type="hidden" name="dining_menu[cards][<?php echo $i; ?>][modal_photo]" class="dm-modal-img" value="<?php echo esc_attr( $c['modal_photo'] ?? '' ); ?>" data-kp-media />
             </div>
 
             <div class="field-group">
@@ -211,6 +207,18 @@ function dining_menu_mb_callback( $post ) {
 
     <button type="button" class="button" id="add_dm_card">+ Карточка меню</button>
 
+    <hr />
+    <h4>PDF-меню (кнопка открытия в новой вкладке)</h4>
+    <div class="field-group">
+        <label>PDF файл</label>
+        <input type="hidden" name="dining_menu[pdf_url]" class="dm-pdf-url" value="<?php echo esc_attr( $v['pdf_url'] ?? '' ); ?>" data-kp-media />
+        <p class="description">Кликните на поле, чтобы выбрать PDF-файл из медиабиблиотеки. Кнопка появится под карточками.</p>
+    </div>
+    <div class="field-group">
+        <label>Текст кнопки</label>
+        <input type="text" name="dining_menu[pdf_text]" value="<?php echo esc_attr( $v['pdf_text'] ?? 'Открыть меню PDF' ); ?>" />
+    </div>
+
     <!-- SVG для превью в JS -->
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polyline points="20 6 9 17 4 12" id="dm-check-svg-def"></polyline></svg>
 
@@ -235,13 +243,13 @@ function dining_menu_mb_callback( $post ) {
                     '<div class="head-row"><strong>Новое меню</strong><button type="button" class="remove-card button button-small">Удалить</button></div>' +
                     '<div class="field-group"><label>Slug для попапа</label><input type="text" name="dining_menu[cards][' + i + '][slug]" value="" placeholder="modal-dining-name" /></div>' +
                     '<span class="sub-label">Карточка</span>' +
-                    '<div class="field-group"><label>Изображение</label><input type="text" name="dining_menu[cards][' + i + '][card_image]" class="dm-card-img" value="" /><img class="dm-img-preview dm-card-preview" src="" alt="" /><button type="button" class="button dm-card-img-btn" style="margin-top:4px;">📁 Выбрать</button></div>' +
+                    '<div class="field-group"><label>Изображение</label><input type="hidden" name="dining_menu[cards][' + i + '][card_image]" class="dm-card-img" value="" data-kp-media /></div>' +
                     '<div class="field-group"><label>Название</label><input type="text" name="dining_menu[cards][' + i + '][card_title]" value="" /></div>' +
                     '<div class="field-group"><label>Описание</label><textarea name="dining_menu[cards][' + i + '][card_desc]" rows="2"></textarea></div>' +
                     '<div class="meta-row"><div class="field-group"><label>Мета 1: иконка</label><input type="text" name="dining_menu[cards][' + i + '][meta1_icon]" value="" placeholder="fa-regular fa-clock" /></div><div class="field-group"><label>Мета 1: текст</label><input type="text" name="dining_menu[cards][' + i + '][meta1_text]" value="" /></div></div>' +
                     '<div class="meta-row"><div class="field-group"><label>Мета 2: иконка</label><input type="text" name="dining_menu[cards][' + i + '][meta2_icon]" value="" placeholder="fa-solid fa-check" /></div><div class="field-group"><label>Мета 2: текст</label><input type="text" name="dining_menu[cards][' + i + '][meta2_text]" value="" /></div></div>' +
                     '<hr /><span class="sub-label">Попап</span>' +
-                    '<div class="field-group"><label>Фото в попапе</label><input type="text" name="dining_menu[cards][' + i + '][modal_photo]" class="dm-modal-img" value="" /><img class="dm-img-preview dm-modal-preview" src="" alt="" /><button type="button" class="button dm-modal-img-btn" style="margin-top:4px;">📁 Выбрать</button></div>' +
+                    '<div class="field-group"><label>Фото в попапе</label><input type="hidden" name="dining_menu[cards][' + i + '][modal_photo]" class="dm-modal-img" value="" data-kp-media /></div>' +
                     '<div class="field-group"><label>Бейдж</label><input type="text" name="dining_menu[cards][' + i + '][modal_badge]" value="" /></div>' +
                     '<div class="field-group"><label>Заголовок попапа</label><input type="text" name="dining_menu[cards][' + i + '][modal_title]" value="" /></div>' +
                     '<div class="field-group"><label>Мета-строка</label><input type="text" name="dining_menu[cards][' + i + '][modal_meta]" value="" /></div>' +
@@ -258,24 +266,6 @@ function dining_menu_mb_callback( $post ) {
         /* Remove card */
         $('#dm_cards_wrap').on('click', '.remove-card', function(){
             if( confirm('Удалить эту карточку и попап?') ) $(this).closest('.dm-card').remove();
-        });
-
-        /* Upload card image */
-        $('#dm_cards_wrap').on('click', '.dm-card-img-btn', function(){
-            var input = $(this).prevAll('input.dm-card-img').first();
-            var preview = input.next('.dm-card-preview');
-            var frame = wp.media({ title:'Выберите изображение карточки', multiple:false, library:{type:'image'} });
-            frame.on('select', function(){ var u = frame.state().get('selection').first().toJSON().url; input.val(u); preview.attr('src',u).show(); });
-            frame.open();
-        });
-
-        /* Upload modal photo */
-        $('#dm_cards_wrap').on('click', '.dm-modal-img-btn', function(){
-            var input = $(this).prevAll('input.dm-modal-img').first();
-            var preview = input.next('.dm-modal-preview');
-            var frame = wp.media({ title:'Выберите фото для попапа', multiple:false, library:{type:'image'} });
-            frame.on('select', function(){ var u = frame.state().get('selection').first().toJSON().url; input.val(u); preview.attr('src',u).show(); });
-            frame.open();
         });
 
         /* Add menu item */
@@ -296,11 +286,6 @@ function dining_menu_mb_callback( $post ) {
             $(this).closest('.mi-row').remove();
         });
 
-        /* Show existing previews */
-        $('#dm_cards_wrap .dm-img-preview').each(function(){
-            if( $(this).attr('src') && $(this).attr('src') !== '' ) $(this).show();
-        });
-
     });
     </script>
     <?php
@@ -316,12 +301,14 @@ add_action( 'save_post', function ( $post_id ) {
     $raw = $_POST['dining_menu'] ?? [];
 
     $clean = [
-        'eyebrow'    => sanitize_text_field( $raw['eyebrow']    ?? '' ),
-        'title'      => sanitize_text_field( $raw['title']      ?? '' ),
-        'gold_text'  => sanitize_text_field( $raw['gold_text']  ?? '' ),
-        'subtitle'   => sanitize_textarea_field( $raw['subtitle'] ?? '' ),
-        'section_id' => sanitize_text_field( $raw['section_id'] ?? '' ),
-        'cards'      => [],
+        'eyebrow'      => sanitize_text_field( $raw['eyebrow']    ?? '' ),
+        'pdf_url'      => esc_url_raw( $raw['pdf_url']  ?? '' ),
+        'pdf_text'     => sanitize_text_field( $raw['pdf_text'] ?? 'Открыть меню PDF' ),
+        'title'        => sanitize_text_field( $raw['title']      ?? '' ),
+        'gold_text'    => sanitize_text_field( $raw['gold_text']  ?? '' ),
+        'subtitle'     => sanitize_textarea_field( $raw['subtitle'] ?? '' ),
+        'section_id'   => sanitize_text_field( $raw['section_id'] ?? '' ),
+        'cards'        => [],
     ];
 
     if ( ! empty( $raw['cards'] ) && is_array( $raw['cards'] ) ) {

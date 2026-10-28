@@ -1,268 +1,116 @@
-<section class="c-dining-formats" id="formats">
-    <div class="container">
-      <div class="section-head section-head--center reveal">
-        <p class="eyebrow">События</p>
-        <h2 class="section-title">Форматы <span class="gold-header"><em>мероприятий</em></span></h2>
-        <p class="section-sub">Сценарии, для которых подходит наша площадка</p>
-      </div>
-      <div class="c-dining-formats__grid reveal">
+<?php
+/**
+ * Template: Dining Event Formats.
+ *
+ * Берёт данные из мета-поля dining_formats, заполненного метабоксом
+ * /inc/dining_formats.php.
+ *
+ * ИЗМЕНЕНИЕ: модалки вынесены ИЗ блока .reveal в отдельный блок-сосед.
+ * Так position: fixed работает корректно (нет transform у предка).
+ */
+ $v = get_post_meta( get_the_ID(), 'dining_formats', true ) ?: [];
 
-        <article class="c-dining-formats__card" data-dining-modal="modal-dining-wedding">
-          <div class="c-dining-formats__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Свадьбы" loading="lazy">
-          </div>
-          <div class="c-dining-formats__card-body">
-            <span class="c-dining-formats__card-tag">до 80 гостей</span>
-            <h3 class="c-dining-formats__card-title">Свадьбы</h3>
-            <p class="c-dining-formats__card-desc">Романтическая церемония на берегу Карпова пруда, банкет в зале с панорамными окнами и проживание для гостей</p>
-            <a href="#" class="c-dining-formats__card-link">
-  Подробнее <i class="icon-arrow-right"></i>
-</a>
-          </div>
-        </article>
+ $eyebrow    = $v['eyebrow']    ?? '';
+ $title      = $v['title']      ?? '';
+ $gold_text  = $v['gold_text']  ?? '';
+ $subtitle   = $v['subtitle']   ?? '';
+ $section_id = $v['section_id'] ?? 'formats';
+ $cards      = is_array( $v['cards'] ?? null ) ? $v['cards'] : [];
 
-        <article class="c-dining-formats__card" data-dining-modal="modal-dining-jubilee">
-          <div class="c-dining-formats__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Юбилеи" loading="lazy">
-          </div>
-          <div class="c-dining-formats__card-body">
-            <span class="c-dining-formats__card-tag">любой масштаб</span>
-            <h3 class="c-dining-formats__card-title">Юбилеи</h3>
-            <p class="c-dining-formats__card-desc">Тёплая атмосфера, любимые блюда именинника и программа вечера — от скромного семейного ужина до большого торжества</p>
-            <a href="#" class="c-dining-formats__card-link">
-  Подробнее <i class="icon-arrow-right"></i>
-</a>
-          </div>
-        </article>
+if ( empty( $cards ) && empty( $eyebrow ) && empty( $title ) ) return;
 
-        <article class="c-dining-formats__card" data-dining-modal="modal-dining-corporate">
-          <div class="c-dining-formats__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Корпоративы" loading="lazy">
-          </div>
-          <div class="c-dining-formats__card-body">
-            <span class="c-dining-formats__card-tag">тимбилдинг</span>
-            <h3 class="c-dining-formats__card-title">Корпоративы</h3>
-            <p class="c-dining-formats__card-desc">Конференция, банкет и командные активности в один день — без необходимости уезжать из отеля</p>
-            <a href="#" class="c-dining-formats__card-link">
-  Подробнее <i class="icon-arrow-right"></i>
-</a>
-          </div>
-        </article>
+ $check_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
-        <article class="c-dining-formats__card" data-dining-modal="modal-dining-family">
-          <div class="c-dining-formats__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Семейные праздники" loading="lazy">
-          </div>
-          <div class="c-dining-formats__card-body">
-            <span class="c-dining-formats__card-tag">для всей семьи</span>
-            <h3 class="c-dining-formats__card-title">Семейные праздники</h3>
-            <p class="c-dining-formats__card-desc">Дни рождения, крестины, семейные reunion — с анимацией для детей и уютной программой для взрослых</p>
-            <a href="#" class="c-dining-formats__card-link">
-  Подробнее <i class="icon-arrow-right"></i>
-</a>
-          </div>
-        </article>
+/* Соберём данные для модалок в массив — выведем ОТДЕЛЬНО от секции */
+ $modals_data = [];
+foreach ( $cards as $format_index => $card ) {
+    $modals_data[] = [
+        'image'       => $card['card_image'] ?? '',
+        'tag'         => $card['card_tag'] ?? '',
+        'name'        => $card['card_title'] ?? '',
+        'desc'        => $card['card_desc'] ?? '',
+        'modal_image' => $card['modal_image'] ?? ( $card['card_image'] ?? '' ),
+        'modal_badge' => $card['modal_badge'] ?? ( $card['card_tag'] ?? '' ),
+        'modal_title' => $card['modal_title'] ?: ( $card['card_title'] ?? '' ),
+        'modal_meta'  => $card['modal_meta'] ?? '',
+        'modal_desc'  => $card['modal_desc'] ?? '',
+        'modal_items' => is_array( $card['modal_items'] ?? null ) ? $card['modal_items'] : [],
+        'cta_text'    => $card['cta_text'] ?? 'Обсудить формат',
+        'cta_link'    => $card['cta_link'] ?: '#booking',
+        'modal_id'    => 'modal-dining-format-' . ( $format_index + 1 ),
+    ];
+}
+?>
 
-      </div>
+<section class="c-dining-formats" id="<?php echo esc_attr( $section_id ); ?>">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <?php if ( $eyebrow ) : ?><p class="eyebrow"><?php echo esc_html( $eyebrow ); ?></p><?php endif; ?>
+      <?php if ( $title || $gold_text ) : ?>
+      <h2 class="section-title">
+        <?php echo esc_html( $title ); ?>
+        <?php if ( $gold_text ) : ?><span class="gold-header"><em><?php echo esc_html( $gold_text ); ?></em></span><?php endif; ?>
+      </h2>
+      <?php endif; ?>
+      <?php if ( $subtitle ) : ?><p class="section-sub"><?php echo esc_html( $subtitle ); ?></p><?php endif; ?>
     </div>
-  </section>
 
+    <?php if ( $cards ) : ?>
+    <div class="c-dining-formats__grid reveal">
+      <?php foreach ( $modals_data as $m ) : ?>
+      <article class="c-dining-formats__card" data-dining-modal="<?php echo esc_attr( $m['modal_id'] ); ?>" role="button" tabindex="0">
+        <div class="c-dining-formats__card-link-wrap">
+          <div class="c-dining-formats__card-img">
+            <?php if ( $m['image'] ) : ?><img src="<?php echo esc_url( $m['image'] ); ?>" alt="<?php echo esc_attr( $m['name'] ); ?>" loading="lazy"><?php endif; ?>
+          </div>
+          <div class="c-dining-formats__card-body">
+            <?php if ( $m['tag'] ) : ?><span class="c-dining-formats__card-tag"><?php echo esc_html( $m['tag'] ); ?></span><?php endif; ?>
+            <?php if ( $m['name'] ) : ?><h3 class="c-dining-formats__card-title"><?php echo esc_html( $m['name'] ); ?></h3><?php endif; ?>
+            <?php if ( $m['desc'] ) : ?><p class="c-dining-formats__card-desc"><?php echo esc_html( $m['desc'] ); ?></p><?php endif; ?>
+            <button type="button" class="c-dining-formats__card-link">Подробнее <i class="icon-arrow-right"></i></button>
+          </div>
+        </div>
+      </article>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+  </div>
+</section>
 
-  <div class="dining-modal" id="modal-dining-wedding" hidden data-dining-modal-close>
+<!-- ═══ Модалки — ВЫНЕСЕНЫ ИЗ СЕКЦИИ (как в spa_programs) ═══ -->
+<!-- Так position: fixed работает относительно viewport, а не относительно .reveal -->
+<?php foreach ( $modals_data as $m ) : ?>
+<div class="dining-modal" id="<?php echo esc_attr( $m['modal_id'] ); ?>" hidden data-dining-modal-close>
   <div class="dining-modal__overlay" data-dining-modal-close></div>
   <div class="dining-modal__dialog">
-    <button class="dining-modal__close" data-dining-modal-close aria-label="Закрыть">✕</button>
-    <img class="dining-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Свадьбы" loading="lazy">
+    <button class="dining-modal__close" type="button" data-dining-modal-close aria-label="Закрыть">&#10005;</button>
+    <?php if ( $m['modal_image'] ) : ?>
+    <img class="dining-modal__photo" src="<?php echo esc_url( $m['modal_image'] ); ?>" alt="<?php echo esc_attr( $m['modal_title'] ); ?>" loading="lazy">
+    <?php endif; ?>
     <div class="dining-modal__body">
-      <p class="dining-modal__badge">Формат мероприятия</p>
-      <h3 class="dining-modal__title">Свадьбы</h3>
-      <p class="dining-modal__meta">до 80 гостей · полный день</p>
-      <p class="dining-modal__desc">
-        Романтическая церемония на берегу Карпова пруда, банкет в зале с панорамными окнами 
-        и проживание для гостей. Организуем торжество «под ключ»: от выкупа и регистрации 
-        до фейерверка и первой брачной ночи в одном из наших номеров.
-      </p>
+      <?php if ( $m['modal_badge'] ) : ?><p class="dining-modal__badge"><?php echo esc_html( $m['modal_badge'] ); ?></p><?php endif; ?>
+      <?php if ( $m['modal_title'] ) : ?><h3 class="dining-modal__title"><?php echo esc_html( $m['modal_title'] ); ?></h3><?php endif; ?>
+      <?php if ( $m['modal_meta'] ) : ?><p class="dining-modal__meta"><?php echo esc_html( $m['modal_meta'] ); ?></p><?php endif; ?>
+      <?php if ( $m['modal_desc'] ) : ?><div class="dining-modal__desc"><?php echo wp_kses_post( $m['modal_desc'] ); ?></div><?php endif; ?>
+
+      <?php if ( ! empty( $m['modal_items'] ) ) : ?>
       <div class="dining-modal__includes">
         <h4 class="dining-modal__includes-title">Что входит</h4>
         <ul class="dining-modal__includes-list">
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Аренда банкетного зала на полный день
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Банкетное меню от шеф-повара (от 3 до 5 блюд)
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Декор зала и цветочное оформление
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Приветственный коктейль на террасе у пруда
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Звуковое оборудование и музыка
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Координация вечернего мероприятия
-          </li>
+          <?php foreach ( $m['modal_items'] as $it ) :
+              $t = is_array( $it ) ? ( $it['text'] ?? '' ) : $it;
+              if ( ! $t ) continue;
+          ?>
+          <li><?php echo $check_svg; ?> <?php echo esc_html( $t ); ?></li>
+          <?php endforeach; ?>
         </ul>
       </div>
+      <?php endif; ?>
+
       <div class="dining-modal__foot">
-        <p class="dining-modal__price">от 4 500 ₽<small>за персону</small></p>
-        <a href="#booking" class="dining-modal__cta">Обсудить детали <i class="icon-arrow-right"></i></a>
+        <a href="<?php echo esc_attr( $m['cta_link'] ); ?>" class="dining-modal__cta"><?php echo esc_html( $m['cta_text'] ); ?> <i class="icon-arrow-right"></i></a>
       </div>
     </div>
   </div>
 </div>
-
-<!-- ═══ Попап 6: Юбилеи ═══ -->
-<div class="dining-modal" id="modal-dining-jubilee" hidden data-dining-modal-close>
-  <div class="dining-modal__overlay" data-dining-modal-close></div>
-  <div class="dining-modal__dialog">
-    <button class="dining-modal__close" data-dining-modal-close aria-label="Закрыть">✕</button>
-    <img class="dining-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Юбилеи" loading="lazy">
-    <div class="dining-modal__body">
-      <p class="dining-modal__badge">Формат мероприятия</p>
-      <h3 class="dining-modal__title">Юбилеи</h3>
-      <p class="dining-modal__meta">любой масштаб · индивидуально</p>
-      <p class="dining-modal__desc">
-        Тёплая атмосфера, любимые блюда именинника и программа вечера — от скромного 
-        семейного ужина до большого торжества на 60+ человек. Поможем составить меню 
-        с учётом предпочтений юбиляра, организуем торт по заказу и подберём развлечения.
-      </p>
-      <div class="dining-modal__includes">
-        <h4 class="dining-modal__includes-title">Что входит</h4>
-        <ul class="dining-modal__includes-list">
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Аренда зала на вечер (от 4 часов)
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Индивидуальное банкетное меню
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Праздничный торт по вашему заказу
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Оформление зала и сервировка
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Музыкальное сопровождение (DJ или живая музыка)
-          </li>
-        </ul>
-      </div>
-      <div class="dining-modal__foot">
-        <p class="dining-modal__price">от 3 000 ₽<small>за персону</small></p>
-        <a href="#booking" class="dining-modal__cta">Обсудить детали <i class="icon-arrow-right"></i></a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ Попап 7: Корпоративы ═══ -->
-<div class="dining-modal" id="modal-dining-corporate" hidden data-dining-modal-close>
-  <div class="dining-modal__overlay" data-dining-modal-close></div>
-  <div class="dining-modal__dialog">
-    <button class="dining-modal__close" data-dining-modal-close aria-label="Закрыть">✕</button>
-    <img class="dining-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Корпоративы" loading="lazy">
-    <div class="dining-modal__body">
-      <p class="dining-modal__badge">Формат мероприятия</p>
-      <h3 class="dining-modal__title">Корпоративы</h3>
-      <p class="dining-modal__meta">до 60 гостей · тимбилдинг</p>
-      <p class="dining-modal__desc">
-        Конференция, банкет и командные активности в один день — без необходимости уезжать 
-        из отеля. Располагаем залом с проектором и флипчартом для презентаций, а также зоной 
-        кейтеринга на свежем воздухе. Возможна организация тимбилдинга на территории парка.
-      </p>
-      <div class="dining-modal__includes">
-        <h4 class="dining-modal__includes-title">Что входит</h4>
-        <ul class="dining-modal__includes-list">
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Аренда конференц-зала с оборудованием
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Проектор, микрофоны, флипчарт
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Кофе-брейки (утренний и дневной)
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Обед или ужин из банкетного меню
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Тимбилдинг-программа на территории парка
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Бесплатная парковка для участников
-          </li>
-        </ul>
-      </div>
-      <div class="dining-modal__foot">
-        <p class="dining-modal__price">от 3 500 ₽<small>за персону</small></p>
-        <a href="#booking" class="dining-modal__cta">Обсудить детали <i class="icon-arrow-right"></i></a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ Попап 8: Семейные праздники ═══ -->
-<div class="dining-modal" id="modal-dining-family" hidden data-dining-modal-close>
-  <div class="dining-modal__overlay" data-dining-modal-close></div>
-  <div class="dining-modal__dialog">
-    <button class="dining-modal__close" data-dining-modal-close aria-label="Закрыть">✕</button>
-    <img class="dining-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Семейные праздники" loading="lazy">
-    <div class="dining-modal__body">
-      <p class="dining-modal__badge">Формат мероприятия</p>
-      <h3 class="dining-modal__title">Семейные праздники</h3>
-      <p class="dining-modal__meta">для всей семьи · уютная атмосфера</p>
-      <p class="dining-modal__desc">
-        Дни рождения, крестины, семейные reunion — с анимацией для детей и уютной программой 
-        для взрослых. Для малышей — игровая зона и аниматор, для старших — прогулки по парку, 
-        баня и спокойные вечера у камина. Комплексный подход для всех поколений.
-      </p>
-      <div class="dining-modal__includes">
-        <h4 class="dining-modal__includes-title">Что входит</h4>
-        <ul class="dining-modal__includes-list">
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Банкетное меню с детским столом
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Аниматор и детская зона
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Праздничный торт по заказу
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Экскурсия по территории парка
-          </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Бесплатная парковка
-          </li>
-        </ul>
-      </div>
-      <div class="dining-modal__foot">
-        <p class="dining-modal__price">от 2 800 ₽<small>за персону</small></p>
-        <a href="#booking" class="dining-modal__cta">Обсудить детали <i class="icon-arrow-right"></i></a>
-      </div>
-    </div>
-  </div>
-</div>
+<?php endforeach; ?>

@@ -1,5 +1,5 @@
 <section class="section acc-extras" id="extras">
-        <img class="acc-bg" src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="" aria-hidden="true" />
+        <img class="acc-bg" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="" aria-hidden="true" />
         <div class="acc-bg__overlay"></div>
 
         <div class="acc-extras__inner">

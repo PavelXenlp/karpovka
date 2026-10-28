@@ -58,14 +58,6 @@ function spa_massage_render_box($post) {
       padding: 6px 14px; font-size: 13px; cursor: pointer; margin-top: 6px;
     }
     .spa-add-item:hover { background: #135e96; }
-    .spa-img-preview { margin-top: 8px; max-width: 300px; }
-    .spa-img-preview img { max-width: 100%; height: auto; border: 1px solid #dcdcde; border-radius: 4px; }
-    .spa-img-btn { display: inline-block; margin-top: 6px; }
-    .spa-img-btn button {
-      background: #2271b1; color: #fff; border: none; border-radius: 4px;
-      padding: 5px 12px; font-size: 13px; cursor: pointer;
-    }
-    .spa-img-btn .spa-remove-img { background: #d63638; margin-left: 6px; }
   </style>
 
   <div class="spa-massage-field">
@@ -91,14 +83,7 @@ function spa_massage_render_box($post) {
 
   <div class="spa-massage-field">
     <label>Фоновое изображение (bg)</label>
-    <input type="hidden" name="spa_massage_bg_img" id="spa_massage_bg_input" value="<?php echo esc_attr($bg_img); ?>">
-    <div class="spa-img-btn">
-      <button type="button" id="spa-upload-bg-btn">Выбрать изображение</button>
-      <button type="button" class="spa-remove-img" id="spa-remove-bg-btn">Удалить</button>
-    </div>
-    <?php if ($bg_img) : ?>
-      <div class="spa-img-preview"><img src="<?php echo esc_url($bg_img); ?>" alt="preview"></div>
-    <?php endif; ?>
+    <input type="hidden" name="spa_massage_bg_img" id="spa_massage_bg_input" value="<?php echo esc_attr($bg_img); ?>" data-kp-media>
   </div>
 
   <div class="spa-massage-field">
@@ -146,25 +131,6 @@ function spa_massage_render_box($post) {
 
     <script>
   jQuery(document).ready(function($) {
-
-    var bgFrame;
-    $('#spa-upload-bg-btn').on('click', function(e) {
-      e.preventDefault();
-      if (bgFrame) { bgFrame.open(); return; }
-      bgFrame = wp.media({ title: 'Выбрать фоновое изображение', button: { text: 'Использовать' }, multiple: false });
-      bgFrame.on('select', function() {
-        var a = bgFrame.state().get('selection').first().toJSON();
-        $('#spa_massage_bg_input').val(a.url);
-        $('.spa-img-preview').remove();
-        $('<div class="spa-img-preview"><img src="'+a.url+'" alt="preview"></div>').insertAfter('#spa-remove-bg-btn').parent();
-      });
-      bgFrame.open();
-    });
-    $('#spa-remove-bg-btn').on('click', function(e) {
-      e.preventDefault();
-      $('#spa_massage_bg_input').val('');
-      $('.spa-img-preview').remove();
-    });
 
     var mi = <?php echo count($items); ?>;
     $('#spa-add-massage-btn').on('click', function() {

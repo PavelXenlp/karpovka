@@ -9,7 +9,7 @@
 
         <article class="c-offers-card" data-offers-modal="modal-offers-spa2">
           <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/tempImagewZbK0r.jpg.jpeg" alt="SPA для двоих" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagewZbK0r.jpg.jpeg" alt="SPA для двоих" loading="lazy">
             <span class="c-offers-card__badge">−15%</span>
           </div>
           <div class="c-offers-card__body">
@@ -26,7 +26,7 @@
 
         <article class="c-offers-card" data-offers-modal="modal-offers-recovery">
           <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="День восстановления" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="День восстановления" loading="lazy">
             <span class="c-offers-card__badge">Пакет дня</span>
           </div>
           <div class="c-offers-card__body">
@@ -43,7 +43,7 @@
 
         <article class="c-offers-card" data-offers-modal="modal-offers-complex">
           <div class="c-offers-card__img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/IMG_9846.JPG.jpeg" alt="Комплексный уход" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_9846.JPG.jpeg" alt="Комплексный уход" loading="lazy">
             <span class="c-offers-card__badge">Новое</span>
           </div>
           <div class="c-offers-card__body">
@@ -68,7 +68,7 @@
   <div class="offers-modal__overlay" data-offers-modal-close></div>
   <div class="offers-modal__dialog">
     <button class="offers-modal__close" data-offers-modal-close aria-label="Закрыть">✕</button>
-    <img class="offers-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/tempImagewZbK0r.jpg.jpeg" alt="SPA для двоих" loading="lazy">
+    <img class="offers-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagewZbK0r.jpg.jpeg" alt="SPA для двоих" loading="lazy">
     <div class="offers-modal__body">
       <p class="offers-modal__badge">SPA-предложение</p>
       <h3 class="offers-modal__title">SPA для двоих</h3>
@@ -101,7 +101,7 @@
   <div class="offers-modal__overlay" data-offers-modal-close></div>
   <div class="offers-modal__dialog">
     <button class="offers-modal__close" data-offers-modal-close aria-label="Закрыть">✕</button>
-    <img class="offers-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="День восстановления" loading="lazy">
+    <img class="offers-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="День восстановления" loading="lazy">
     <div class="offers-modal__body">
       <p class="offers-modal__badge">Пакет дня</p>
       <h3 class="offers-modal__title">День восстановления</h3>
@@ -135,7 +135,7 @@
   <div class="offers-modal__overlay" data-offers-modal-close></div>
   <div class="offers-modal__dialog">
     <button class="offers-modal__close" data-offers-modal-close aria-label="Закрыть">✕</button>
-    <img class="offers-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/IMG_9846.JPG.jpeg" alt="Комплексный уход" loading="lazy">
+    <img class="offers-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_9846.JPG.jpeg" alt="Комплексный уход" loading="lazy">
     <div class="offers-modal__body">
       <p class="offers-modal__badge">Новое</p>
       <h3 class="offers-modal__title">Комплексный уход</h3>

@@ -119,7 +119,7 @@
 <body>
     <!-- ─── Глобальный лоадер (в WP → после wp_body_open) ───────── -->
     <div id="site-loader" role="status" aria-label="Загрузка сайта">
-        <img class="loader__logo" src="./assets/imgs/logo.png" alt="Карповка" />
+        <img class="loader__logo" src="/wp-content/themes/theme/assets/imgs/logo.png" alt="Карповка" />
         <div class="loader__bar">
             <div class="loader__bar-fill"></div>
         </div>
@@ -387,28 +387,44 @@
     </svg>
 
     <!-- ─── Nav ─────────────────────────────────────────────── -->
+    <?php
+    $karpovka_nav_items = array(
+        array( 'label' => 'Проживание', 'path' => '/prozhivanie/' ),
+        array( 'label' => 'СПА', 'path' => '/spa/' ),
+        array( 'label' => 'Баня', 'path' => '/bannyy-kompleks/' ),
+        array( 'label' => 'Кафе', 'path' => '/kafe/' ),
+        array( 'label' => 'Активный отдых', 'path' => '/aktivnyy-otdyh/' ),
+        array( 'label' => 'Мероприятия', 'path' => '/meropriyatiya/' ),
+        array( 'label' => 'Контакты', 'path' => '/contacts/' ),
+        array( 'label' => 'Отзывы', 'path' => '/review/' ),
+        array( 'label' => 'Статьи', 'path' => '/articles/' ),
+        array( 'label' => 'Акции', 'path' => '/stock/' ),
+    );
+    $karpovka_current_path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH ), '/' );
+    ?>
     <header class="nav" id="nav">
-        <nav class="nav__inner">
-            <a href="/index" class="logo" aria-label="Карповка — парк-отель">
-                <img class="logo__img" src="/wp-content/themes/theme/assets/img/logo.png" alt="Карповка" />
+        <nav class="nav__inner" aria-label="Основная навигация">
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo" aria-label="Карповка — парк-отель">
+                <img class="logo__img" src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/logo.png' ); ?>" alt="Карповка" />
             </a>
             <ul class="nav__links hidden-mobile">
-                <li><a href="/prozhivanie">Проживание</a></li>
-                <li><a href="/spa">СПА</a></li>
-                <li><a href="/bannyy-kompleks">Баня</a></li>
-                <li><a href="/kafe">Кафе</a></li>
-                <li><a href="/aktivnyy-otdyh">Активный отдых</a></li>
-                <li><a href="/meropriyatiya">Мероприятия</a></li>
-                <li><a href="/contacts">Контакты</a></li>
-                <li><a href="/review">Отзывы</a></li>
-                <li><a href="/articles">Статьи</a></li>
-                <li><a href="/stock">Акции</a></li>
+                <?php foreach ( $karpovka_nav_items as $item ) :
+                    $item_url = home_url( $item['path'] );
+                    $item_path = trim( (string) wp_parse_url( $item_url, PHP_URL_PATH ), '/' );
+                    $is_current = $karpovka_current_path === $item_path;
+                ?>
+                <li><a href="<?php echo esc_url( $item_url ); ?>"<?php if ( $is_current ) : ?> class="is-current" aria-current="page"<?php endif; ?>><?php echo esc_html( $item['label'] ); ?></a></li>
+                <?php endforeach; ?>
             </ul>
-            <div class="nav__tels">
-                <a href="tel:+79850200203" class="nav__cta hidden-mobile">+7 (985) 020-02-03</a>
-                <a href="tel:+79127813933" class="nav__cta hidden-mobile">+7 (912) 781-39-33</a>
+            <div class="nav__tels hidden-mobile">
+                <span class="nav__contacts-label">Бронирование</span>
+                <div class="nav__tel-links">
+                    <a href="tel:+79850200203" class="nav__cta">+7 (985) 020-02-03</a>
+                    <a href="tel:+79127813933" class="nav__cta nav__cta--secondary">+7 (912) 781-39-33</a>
+                </div>
             </div>
             <button
+                type="button"
                 class="nav__burger show-mobile"
                 id="burger"
                 aria-label="Меню"
@@ -417,16 +433,13 @@
             </button>
         </nav>
         <nav class="nav__mobile" id="mobileMenu" hidden>
-            <a href="/prozhivanie" class="nav__mobile-link">Проживание</a>
-            <a href="/spa" class="nav__mobile-link">СПА</a>
-            <a href="/bannyy-kompleks" class="nav__mobile-link">Баня</a>
-            <a href="/" class="nav__mobile-link">Кафе</a>
-            <a href="/" class="nav__mobile-link">Активный отдых</a>
-            <a href="/" class="nav__mobile-link">Мероприятия</a>
-            <a href="/" class="nav__mobile-link">Контакты</a>
-            <a href="/" class="nav__mobile-link">Отзывы</a>
-            <a href="/" class="nav__mobile-link">Статьи</a>
-            <a href="/" class="nav__mobile-link">Акции</a>
+            <?php foreach ( $karpovka_nav_items as $item ) :
+                $item_url = home_url( $item['path'] );
+                $item_path = trim( (string) wp_parse_url( $item_url, PHP_URL_PATH ), '/' );
+                $is_current = $karpovka_current_path === $item_path;
+            ?>
+            <a href="<?php echo esc_url( $item_url ); ?>" class="nav__mobile-link<?php echo $is_current ? ' is-current' : ''; ?>"<?php if ( $is_current ) : ?> aria-current="page"<?php endif; ?>><?php echo esc_html( $item['label'] ); ?></a>
+            <?php endforeach; ?>
             <a href="tel:+79850200203" class="nav__mobile-cta">+7 (985) 020-02-03</a>
             <a href="tel:+79127813933" class="nav__mobile-cta">+7 (912) 781-39-33</a>
             <div class="socials nav__mobile-socials">

@@ -2,6 +2,7 @@
 /**
  * Template: Contacts Section
  */
+ karpovka_initialize_home_contacts( get_the_ID() );
  $v = get_post_meta( get_the_ID(), 'contacts_section', true ) ?: [];
 
  $eyebrow    = $v['eyebrow']    ?? '';

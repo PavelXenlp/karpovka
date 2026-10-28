@@ -11,10 +11,10 @@
           <div class="c-bath-detail__gallery" data-bath-gallery="corporate">
             <div class="c-bath-detail__gallery-track">
               <div class="c-bath-detail__gallery-slide">
-                <img src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Корпоратив — конференция" loading="lazy">
+                <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Корпоратив — конференция" loading="lazy">
               </div>
               <div class="c-bath-detail__gallery-slide">
-                <img src="/wp-content/themes/theme/assets/img/imgs/tempImagewZbK0r.jpg.jpeg" alt="Корпоратив — тимбилдинг" loading="lazy">
+                <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagewZbK0r.jpg.jpeg" alt="Корпоратив — тимбилдинг" loading="lazy">
               </div>
             </div>
             <button class="c-bath-detail__gallery-prev" aria-label="Предыдущее фото"><svg class="icon"><use href="#icon-arrow-left"></use></svg></button>
@@ -56,10 +56,10 @@
           <div class="c-bath-detail__gallery" data-bath-gallery="celebrations">
             <div class="c-bath-detail__gallery-track">
               <div class="c-bath-detail__gallery-slide">
-                <img src="/wp-content/themes/theme/assets/img/imgs/IMG_9846.JPG.jpeg" alt="Юбилей — застолье" loading="lazy">
+                <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_9846.JPG.jpeg" alt="Юбилей — застолье" loading="lazy">
               </div>
               <div class="c-bath-detail__gallery-slide">
-                <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Юбилей — площадка" loading="lazy">
+                <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Юбилей — площадка" loading="lazy">
               </div>
             </div>
             <button class="c-bath-detail__gallery-prev" aria-label="Предыдущее фото"><svg class="icon"><use href="#icon-arrow-left"></use></svg></button>

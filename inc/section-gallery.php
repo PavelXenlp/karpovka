@@ -17,6 +17,7 @@ function spa_gallery_render_box($post) {
   $eyebrow = get_post_meta($post->ID, 'spa_gallery_eyebrow', true);
   $title   = get_post_meta($post->ID, 'spa_gallery_title', true);
   $gold    = get_post_meta($post->ID, 'spa_gallery_gold', true);
+  $subtitle = get_post_meta($post->ID, 'spa_gallery_subtitle', true);
   $sec_id  = get_post_meta($post->ID, 'spa_gallery_id', true);
   $items   = get_post_meta($post->ID, 'spa_gallery_items', true);
 
@@ -34,11 +35,6 @@ function spa_gallery_render_box($post) {
     .sg-remove-item { position: absolute; top: 8px; right: 8px; background: #d63638; color: #fff; border: none; border-radius: 3px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
     .sg-add-item { background: #2271b1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-size: 13px; cursor: pointer; margin-top: 6px; }
     .sg-add-item:hover { background: #135e96; }
-    .sg-preview { margin-top: 8px; max-width: 300px; }
-    .sg-preview img { max-width: 100%; height: auto; border: 1px solid #dcdcde; border-radius: 4px; }
-    .sg-img-btn { display: inline-block; margin-top: 6px; }
-    .sg-img-btn button { background: #2271b1; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 13px; cursor: pointer; }
-    .sg-img-btn .sg-remove-img { background: #d63638; margin-left: 6px; }
   </style>
 
   <div class="sg-field">
@@ -52,6 +48,10 @@ function spa_gallery_render_box($post) {
   <div class="sg-field">
     <label>Золотой текст в заголовке</label>
     <input type="text" name="spa_gallery_gold" value="<?php echo esc_attr($gold); ?>" placeholder="SPA">
+  </div>
+  <div class="sg-field">
+    <label>Подзаголовок</label>
+    <textarea name="spa_gallery_subtitle" rows="2"><?php echo esc_textarea($subtitle); ?></textarea>
   </div>
   <div class="sg-field">
     <label>ID секции (якорь)</label>
@@ -70,14 +70,7 @@ function spa_gallery_render_box($post) {
           <button type="button" class="sg-remove-item" onclick="this.closest('.sg-item').remove();">Удалить</button>
           <div class="sg-field">
             <label>Изображение</label>
-            <input type="hidden" name="spa_gallery_items[<?php echo $i; ?>][img]" value="<?php echo esc_attr($img); ?>">
-            <div class="sg-img-btn">
-              <button type="button" onclick="uploadGalleryImg(this)">Выбрать</button>
-              <button type="button" class="sg-remove-img" onclick="removeGalleryImg(this)">Удалить</button>
-            </div>
-            <?php if ($img) : ?>
-              <div class="sg-preview"><img src="<?php echo esc_url($img); ?>" alt="preview"></div>
-            <?php endif; ?>
+            <input type="hidden" name="spa_gallery_items[<?php echo $i; ?>][img]" value="<?php echo esc_attr($img); ?>" data-kp-media>
           </div>
           <div class="sg-field">
             <label>Alt-текст (описание картинки)</label>
@@ -104,9 +97,7 @@ function spa_gallery_render_box($post) {
     $('#spa-add-gallery-btn').on('click', function() {
       var h = '<div class="sg-item"><button type="button" class="sg-remove-item" onclick="this.closest(\'.sg-item\').remove();">Удалить</button>' +
         '<div class="sg-field"><label>Изображение</label>' +
-        '<input type="hidden" name="spa_gallery_items['+gi+'][img]" value="">' +
-        '<div class="sg-img-btn"><button type="button" onclick="uploadGalleryImg(this)">Выбрать</button>' +
-        '<button type="button" class="sg-remove-img" onclick="removeGalleryImg(this)">Удалить</button></div></div>' +
+        '<input type="hidden" name="spa_gallery_items['+gi+'][img]" value="" data-kp-media></div>' +
         '<div class="sg-field"><label>Alt-текст</label><input type="text" name="spa_gallery_items['+gi+'][alt]" placeholder="Описание картинки"></div>' +
         '<div class="sg-field"><label>Размер</label><select name="spa_gallery_items['+gi+'][tall]">' +
         '<option value="">Обычный</option><option value="1">Высокий (tall)</option></select>' +
@@ -117,25 +108,6 @@ function spa_gallery_render_box($post) {
 
   });
 
-  function uploadGalleryImg(btn) {
-    var frame;
-    if (frame) { frame.open(); return; }
-    frame = wp.media({ title: 'Выбрать фото для галереи', button: { text: 'Использовать' }, multiple: false });
-    frame.on('select', function() {
-      var a = frame.state().get('selection').first().toJSON();
-      var item = jQuery(btn).closest('.sg-item');
-      item.find('input[name*="[img]"]').val(a.url);
-      item.find('.sg-preview').remove();
-      jQuery('<div class="sg-preview"><img src="'+a.url+'" alt="preview"></div>').insertAfter(jQuery(btn).parent());
-    });
-    frame.open();
-  }
-
-  function removeGalleryImg(btn) {
-    var item = jQuery(btn).closest('.sg-item');
-    item.find('input[name*="[img]"]').val('');
-    item.find('.sg-preview').remove();
-  }
   </script>
 
   <?php
@@ -147,7 +119,7 @@ add_action('save_post', function($post_id) {
   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
   if (!current_user_can('edit_page', $post_id)) return;
 
-  $simple = array('spa_gallery_eyebrow', 'spa_gallery_title', 'spa_gallery_gold', 'spa_gallery_id');
+  $simple = array('spa_gallery_eyebrow', 'spa_gallery_title', 'spa_gallery_gold', 'spa_gallery_subtitle', 'spa_gallery_id');
   foreach ($simple as $field) {
     if (isset($_POST[$field])) {
       update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));

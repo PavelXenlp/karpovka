@@ -1,11 +1,35 @@
 /* ===== ЗАБЛОКИРОВАТЬ СКРОЛЛ ПРИ ОТКРЫТЫХ ПОПАПАХ ===== */
 (function () {
   let scrollY = 0;
-  const body = document.body;
   let lockCount = 0;
+  let bodyStyle = null;
+  let htmlOverflow = '';
+  let htmlScrollBehavior = '';
 
   window.__lockScroll = function () {
-    scrollY = window.scrollY;
+    const body = document.body;
+    const html = document.documentElement;
+    if (!body || !html) return;
+
+    if (lockCount === 0) {
+      scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
+      bodyStyle = {
+        position: body.style.position,
+        top: body.style.top,
+        left: body.style.left,
+        right: body.style.right,
+        width: body.style.width,
+        overflow: body.style.overflow,
+        scrollBehavior: body.style.scrollBehavior
+      };
+      htmlOverflow = html.style.overflow;
+      htmlScrollBehavior = html.style.scrollBehavior;
+
+      body.classList.add('is-modal-open');
+      html.style.overflow = 'hidden';
+      body.style.width = '100%';
+    }
+
     body.style.position = 'fixed';
     body.style.top = '-' + scrollY + 'px';
     body.style.left = '0';
@@ -15,17 +39,41 @@
   };
 
   window.__unlockScroll = function () {
+    if (lockCount <= 0) return;
+
     lockCount--;
     if (lockCount <= 0) {
       lockCount = 0;
-      body.style.position = '';
-      body.style.top = '';
-      body.style.left = '';
-      body.style.right = '';
-      body.style.overflow = '';
-      // Мгновенный возврат без анимации
-      window.scrollTo(0, scrollY);
+      const body = document.body;
+      const html = document.documentElement;
+      const restoreY = scrollY;
+      const bodyScrollBehavior = bodyStyle ? bodyStyle.scrollBehavior : '';
+
+      if (body) {
+        body.classList.remove('is-modal-open');
+        body.style.scrollBehavior = 'auto';
+        body.style.position = bodyStyle ? bodyStyle.position : '';
+        body.style.top = bodyStyle ? bodyStyle.top : '';
+        body.style.left = bodyStyle ? bodyStyle.left : '';
+        body.style.right = bodyStyle ? bodyStyle.right : '';
+        body.style.width = bodyStyle ? bodyStyle.width : '';
+        body.style.overflow = bodyStyle ? bodyStyle.overflow : '';
+      }
+      if (html) {
+        html.style.scrollBehavior = 'auto';
+        html.style.overflow = htmlOverflow;
+      }
+
       scrollY = 0;
+      bodyStyle = null;
+      window.scrollTo(0, restoreY);
+
+      window.requestAnimationFrame(function () {
+        if (html) html.style.scrollBehavior = htmlScrollBehavior;
+        if (body) body.style.scrollBehavior = bodyScrollBehavior;
+        htmlOverflow = '';
+        htmlScrollBehavior = '';
+      });
     }
   };
 })();
@@ -196,9 +244,9 @@
   // Фото по сезонам. ЗАГЛУШКИ — замените на присланные картинки:
   // зима — снег, лето — зелень и солнце, круглый год — лето с закатом.
   const seasonImages = {
-    summer: '/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg',
-    winter: '/wp-content/themes/theme/assets/img/imgs/IMG_0632-2.jpg.jpeg',
-    year: '/wp-content/themes/theme/assets/img/imgs/photo.jpg_2.jpeg',
+    summer: '/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg',
+    winter: '/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_0632-2.jpg.jpeg',
+    year: '/clients/karpovka/wp-content/themes/theme/assets/img/imgs/photo.jpg_2.jpeg',
   };
 
   const renderList = (season) => {
@@ -315,210 +363,182 @@
   });
 })();
 
+
+
 // ─── Слайдер «Выберите формат отдыха» (Swiper, центрированный) ─
 (() => {
-  const el = document.querySelector('[data-stories]');
-  if (!el || typeof Swiper === 'undefined') return;
+  if (typeof Swiper === 'undefined') return;
 
-  new Swiper(el, {
-    slidesPerView: 'auto', // ширину карточек задаёт CSS (var(--story-card-w))
-    centeredSlides: true, // активная карточка — по центру
-    loop: true, // бесконечная прокрутка
-    speed: 600, // синхронно с --story-dur в CSS
-    grabCursor: true, // перетаскивание мышью/пальцем
-    slideToClickedSlide: true, // клик по соседней карточке центрирует её
-    navigation: {
-      prevEl: '[data-stories-prev]',
-      nextEl: '[data-stories-next]',
-    },
-    breakpoints: {
-      0: { spaceBetween: 14 },
-      720: { spaceBetween: 24 },
-    },
-  });
+  const initStories = (el) => {
+    if (!el || el.dataset.storiesInitialized === '1') return;
 
-  // Активна только центральная карточка: переход по ссылке у остальных
-  // отменяем (slideToClickedSlide просто центрирует кликнутую).
-  el.addEventListener('click', (event) => {
-    const card = event.target.closest('.story-slide__card');
-    if (!card) return;
-    const slide = card.closest('.swiper-slide');
-    if (slide && !slide.classList.contains('swiper-slide-active')) {
-      event.preventDefault();
+    const wrapper = el.querySelector('.swiper-wrapper');
+    if (!wrapper) return;
+
+    const init = () => {
+      if (el.dataset.storiesInitialized === '1') return;
+      if (!el.offsetWidth) return;
+      el.dataset.storiesInitialized = '1';
+
+      // ─── 1. Чистим старые клоны ───
+      wrapper.querySelectorAll('[data-stories-clone]').forEach((c) => c.remove());
+
+      const originalSlides = Array.from(wrapper.children);
+      if (!originalSlides.length) return;
+
+      // ─── 2. Считаем, сколько слайдов нужно для 2x экрана ───
+      const viewportWidth = el.offsetWidth;
+      const sampleWidth = originalSlides[0].getBoundingClientRect().width || 300;
+      const gap = window.innerWidth >= 720 ? 24 : 14;
+      const visibleCount = Math.ceil(viewportWidth / (sampleWidth + gap)) + 1;
+      const targetCount = Math.max(visibleCount * 2, originalSlides.length * 2);
+
+      // ─── 3. Клонируем в правильном циклическом порядке ───
+      let idx = 0;
+      while (wrapper.children.length < targetCount) {
+        const source = originalSlides[idx % originalSlides.length];
+        const clone = source.cloneNode(true);
+        clone.setAttribute('data-stories-clone', 'true');
+        clone.setAttribute('aria-hidden', 'true');
+        wrapper.appendChild(clone);
+        idx++;
+      }
+
+      // ─── 4. Инициализируем Swiper ───
+      const sw = new Swiper(el, {
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        loop: true,
+        speed: 600,
+        grabCursor: true,
+        slideToClickedSlide: true,
+        observer: true,
+        observeParents: true,
+        observeSlideChildren: true,
+        navigation: {
+          prevEl: el.querySelector('[data-stories-prev]'),
+          nextEl: el.querySelector('[data-stories-next]')
+        },
+        breakpoints: {
+          0: { spaceBetween: 14 },
+          720: { spaceBetween: 24 }
+        }
+      });
+
+      const refresh = () => {
+        if (!sw || sw.destroyed) return;
+        requestAnimationFrame(() => {
+          sw.updateSize();
+          sw.updateSlides();
+          sw.updateProgress();
+          sw.updateSlidesClasses();
+        });
+      };
+
+      const images = Array.from(el.querySelectorAll('img'));
+      images.forEach((img) => {
+        if (!img.complete) {
+          img.addEventListener('load', refresh, { once: true });
+          img.addEventListener('error', refresh, { once: true });
+        }
+      });
+
+      window.addEventListener('load', refresh);
+
+      const resizeObserver = new ResizeObserver(() => refresh());
+      resizeObserver.observe(el);
+
+      el.addEventListener('click', (event) => {
+        const card = event.target.closest('.story-slide__card');
+        if (!card) return;
+        const slide = card.closest('.swiper-slide');
+        if (slide && !slide.classList.contains('swiper-slide-active')) {
+          event.preventDefault();
+        }
+      });
+    };
+
+    const images = Array.from(el.querySelectorAll('img'));
+
+    const waitForImages = () => {
+      const loaded = images.every(
+        (img) => img.complete && img.naturalWidth > 0
+      );
+      if (images.length === 0 || loaded) {
+        init();
+        return;
+      }
+
+      let remaining = images.filter((img) => !img.complete).length;
+      const done = () => {
+        remaining--;
+        if (remaining <= 0) init();
+      };
+
+      images.forEach((img) => {
+        if (!img.complete) {
+          img.addEventListener('load', done, { once: true });
+          img.addEventListener('error', done, { once: true });
+        }
+      });
+    };
+
+    if (el.offsetWidth) {
+      waitForImages();
+      return;
     }
-  });
+
+    const observer = new ResizeObserver(() => {
+      if (el.offsetWidth) {
+        observer.disconnect();
+        waitForImages();
+      }
+    });
+    observer.observe(el);
+  };
+
+  const initAllStories = () => {
+    document.querySelectorAll('[data-stories]').forEach(initStories);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAllStories, {
+      once: true
+    });
+  } else {
+    initAllStories();
+  }
+
+  window.addEventListener('load', initAllStories);
 })();
+
 
 // ─── СПА-центр: вкладки + слайдер ─────────────────────────
 (() => {
   const root = document.querySelector('[data-spa]');
   if (!root) return;
 
-  const SPA_TABS = [
-    {
-      id: 'pools',
-      label: 'Бассейны',
-      slides: [
-        {
-          img: '/wp-content/themes/theme/assets/img/imgs/pool_6x18.jpg',
-          title: 'Бассейн 6×18',
-          desc: 'Просторный бассейн с комфортной температурой воды, финской сауной и душевыми',
-          // desc: 'Главная чаша спа-центра: просторная вода, финская сауна и зона отдыха рядом — можно провести здесь весь вечер.',
-          details: [
-            'Финская сауна',
-            'Душевые',
-            'Зона отдыха',
-            'Посещение уличного бассейна в подарок (сезонно)',
-            'Температура воды 29–33 °C',
-          ],
-        },
-        {
-          img: '/wp-content/themes/theme/assets/img/imgs/pool_outdoor.JPG',
-          title: 'Уличный бассейн',
-          desc: 'Подогреваемый бассейн под открытым небом. Работает в тёплое время года и входит в посещение бассейна 6×18.',
-          details: [
-            'Зона отдыха с шезлонгами и зонтиками',
-            'Водопад',
-            'Подводный массаж',
-            'Подогрев',
-            'Работает в тёплый сезон',
-          ],
-        },
-        {
-          img: '/wp-content/themes/theme/assets/img/imgs/pool_10x4.jpg',
-          title: 'Бассейн 10×4',
-          desc: 'Камерный бассейн с водопадом и турецкой парной — формат для спокойного восстановления без суеты.',
-          details: ['Водопад', 'Турецкая паровая', 'Комната отдыха', 'Температура воды 29–33 °C', 'Противоток (доп. услуга)'],
-        },
-        {
-          img: '/wp-content/themes/theme/assets/img/imgs/pool_afrodita.jpg',
-          title: 'Бассейн 6×3 «Афродита»',
-          desc: 'Самая насыщенная зона комплекса: джакузи, хамам и паровая в одном пространстве.',
-          details: [
-            'Джакузи на 75 форсунок',
-            'Подводный массаж',
-            'Турецкая паровая',
-            'Хамам',
-            'Комната отдыха',
-            'Температура воды 29–33 °C',
-          ],
-        },
-      ],
-    },
-    {
-      id: 'massage',
-      label: 'Массаж',
-      slides: [
-        {
-          img: './assets/imgs/imgs/massage_spine.jpg',
-          title: 'Массаж спины',
-          desc: 'Средство для улучшения общего состояния и профилактики воздействия вредных факторов среды. Повышает сопротивляемость организма инфекциям и стрессам.',
-          details: [
-            'Нормализует работу сальных и потовых желёз',
-            'Улучшает состояние подкожно-жировой клетчатки',
-            'Кожа становится гладкой, плотной и эластичной',
-          ],
-        },
-        {
-          img: './assets/imgs/imgs/massage_method.jpg',
-          title: 'Массаж по авторской методике',
-          desc: 'Процедура охватывает все основные группы мышц: разминание, поглаживание и растирание помогают расслабиться и снять болевые ощущения.',
-          details: [
-            'Улучшить кровообращение',
-            'Стимулировать лимфатическую систему',
-            'Способствовать эмоциональному расслаблению',
-            'Снизить уровень стресса и улучшить настроение',
-          ],
-        },
-        {
-          img: './assets/imgs/imgs/massage_childern.jpg',
-          title: 'Детский массаж',
-          desc: 'Тело подростка непрерывно меняется, и эти изменения часто становятся причиной болей в мышцах, головных болей и травм.',
-          details: [
-            'Восстанавливает повреждённые мышцы',
-            'Снимает боль после спортивных нагрузок',
-            'Улучшает качество сна',
-            'Положительно влияет на учебную продуктивность',
-          ],
-        },
-        {
-          img: './assets/imgs/imgs/massage_lpg.jpg',
-          title: 'LPG-массаж',
-          desc: 'Аппаратная методика для улучшения внешнего вида и эластичности кожи, обменных процессов и уменьшения жировых клеток.',
-          details: [
-            'Стимулирует выработку коллагена и эластина',
-            'Укрепляет и уплотняет кожу',
-            'Тонизирует мышцы, борется с вялостью кожи',
-          ],
-        },
-        {
-          img: './assets/imgs/imgs/massage_vibro.jpg',
-          title: 'Вибромассаж',
-          desc: 'Вибрационный массаж всего тела — эффективная и приятная процедура с множеством преимуществ для организма.',
-          details: [
-            'Улучшение кровообращения и питания тканей',
-            'Расслабление мышц, снятие спазмов и усталости',
-            'Снятие стресса за счёт выделения эндорфинов',
-          ],
-        },
-        {
-          img: './assets/imgs/imgs/massage_press.jpg',
-          title: 'Прессотерапия',
-          desc: 'Вид аппаратного массажа: механическое воздействие на тело сжатым воздухом. Активизирует ток лимфы по сосудам.',
-          details: [
-            'Ускоряет выход жидкости из межклеточного пространства',
-            'Уменьшает отёчность',
-            'Понадобится удобная одежда с длинным рукавом',
-          ],
-        },
-      ],
-    },
-    {
-      id: 'programs',
-      label: 'СПА-программы',
-      slides: [
-        {
-          img: './assets/imgs/imgs/spa_krasivoe-telo.jpg',
-          title: 'СПА-программа «Красивое тело»',
-          desc: 'Комплексный уход на основе мёда. Эффект: подтянутая, сияющая кожа, ощущение лёгкости и прилив энергии.',
-          details: [
-            'Медовый скраб — нежное очищение и питание кожи',
-            'Медовое обёртывание — глубокое увлажнение',
-            'Лимфодренажный массаж — меньше отёков, лучше тонус',
-            'Травяной чай — расслабляющее завершение',
-          ],
-        },
-        {
-          img: './assets/imgs/imgs/spa_chocolate-heaven.jpg',
-          title: 'СПА-программа «Шоколадный рай»',
-          desc: 'Ритуал с ароматом какао. Эффект: бархатистая кожа, приподнятое настроение и полное восстановление сил.',
-          details: [
-            'Шоколадное скрабирование — мягкое отшелушивание',
-            'Шоколадное обёртывание — питание и увлажнение',
-            'Расслабляющий массаж — снятие мышечных зажимов',
-            'Травяной чай — тёплое завершение ритуала',
-          ],
-        },
-      ],
-    },
-    {
-      id: 'salt',
-      label: 'Соляная комната',
-      slides: [
-        {
-          img: './assets/imgs/imgs/spa_salt-room.jpg',
-          title: 'Соляная комната',
-          desc: 'Соляная пещера в «Карповке» — отличный способ снять накопившуюся усталость. Сеанс проходит в сопровождении расслабляющей музыки (по желанию).',
-          details: [
-            'Солегенератор насыщает воздух микрочастицами соли',
-            'Помогает справляться с простудными заболеваниями',
-            'Укрепляет иммунитет',
-            'Снимает стресс',
-          ],
-        },
-      ],
-    },
-  ];
+  const dataEl = root.querySelector('[data-spa-data]');
+  if (!dataEl) return;
+  let slides;
+  try {
+    slides = JSON.parse(dataEl.textContent);
+  } catch (error) {
+    return;
+  }
+  if (!Array.isArray(slides)) return;
+
+  const SPA_TABS = [];
+  slides.forEach((slide) => {
+    if (!slide || !slide.tab) return;
+    let tab = SPA_TABS.find((item) => item.label === slide.tab);
+    if (!tab) {
+      tab = { label: slide.tab, slides: [] };
+      SPA_TABS.push(tab);
+    }
+    tab.slides.push(slide);
+  });
+  if (!SPA_TABS.length) return;
 
   const tabsBox = root.querySelector('[data-spa-tabs]');
   const imgEl = root.querySelector('[data-spa-img]');
@@ -571,13 +591,19 @@
 
     tabBtns.forEach((b, i) => b.classList.toggle('is-active', i === activeTab));
 
-    imgEl.src = slide.img;
-    imgEl.alt = slide.title;
-    titleEl.textContent = slide.title;
-    descEl.textContent = slide.desc;
+    imgEl.src = slide.img || '';
+    imgEl.alt = slide.title || '';
+    titleEl.textContent = slide.title || '';
+    descEl.textContent = slide.desc || '';
 
     detailsEl.innerHTML = '';
-    slide.details.forEach((d) => {
+    const detailHtml = document.createElement('div');
+    detailHtml.innerHTML = (slide.details || '').replace(/<br\s*\/?\s*>/gi, '\n');
+    const detailNodes = detailHtml.querySelectorAll('.spa__detail, li, p');
+    const details = detailNodes.length
+      ? Array.from(detailNodes, (node) => node.textContent.trim())
+      : detailHtml.textContent.split(/\r?\n/).map((line) => line.trim());
+    details.filter(Boolean).forEach((d) => {
       const row = document.createElement('div');
       row.className = 'spa__detail';
       const span = document.createElement('span');
@@ -836,7 +862,7 @@ document.querySelectorAll('[data-marquee]').forEach((track) => {
     if (mName) mName.textContent = name ? name.textContent : '';
     if (mDate) mDate.textContent = date ? date.textContent : '';
     modal.hidden = false;
-    document.window.__lockScroll();
+    window.__lockScroll();
   };
 
   const closeModal = () => {
@@ -845,7 +871,7 @@ document.querySelectorAll('[data-marquee]').forEach((track) => {
     closeTimer = window.setTimeout(() => {
       modal.hidden = true;
       modal.classList.remove('is-closing');
-      document.body.classList.remove('is-modal-open');
+      window.__unlockScroll();
     }, CLOSE_DUR);
   };
 
@@ -906,6 +932,150 @@ document.querySelectorAll('[data-faq]').forEach((faq) => {
 });
 
 // ─── Форма быстрого бронирования ──────────────────────────
+document.querySelectorAll('[data-booking-guests]').forEach((guestPicker) => {
+  const form = guestPicker.closest('[data-booking-form]');
+  const toggle = guestPicker.querySelector('[data-booking-guests-toggle]');
+  const panel = guestPicker.querySelector('[data-booking-guests-panel]');
+  const roomsList = guestPicker.querySelector('[data-booking-rooms]');
+  const summary = guestPicker.querySelector('[data-booking-guests-summary]');
+  const summaryInput = guestPicker.querySelector('[data-booking-guests-value]');
+  const roomsCountInput = guestPicker.querySelector('[data-booking-rooms-count]');
+  const addRoom = guestPicker.querySelector('[data-booking-room-add]');
+  const maxRooms = 5;
+
+  if (!form || !toggle || !panel || !roomsList || !summary || !addRoom) return;
+
+  const plural = (value, one, few, many) => {
+    const mod100 = value % 100;
+    const mod10 = value % 10;
+    if (mod100 >= 11 && mod100 <= 19) return many;
+    if (mod10 === 1) return one;
+    if (mod10 >= 2 && mod10 <= 4) return few;
+    return many;
+  };
+
+  const createRoom = (adults = 2, children = 0) => {
+    const room = document.createElement('section');
+    room.className = 'booking-guests__room';
+    room.dataset.bookingRoom = '';
+    room.innerHTML = `
+      <div class="booking-guests__room-head">
+        <strong class="booking-guests__room-title" data-booking-room-title></strong>
+        <button type="button" class="booking-guests__remove" data-booking-room-remove>Удалить</button>
+      </div>
+      <div class="booking-guests__counters">
+        <div class="booking-guests__counter">
+          <label>Взрослые</label>
+          <div class="booking-guests__stepper">
+            <button type="button" class="booking-guests__step" aria-label="Уменьшить количество взрослых" data-booking-step="adults" data-delta="-1">−</button>
+            <span class="booking-guests__count" data-booking-count="adults">${adults}</span>
+            <button type="button" class="booking-guests__step" aria-label="Увеличить количество взрослых" data-booking-step="adults" data-delta="1">+</button>
+          </div>
+          <input type="hidden" value="${adults}" data-booking-input="adults">
+        </div>
+        <div class="booking-guests__counter">
+          <label>Дети младше 18 лет</label>
+          <div class="booking-guests__stepper">
+            <button type="button" class="booking-guests__step" aria-label="Уменьшить количество детей" data-booking-step="children" data-delta="-1">−</button>
+            <span class="booking-guests__count" data-booking-count="children">${children}</span>
+            <button type="button" class="booking-guests__step" aria-label="Увеличить количество детей" data-booking-step="children" data-delta="1">+</button>
+          </div>
+          <input type="hidden" value="${children}" data-booking-input="children">
+        </div>
+      </div>`;
+    return room;
+  };
+
+  const update = () => {
+    const rooms = Array.from(roomsList.querySelectorAll('[data-booking-room]'));
+    let adultsTotal = 0;
+    let childrenTotal = 0;
+
+    rooms.forEach((room, index) => {
+      const adultsInput = room.querySelector('[data-booking-input="adults"]');
+      const childrenInput = room.querySelector('[data-booking-input="children"]');
+      const adults = Number(adultsInput.value);
+      const children = Number(childrenInput.value);
+      adultsTotal += adults;
+      childrenTotal += children;
+      adultsInput.name = `rooms[${index}][adults]`;
+      childrenInput.name = `rooms[${index}][children]`;
+      room.querySelector('[data-booking-room-title]').textContent = `Номер ${index + 1}`;
+      room.querySelector('[data-booking-room-remove]').hidden = rooms.length === 1;
+      room.querySelector('[data-booking-step="adults"][data-delta="-1"]').disabled = adults <= 1;
+      room.querySelector('[data-booking-step="children"][data-delta="-1"]').disabled = children <= 0;
+      room.querySelector('[data-booking-step="adults"][data-delta="1"]').disabled = adults >= 8;
+      room.querySelector('[data-booking-step="children"][data-delta="1"]').disabled = children >= 6;
+      room.querySelector('[data-booking-count="adults"]').textContent = adults;
+      room.querySelector('[data-booking-count="children"]').textContent = children;
+    });
+
+    const parts = [adultsTotal + ' ' + plural(adultsTotal, 'взрослый', 'взрослых', 'взрослых')];
+    if (childrenTotal) parts.push(childrenTotal + ' ' + plural(childrenTotal, 'ребёнок', 'ребёнка', 'детей'));
+    parts.push(rooms.length + ' ' + plural(rooms.length, 'номер', 'номера', 'номеров'));
+    const value = parts.join(', ');
+    summary.textContent = value;
+    if (summaryInput) summaryInput.value = value;
+    if (roomsCountInput) roomsCountInput.value = rooms.length;
+    addRoom.disabled = rooms.length >= maxRooms;
+  };
+
+  const setOpen = (open, restoreFocus = false) => {
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    panel.hidden = !open;
+    if (restoreFocus) toggle.focus();
+  };
+
+  roomsList.appendChild(createRoom());
+  update();
+
+  toggle.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  panel.addEventListener('click', (event) => {
+    const step = event.target.closest('[data-booking-step]');
+    if (step) {
+      const room = step.closest('[data-booking-room]');
+      const type = step.dataset.bookingStep;
+      const input = room.querySelector(`[data-booking-input="${type}"]`);
+      const min = type === 'adults' ? 1 : 0;
+      const max = type === 'adults' ? 8 : 6;
+      input.value = Math.min(max, Math.max(min, Number(input.value) + Number(step.dataset.delta)));
+      update();
+      return;
+    }
+
+    const remove = event.target.closest('[data-booking-room-remove]');
+    if (remove && roomsList.children.length > 1) {
+      remove.closest('[data-booking-room]').remove();
+      update();
+      return;
+    }
+
+    if (event.target.closest('[data-booking-room-add]')) {
+      if (roomsList.children.length >= maxRooms) return;
+      const room = createRoom();
+      roomsList.appendChild(room);
+      update();
+      room.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      return;
+    }
+
+    if (event.target.closest('[data-booking-guests-done], [data-booking-guests-close]')) {
+      setOpen(false, true);
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.composedPath().includes(guestPicker)) setOpen(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !panel.hidden) setOpen(false, true);
+  });
+});
+
 document.querySelectorAll('[data-booking-form]').forEach((form) => {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -1039,6 +1209,15 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     btn.disabled = true;
     btn.textContent = 'Заявка отправлена';
     // Здесь позже — отправка на бэкенд/CRM
+  });
+});
+
+document.addEventListener('click', function (event) {
+  const button = event.target.closest('[data-copy-link]');
+  if (!button || !navigator.clipboard) return;
+  navigator.clipboard.writeText(button.dataset.copyLink || window.location.href).then(function () {
+    button.classList.add('is-copied');
+    window.setTimeout(function () { button.classList.remove('is-copied'); }, 1200);
   });
 });
 
@@ -1239,7 +1418,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (mDesc) mDesc.textContent = marker.dataset.desc || '';
     if (mPrice) mPrice.textContent = marker.dataset.price || '';
     modal.hidden = false;
-    document.window.__lockScroll();
+    window.__lockScroll();
   };
 
   const closeMarker = () => {
@@ -1248,7 +1427,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     mMapCloseTimer = setTimeout(() => {
       modal.hidden = true;
       modal.classList.remove('is-closing');
-      document.body.classList.remove('is-modal-open');
+      window.__unlockScroll();
     }, 260);
   };
 
@@ -1277,7 +1456,36 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
 
 
 
+/*Закрытие всех открытых модалок перед открытием новой*/
+function closeAllOpenModals() {
+  const modalSelectors = [
+    '.site-modal-callback',
+    '.site-modal-booking',
+    '.spa-prog-modal',
+    '.bath-modal',
+    '.dining-modal',
+    '.act-modal',
+    '.events-modal',
+    '.offers-modal',
+    '.fishing-modal',
+    '[data-review-modal]',
+    '[data-map-modal]'
+  ];
 
+  const selector = modalSelectors.map(s => s + ':not([hidden])').join(', ');
+  const openModals = document.querySelectorAll(selector);
+
+  openModals.forEach(modal => {
+
+    if (modal.classList.contains('is-closing')) return;
+    modal.classList.add('is-closing');
+    window.__unlockScroll();
+    setTimeout(() => {
+      modal.setAttribute('hidden', '');
+      modal.classList.remove('is-closing');
+    }, 320);
+  });
+}
 
 (function() {
   'use strict';
@@ -1287,9 +1495,15 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
 
   /* — Открытие — */
   function open() {
+
+    /* ----- */
+    /* Закрытие модалок с описанием и открытие модалки с формой для контаков */
+    closeAllOpenModals();
+    /* ----- */
+    
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
     /* Сбросить состояние */
     document.getElementById('callback-form-wrap').style.display = '';
     document.getElementById('callback-success').classList.remove('is-active');
@@ -1300,7 +1514,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   function close() {
     if (!modal || modal.hasAttribute('hidden')) return;
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
+    window.__unlockScroll();
 
     function handler(e) {
       if (
@@ -1324,6 +1538,8 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
       open();
       return;
     }
+
+
   });
 
   /* — Закрытие: оверлей / крестик — */
@@ -1365,25 +1581,32 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
 (function() {
   'use strict';
 
-  var modal = document.getElementById('site-modal-booking');
-  if (!modal) return;
+  function getModal() {
+    return document.getElementById('site-modal-booking');
+  }
 
   /* — Открытие — */
   function open() {
+    var modal = getModal();
+    if (!modal) return;
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
     /* Сбросить состояние */
-    document.getElementById('booking-form-wrap').style.display = '';
-    document.getElementById('booking-success').classList.remove('is-active');
-    document.getElementById('site-booking-form').reset();
+    var formWrap = document.getElementById('booking-form-wrap');
+    var success = document.getElementById('booking-success');
+    var form = document.getElementById('site-booking-form');
+    if (formWrap) formWrap.style.display = '';
+    if (success) success.classList.remove('is-active');
+    if (form) form.reset();
   }
 
   /* — Закрытие — */
   function close() {
+    var modal = getModal();
     if (!modal || modal.hasAttribute('hidden')) return;
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
+    window.__unlockScroll();
 
     function handler(e) {
       if (
@@ -1410,7 +1633,9 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   });
 
   /* — Закрытие: оверлей / крестик — */
-  modal.addEventListener('click', function(e) {
+  document.addEventListener('click', function(e) {
+    var modal = e.target.closest('#site-modal-booking');
+    if (!modal) return;
     var closeBtn = e.target.closest('.site-modal__close');
     if (closeBtn) { close(); return; }
 
@@ -1420,19 +1645,23 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
 
   /* — Escape — */
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) close();
+    var modal = getModal();
+    if (e.key === 'Escape' && modal && !modal.hasAttribute('hidden')) close();
   });
 
   /* — Отправка формы — */
-  document.getElementById('site-booking-form').addEventListener('submit', function(e) {
+  document.addEventListener('submit', function(e) {
+    if (!e.target.matches('#site-booking-form')) return;
     e.preventDefault();
 
-    var name  = document.getElementById('bk-name').value.trim();
-    var phone = document.getElementById('bk-phone').value.trim();
+    var nameField = document.getElementById('bk-name');
+    var phoneField = document.getElementById('bk-phone');
+    var name  = nameField ? nameField.value.trim() : '';
+    var phone = phoneField ? phoneField.value.trim() : '';
 
     if (!name || !phone) {
-      if (!name)  document.getElementById('bk-name').style.borderColor = '#d44';
-      if (!phone) document.getElementById('bk-phone').style.borderColor = '#d44';
+      if (!name && nameField) nameField.style.borderColor = '#d44';
+      if (!phone && phoneField) phoneField.style.borderColor = '#d44';
       return;
     }
 
@@ -1440,8 +1669,10 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     /* Например: fetch('/api/booking', { method: 'POST', body: new FormData(this) }) */
 
     /* Показать успех */
-    document.getElementById('booking-form-wrap').style.display = 'none';
-    document.getElementById('booking-success').classList.add('is-active');
+    var formWrap = document.getElementById('booking-form-wrap');
+    var success = document.getElementById('booking-success');
+    if (formWrap) formWrap.style.display = 'none';
+    if (success) success.classList.add('is-active');
   });
 })();
 
@@ -1652,9 +1883,6 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
 */
 
 
-      /* ═══════════════════════════════════════════════
-   ПОПАПЫ SPA-ПРОГРАММ
-   ═══════════════════════════════════════════════ */
 (function () {
   'use strict';
 
@@ -1665,44 +1893,122 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.hidden = false;
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
   }
 
-  function closeModal(modal) {
-    if (!modal || modal.hidden) return;
+  function closeModal(modal, restoreFocus, callback) {
+    if (!modal || modal.hidden) {
+      if (callback) callback();
+      return;
+    }
+
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
-    modal.addEventListener('animationend', function handler(e) {
-      if (e.target === modal.querySelector('.spa-prog-modal__dialog') ||
-          e.target === modal.querySelector('.spa-prog-modal__overlay')) {
-        modal.hidden = true;
-        modal.classList.remove('is-closing');
-        modal.removeEventListener('animationend', handler);
+    window.__unlockScroll();
+
+    var finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+
+      modal.hidden = true;
+      modal.classList.remove('is-closing');
+      modal.removeEventListener('animationend', handler);
+
+      if (callback) callback();
+    }
+
+    function handler(e) {
+      if (
+        e.target === modal.querySelector('.spa-prog-modal__dialog') ||
+        e.target === modal.querySelector('.spa-prog-modal__overlay')
+      ) {
+        finish();
       }
-    });
+    }
+
+    modal.addEventListener('animationend', handler);
+    window.setTimeout(finish, 320);
   }
 
-  /* Клик по кнопкам «Подробнее» в SPA-программах */
   document.addEventListener('click', function (e) {
     var trigger = e.target.closest('[data-spa-modal]');
+
     if (!trigger) return;
+
     e.preventDefault();
     openModal(trigger.getAttribute('data-spa-modal'));
   });
 
-  /* Клик по оверлею или кресту */
   document.addEventListener('click', function (e) {
+    var bookingButton = e.target.closest('.spa-prog-modal [data-spa-modal-book]');
+
+    if (bookingButton) {
+      e.preventDefault();
+
+      var modal = bookingButton.closest('.spa-prog-modal');
+      var href = bookingButton.getAttribute('href');
+
+      if (!href || href === '#') {
+        if (modal) closeModal(modal, false);
+        return;
+      }
+
+      var target = null;
+
+      if (href.charAt(0) === '#') {
+        target = document.querySelector(href);
+      }
+
+      if (!target) {
+        window.location.href = href;
+        return;
+      }
+
+      if (modal) {
+        closeModal(modal, false, function () {
+          setTimeout(function () {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+
+            history.replaceState(null, '', href);
+          }, 30);
+        });
+      } else {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+        history.replaceState(null, '', href);
+      }
+
+      return;
+    }
+
     var closer = e.target.closest('[data-spa-modal-close]');
+
     if (!closer) return;
+
+    e.preventDefault();
+
     var modal = closer.closest('.spa-prog-modal');
-    if (modal) closeModal(modal);
+
+    if (modal) {
+      closeModal(modal, true);
+    }
   });
 
-  /* Escape */
   document.addEventListener('keydown', function (e) {
     if (e.key !== ESC) return;
+
     var modal = document.querySelector('.spa-prog-modal:not([hidden])');
-    if (modal) closeModal(modal);
+
+    if (modal) {
+      closeModal(modal, true);
+    }
   });
 })();
 
@@ -1722,13 +2028,13 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.hidden = false;
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
   }
 
   function closeModal(modal) {
     if (!modal || modal.hidden) return;
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
+    window.__unlockScroll();
     modal.addEventListener('animationend', function handler(e) {
       if (e.target === modal.querySelector('.bath-modal__dialog') ||
           e.target === modal.querySelector('.bath-modal__overlay')) {
@@ -1749,6 +2055,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   document.addEventListener('click', function (e) {
     var closer = e.target.closest('[data-bath-modal-close]');
     if (!closer) return;
+    e.preventDefault();
     var modal = closer.closest('.bath-modal');
     if (modal) closeModal(modal);
   });
@@ -1796,13 +2103,13 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
   }
 
   function closeModal(modal) {
     if (!modal || modal.hasAttribute('hidden')) return;
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
+    window.__unlockScroll();
 
     function handler(e) {
       if (
@@ -1922,7 +2229,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.hidden = false;
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
     /* Фокус на диалог для доступности */
     const dialog = modal.querySelector('.act-modal__dialog');
     if (dialog) dialog.focus();
@@ -1932,7 +2239,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   function closeModal(modal) {
     if (!modal || modal.hidden) return;
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
+    window.__unlockScroll();
     modal.addEventListener('animationend', function handler(e) {
       if (e.target === modal.querySelector('.act-modal__dialog') ||
           e.target === modal.querySelector('.act-modal__overlay')) {
@@ -1955,6 +2262,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   document.addEventListener('click', function (e) {
     const closer = e.target.closest('[data-modal-close]');
     if (!closer) return;
+    e.preventDefault();
     const modal = closer.closest('.act-modal');
     if (modal) closeModal(modal);
   });
@@ -2002,13 +2310,13 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     if (!modal) return;
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
   }
 
   function closeModal(modal) {
     if (!modal || modal.hasAttribute('hidden')) return;
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
+    window.__unlockScroll();
 
     function handler(e) {
       if (
@@ -2034,6 +2342,14 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     }
 
     /* Закрытие — только кнопка ✕ или оверлей */
+    var closer = e.target.closest('[data-events-modal-close]');
+    if (closer) {
+      e.preventDefault();
+      var modal0 = closer.closest('.events-modal');
+      if (modal0) closeModal(modal0);
+      return;
+    }
+
     var closeBtn = e.target.closest('.events-modal__close');
     if (closeBtn) {
       var modal = closeBtn.closest('.events-modal');
@@ -2047,6 +2363,14 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
       if (modal2) closeModal(modal2);
       return;
     }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var trigger = e.target.closest('[data-dining-modal]');
+    if (!trigger) return;
+    e.preventDefault();
+    openModal(trigger.getAttribute('data-dining-modal'));
   });
 
   /* Escape */
@@ -2068,6 +2392,7 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     const filters = document.getElementById('filters');
     const list = document.getElementById('reviewsList');
     const counter = document.getElementById('reviewsCount');
+    if (!filters || !list || !counter) return;
     const cards = list.querySelectorAll('.c-review');
     const buttons = filters.querySelectorAll('.c-reviews__filter');
 
@@ -2150,28 +2475,31 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
   // Страница акции
   (function() {
   'use strict';
+  var activeTrigger = null;
 
-  function openModal(id) {
+  function openModal(id, trigger) {
     var modal = document.getElementById(id);
     if (!modal) return;
+    activeTrigger = trigger;
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    document.window.__lockScroll();
+    window.__lockScroll();
+    var closeButton = modal.querySelector('[data-offers-modal-close]');
+    if (closeButton) closeButton.focus();
   }
 
-  function closeModal(modal) {
-    if (!modal || modal.hasAttribute('hidden')) return;
+  function closeModal(modal, restoreFocus) {
+    if (!modal || modal.hasAttribute('hidden') || modal.classList.contains('is-closing')) return;
     modal.classList.add('is-closing');
-    document.body.classList.remove('is-modal-open');
+    window.__unlockScroll();
 
     function handler(e) {
-      if (
-        e.target.classList.contains('offers-modal__dialog') ||
-        e.target.classList.contains('offers-modal__overlay')
-      ) {
+      if (e.target === modal.querySelector('.offers-modal__dialog') || e.target === modal.querySelector('.offers-modal__overlay')) {
         modal.setAttribute('hidden', '');
         modal.classList.remove('is-closing');
         modal.removeEventListener('animationend', handler);
+        if (restoreFocus !== false && activeTrigger && activeTrigger.isConnected) activeTrigger.focus();
+        activeTrigger = null;
       }
     }
 
@@ -2182,26 +2510,33 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
     var trigger = e.target.closest('[data-offers-modal]');
     if (trigger) {
       e.preventDefault();
-      openModal(trigger.getAttribute('data-offers-modal'));
+      openModal(trigger.getAttribute('data-offers-modal'), trigger);
       return;
     }
 
-    var closeBtn = e.target.closest('.offers-modal__close');
-    if (closeBtn) {
-      var modal = closeBtn.closest('.offers-modal');
-      if (modal) closeModal(modal);
+    var bookingButton = e.target.closest('.offers-modal [data-offers-modal-book]');
+    if (bookingButton) {
+      closeModal(bookingButton.closest('.offers-modal'), false);
       return;
     }
 
-    var overlay = e.target.closest('.offers-modal__overlay');
-    if (overlay) {
-      var modal2 = overlay.closest('.offers-modal');
-      if (modal2) closeModal(modal2);
+    var closer = e.target.closest('[data-offers-modal-close]');
+    if (closer) {
+      e.preventDefault();
+      var modal0 = closer.closest('.offers-modal');
+      if (modal0) closeModal(modal0);
       return;
     }
+
   });
 
   document.addEventListener('keydown', function(e) {
+    var trigger = e.target.closest('[data-offers-modal]');
+    if (trigger && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      openModal(trigger.getAttribute('data-offers-modal'), trigger);
+      return;
+    }
     if (e.key === 'Escape') {
       var active = document.querySelector('.offers-modal:not([hidden])');
       if (active) closeModal(active);
@@ -2215,87 +2550,113 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
 
 
 
-/* ─── Fishing format modals (offers-style logic) ─────── */
+/* ─── Fishing format modals ─────── */
 (function () {
   'use strict';
 
-  var scrollY = 0;
-
-  function lockScroll() {
-    scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    document.body.style.top = '-' + scrollY + 'px';
-    document.window.__lockScroll();
-  }
-
-  function unlockScroll() {
-    document.body.classList.remove('is-modal-open');
-    document.body.style.top = '';
-    window.scrollTo(0, scrollY);
-  }
+  var CLOSE_DURATION = 320;
 
   function openModal(id) {
     var modal = document.getElementById(id);
     if (!modal) return;
+
     modal.removeAttribute('hidden');
     modal.classList.remove('is-closing');
-    lockScroll();
+
+    window.__lockScroll();
   }
 
   function closeModal(modal) {
-    if (!modal || modal.hasAttribute('hidden')) return;
+    if (!modal || modal.hasAttribute('hidden') || modal.classList.contains('is-closing')) {
+      return;
+    }
+
     modal.classList.add('is-closing');
 
-    function handler(e) {
-      if (
-        e.target.classList.contains('fishing-modal__dialog') ||
-        e.target.classList.contains('fishing-modal__overlay')
-      ) {
-        modal.setAttribute('hidden', '');
-        modal.classList.remove('is-closing');
-        unlockScroll();
-        modal.removeEventListener('animationend', handler);
+    var finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+
+      modal.setAttribute('hidden', '');
+      modal.classList.remove('is-closing');
+
+      window.__unlockScroll();
+
+      modal.removeEventListener('animationend', onAnimationEnd);
+      clearTimeout(timer);
+    }
+
+    function onAnimationEnd(event) {
+      if (event.target === modal) {
+        finish();
       }
     }
 
-    modal.addEventListener('animationend', handler);
+    modal.addEventListener('animationend', onAnimationEnd);
+
+    var timer = setTimeout(function () {
+      finish();
+    }, CLOSE_DURATION);
   }
 
-  /* Клик по карточке */
   document.addEventListener('click', function (e) {
     var trigger = e.target.closest('.c-fishing-formats [data-fishing-format-modal]');
+
     if (trigger) {
       e.preventDefault();
+
       openModal(trigger.getAttribute('data-fishing-format-modal'));
       return;
     }
 
     var closeBtn = e.target.closest('.fishing-modal__close');
+
     if (closeBtn) {
       var modal = closeBtn.closest('.fishing-modal');
-      if (modal) closeModal(modal);
+
+      if (modal) {
+        closeModal(modal);
+      }
+
       return;
     }
 
     var overlay = e.target.closest('.fishing-modal__overlay');
+
     if (overlay) {
       var modal2 = overlay.closest('.fishing-modal');
-      if (modal2) closeModal(modal2);
+
+      if (modal2) {
+        closeModal(modal2);
+      }
+
       return;
     }
 
     var bookingBtn = e.target.closest('.fishing-modal [data-fishing-modal-close]');
+
     if (bookingBtn) {
+      e.preventDefault();
+
       var modal3 = bookingBtn.closest('.fishing-modal');
-      if (modal3) closeModal(modal3);
+
+      if (modal3) {
+        closeModal(modal3);
+      }
+
       return;
     }
   });
 
-  /* Escape */
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      var active = document.querySelector('.fishing-modal:not([hidden])');
-      if (active) closeModal(active);
+    if (e.key !== 'Escape') return;
+
+    var active = document.querySelector('.fishing-modal:not([hidden])');
+
+    if (active) {
+      closeModal(active);
     }
   });
 })();
@@ -2306,69 +2667,6 @@ document.querySelectorAll('[data-callback-form]').forEach((form) => {
 
 
 
-
-
-
-// Лайтбокс для галереи
-(function() {
-  var lightbox = document.getElementById('spaLightbox');
-  if (!lightbox) return;
-
-  var img = lightbox.querySelector('.spa-lightbox__img');
-  var overlay = lightbox.querySelector('.spa-lightbox__overlay');
-  var closeBtn = lightbox.querySelector('.spa-lightbox__close');
-  var prevBtn = lightbox.querySelector('.spa-lightbox__arrow--prev');
-  var nextBtn = lightbox.querySelector('.spa-lightbox__arrow--next');
-  var counter = lightbox.querySelector('.spa-lightbox__counter');
-
-  var galleryItems = document.querySelectorAll('.c-spa-gallery__item');
-  var currentIndex = 0;
-
-  function open(index) {
-    currentIndex = index;
-    var src = galleryItems[index].querySelector('img').src;
-    img.src = src;
-    counter.textContent = (index + 1) + ' / ' + galleryItems.length;
-    lightbox.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    lightbox.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-
-  function prev() {
-    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-    open(currentIndex);
-  }
-
-  function next() {
-    currentIndex = (currentIndex + 1) % galleryItems.length;
-    open(currentIndex);
-  }
-
-  // Клик по картинкам в галерее
-  galleryItems.forEach(function(item, i) {
-    item.style.cursor = 'pointer';
-    item.addEventListener('click', function() {
-      open(i);
-    });
-  });
-
-  closeBtn.addEventListener('click', close);
-  overlay.addEventListener('click', close);
-  prevBtn.addEventListener('click', prev);
-  nextBtn.addEventListener('click', next);
-
-  // Клавиатура
-  document.addEventListener('keydown', function(e) {
-    if (!lightbox.classList.contains('is-open')) return;
-    if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') prev();
-    if (e.key === 'ArrowRight') next();
-  });
-})();
 
 
 

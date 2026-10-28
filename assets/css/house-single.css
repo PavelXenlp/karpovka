@@ -1,0 +1,594 @@
+.house-page {
+  background: #f4f1ea;
+  color: #24362f;
+}
+.house-page em {
+  color: var(--gold);
+  font-style: italic;
+}
+.house-hero {
+  position: relative;
+  min-height: min(860px, 92vh);
+  display: flex;
+  align-items: center;
+  padding: 130px 0 72px;
+  overflow: visible;
+  background: var(--navy-900);
+  color: var(--cream);
+}
+.house-hero__media,
+.house-hero__overlay {
+  position: absolute;
+  inset: 0;
+}
+.house-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.house-hero__overlay {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 34, 28, 0.94) 0%,
+      rgba(8, 34, 28, 0.77) 48%,
+      rgba(8, 34, 28, 0.43) 100%
+    ),
+    linear-gradient(0deg, rgba(8, 34, 28, 0.72), transparent 58%);
+}
+.house-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 410px);
+  gap: 72px;
+  align-items: center;
+}
+.house-hero__copy {
+  max-width: 720px;
+}
+.house-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 38px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 12px;
+}
+.house-breadcrumbs a:hover {
+  color: var(--gold);
+}
+.house-hero__badge {
+  display: inline-block;
+  margin: 0 0 16px;
+  padding: 7px 11px;
+  border-left: 2px solid var(--gold);
+  background: rgba(200, 164, 108, 0.12);
+  color: var(--gold);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.house-hero h1 {
+  max-width: 680px;
+  margin: 0 0 22px;
+  font-family: var(--serif);
+  font-size: 58px;
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+.house-hero__lead {
+  max-width: 640px;
+  margin: 0 0 26px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.house-hero__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.house-hero__facts span {
+  padding: 10px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(9, 34, 28, 0.34);
+  font-size: 13px;
+}
+.house-hero__facts .house-hero__price {
+  border-color: rgba(200, 164, 108, 0.42);
+  color: var(--gold);
+}
+.house-photo-link {
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.52);
+  padding: 0 0 4px;
+  background: none;
+  color: #fff;
+  font-size: 13px;
+}
+.house-photo-link:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.house-booking {
+  position: relative;
+  z-index: 4;
+  padding: 26px;
+  background: rgba(8, 35, 29, 0.82);
+  border: 1px solid rgba(200, 164, 108, 0.35);
+  box-shadow: 0 24px 70px rgba(3, 18, 14, 0.32);
+  backdrop-filter: blur(14px);
+}
+.house-booking__head {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: 6px 8px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.house-booking__head > span {
+  grid-column: 1/-1;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.house-booking__head strong {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 500;
+}
+.house-booking__head small {
+  color: rgba(255, 255, 255, 0.56);
+}
+.house-booking__dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.house-booking__field {
+  position: relative;
+  display: grid;
+  gap: 7px;
+  margin-bottom: 13px;
+}
+.house-booking__field label {
+  color: var(--gold);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.house-booking__field > input {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(200, 164, 108, 0.28);
+  border-radius: 2px;
+  padding: 11px 13px;
+  background: rgba(6, 28, 23, 0.72);
+  color: #fff;
+  font-family: var(--sans);
+}
+.house-booking__field > input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.house-booking__field > input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.9) sepia(0.5);
+}
+.house-booking .booking__guests-trigger {
+  background: rgba(6, 28, 23, 0.72);
+}
+.house-booking .booking-guests {
+  right: 0;
+  top: calc(100% + 5px);
+}
+.house-booking__hint,
+.house-booking__note {
+  margin: 0 0 13px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.house-booking__submit {
+  width: 100%;
+  justify-content: center;
+}
+.house-booking__note {
+  margin: 11px 0 0;
+  text-align: center;
+}
+.house-overview {
+  padding: 96px 0;
+  background: #f4f1ea;
+}
+.house-overview__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.65fr);
+  gap: 80px;
+  align-items: start;
+}
+.house-section-copy h2,
+.house-section-head h2,
+.house-bottom-booking h2 {
+  margin: 8px 0 24px;
+  font-family: var(--serif);
+  font-size: 46px;
+  font-weight: 500;
+  line-height: 1.12;
+  color: #173d34;
+  letter-spacing: 0;
+}
+.house-overview__intro {
+  max-width: 760px;
+  margin: 0;
+  color: #53645e;
+  font-size: 16px;
+  line-height: 1.85;
+}
+.house-feature-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 28px;
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #d8d4cb;
+}
+.house-feature-list li {
+  position: relative;
+  padding: 15px 10px 15px 25px;
+  border-bottom: 1px solid #d8d4cb;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.house-feature-list li:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #b8945a;
+  transform: rotate(45deg);
+}
+.house-rate {
+  padding: 28px;
+  border-top: 3px solid var(--gold);
+  background: #173d34;
+  color: #fff;
+}
+.house-rate__label {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.house-rate__price {
+  margin: 0 0 16px;
+  font-family: var(--serif);
+  font-size: 34px;
+}
+.house-rate__price span,
+.house-rate__price small {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.58);
+}
+.house-rate > p:not(.house-rate__price):not(.house-rate__label) {
+  margin: 0 0 24px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.house-rate .btn {
+  width: 100%;
+  justify-content: center;
+}
+.house-equipment {
+  padding: 92px 0;
+  background: #fff;
+}
+.house-section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  align-items: end;
+  margin-bottom: 40px;
+}
+.house-section-head > div {
+  max-width: 760px;
+}
+.house-section-head h2 {
+  margin-bottom: 0;
+}
+.house-section-head > p {
+  max-width: 390px;
+  margin: 0;
+  color: #65736e;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.house-section-head > a {
+  border-bottom: 1px solid #9eaa9f;
+  padding-bottom: 4px;
+  color: #31594d;
+  font-size: 13px;
+}
+.house-equipment__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 1px;
+  background: #dde1dd;
+  list-style: none;
+}
+.house-equipment__grid li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  min-height: 112px;
+  padding: 22px;
+  background: #f8f8f5;
+}
+.house-equipment__grid span {
+  color: #b8945a;
+  font-family: var(--serif);
+  font-size: 13px;
+}
+.house-equipment__grid p {
+  margin: 0;
+  color: #42534d;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.house-equipment__grid strong {
+  color: #173d34;
+}
+.house-gallery-section {
+  padding: 92px 0;
+  background: #e9ede9;
+}
+.house-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 190px;
+  gap: 8px;
+}
+.house-gallery-grid__item {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  background: #173d34;
+  text-decoration: none;
+}
+.house-gallery-grid__hidden {
+  display: none;
+}
+.house-gallery-grid__item--lead {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.house-gallery-grid__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform 0.5s ease,
+    opacity 0.3s;
+}
+.house-gallery-grid__item:hover img {
+  transform: scale(1.035);
+  opacity: 0.82;
+}
+.house-gallery-grid__item span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(12, 45, 37, 0.62);
+  color: #fff;
+  font-family: var(--serif);
+  font-size: 24px;
+}
+.house-bottom-booking {
+  padding: 72px 0;
+  background: #173d34;
+  color: #fff;
+}
+.house-bottom-booking__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+.house-bottom-booking h2 {
+  margin-bottom: 16px;
+  color: #fff;
+}
+.house-bottom-booking p:not(.eyebrow) {
+  max-width: 720px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.75;
+}
+.house-bottom-booking__actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.house-related {
+  padding: 90px 0 110px;
+  background: #f4f1ea;
+}
+.house-related__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.house-related-card {
+  display: grid;
+  grid-template-rows: 240px 1fr;
+  background: #fff;
+  border-bottom: 2px solid transparent;
+  transition:
+    transform 0.25s,
+    border-color 0.25s;
+}
+.house-related-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+}
+.house-related-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.house-related-card > div {
+  padding: 20px;
+}
+.house-related-card span {
+  color: #a07c43;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.house-related-card h3 {
+  margin: 8px 0;
+  font-family: var(--serif);
+  font-size: 23px;
+  font-weight: 500;
+  color: #173d34;
+}
+.house-related-card p {
+  min-height: 42px;
+  margin: 0 0 16px;
+  color: #66746f;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.house-related-card strong {
+  color: #173d34;
+  font-size: 14px;
+}
+@media (max-width: 1050px) {
+  .house-hero__inner {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 36px;
+  }
+  .house-equipment__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .house-bottom-booking__inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .house-related-card {
+    grid-template-rows: 200px 1fr;
+  }
+}
+@media (max-width: 800px) {
+  .house-hero {
+    min-height: 0;
+    padding: 112px 0 54px;
+  }
+  .house-hero__inner {
+    grid-template-columns: 1fr;
+  }
+  .house-hero__copy {
+    padding-top: 70px;
+  }
+  .house-breadcrumbs {
+    margin-bottom: 26px;
+  }
+  .house-hero h1 {
+    font-size: 42px;
+  }
+  .house-booking {
+    max-width: 560px;
+    width: 100%;
+  }
+  .house-overview,
+  .house-equipment,
+  .house-gallery-section,
+  .house-related {
+    padding: 64px 0;
+  }
+  .house-overview__grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .house-section-head {
+    display: block;
+  }
+  .house-section-head > p {
+    margin-top: 18px;
+  }
+  .house-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 170px;
+  }
+  .house-related__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .house-bottom-booking__actions {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 540px) {
+  .house-hero__copy {
+    padding-top: 30px;
+  }
+  .house-hero h1 {
+    font-size: 36px;
+  }
+  .house-hero__lead {
+    font-size: 14px;
+  }
+  .house-booking {
+    padding: 20px;
+  }
+  .house-booking__dates,
+  .house-feature-list {
+    grid-template-columns: 1fr;
+  }
+  .house-equipment__grid {
+    grid-template-columns: 1fr;
+  }
+  .house-equipment__grid li {
+    min-height: 0;
+  }
+  .house-gallery-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-right: -20px;
+    padding-right: 20px;
+  }
+  .house-gallery-grid__item,
+  .house-gallery-grid__item--lead {
+    flex: 0 0 82%;
+    height: 250px;
+    scroll-snap-align: start;
+  }
+  .house-related__grid {
+    grid-template-columns: 1fr;
+  }
+  .house-bottom-booking__actions {
+    width: 100%;
+    display: grid;
+  }
+  .house-bottom-booking__actions .btn {
+    justify-content: center;
+  }
+}

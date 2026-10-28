@@ -1,14 +1,28 @@
 <?php
- $v = get_post_meta( get_the_ID(), 'spa_interactive', true );
+$v = get_post_meta( get_the_ID(), 'spa_interactive', true );
 
 if ( empty( $v ) || empty( $v['slides'] ) ) return;
 
- $eyebrow    = esc_html( $v['eyebrow'] ?? '' );
- $section_id = esc_attr( $v['section_id'] ?? 'spa' );
- $slides     = $v['slides'];
+$eyebrow    = esc_html( $v['eyebrow'] ?? '' );
+$section_id = esc_attr( ! empty( $v['section_id'] ) ? $v['section_id'] : 'spa' );
+$slides     = array();
+foreach ( $v['slides'] as $slide ) {
+    if ( ! is_array( $slide ) || empty( $slide['tab'] ) ) {
+        continue;
+    }
+    $slides[] = array(
+        'tab'     => (string) $slide['tab'],
+        'title'   => (string) ( $slide['title'] ?? '' ),
+        'desc'    => (string) ( $slide['desc'] ?? '' ),
+        'details' => wp_kses_post( $slide['details'] ?? '' ),
+        'img'     => esc_url( $slide['img'] ?? '' ),
+    );
+}
+if ( ! $slides ) return;
 ?>
 
 <section id="<?php echo $section_id; ?>" class="spa reveal" data-spa>
+    <script type="application/json" data-spa-data><?php echo wp_json_encode( $slides, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE ); ?></script>
     <div class="spa__body">
         <div class="spa__text">
             <div class="spa__head">
@@ -44,19 +58,3 @@ if ( empty( $v ) || empty( $v['slides'] ) ) return;
     </div>
     <div class="spa__strip" data-spa-strip></div>
 </section>
-
-<script>
-window.wpSpaData = <?php
-    $out = [];
-    foreach ( $slides as $s ) {
-        $out[] = [
-            'tab'     => $s['tab'] ?? '',
-            'title'   => $s['title'] ?? '',
-            'desc'    => $s['desc'] ?? '',
-            'details' => $s['details'] ?? '',
-            'img'     => $s['img'] ?? '',
-        ];
-    }
-    echo wp_json_encode( $out, JSON_UNESCAPED_UNICODE );
-?>;
-</script>

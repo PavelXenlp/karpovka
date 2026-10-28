@@ -42,10 +42,6 @@ function cta_review_section_box( $post ) {
         .ctr-item .ctr-row label{margin-bottom:2px}
         .ctr-btn{padding:4px 12px;cursor:pointer;margin:3px 2px}
         .ctr-btn--del{color:#a00;border-color:#a00}
-        .ctr-upload{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-        .ctr-upload input[type="text"]{flex:1}
-        .ctr-upload button{padding:4px 10px;cursor:pointer}
-        .ctr-upload img.preview{max-width:120px;height:auto;border:1px solid #ccc;border-radius:4px;display:none}
     </style>
 
     <p><strong>Шапка секции</strong></p>
@@ -62,10 +58,9 @@ function cta_review_section_box( $post ) {
         <input type="text" name="cta_review_section[section_id]" value="<?php echo esc_attr( $section_id ); ?>">
     </div>
 
-    <div class="ctr-upload">
-        <button type="button" class="ctr-btn ctr-upload-bg">📁 Фон (большое фото)</button>
-        <input type="text" name="cta_review_section[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>" placeholder="URL или загрузите">
-        <img class="preview ctr-bg-preview" src="<?php echo esc_url( $bg_img ); ?>" alt="">
+    <div class="ctr-field">
+        <label>Фон (большое фото)</label>
+        <input type="hidden" name="cta_review_section[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>" data-kp-media>
     </div>
 
     <div class="ctr-group">
@@ -74,10 +69,9 @@ function cta_review_section_box( $post ) {
             <label>Текст</label>
             <textarea name="cta_review_section[aside_text]" rows="3"><?php echo esc_textarea( $aside_text ); ?></textarea>
         </div>
-        <div class="ctr-upload">
-            <button type="button" class="ctr-btn ctr-upload-aside">📁 Фото</button>
-            <input type="text" name="cta_review_section[aside_img]" value="<?php echo esc_attr( $aside_img ); ?>" placeholder="URL или загрузите">
-            <img class="preview ctr-aside-preview" src="<?php echo esc_url( $aside_img ); ?>" alt="">
+        <div class="ctr-field">
+            <label>Фото</label>
+            <input type="hidden" name="cta_review_section[aside_img]" value="<?php echo esc_attr( $aside_img ); ?>" data-kp-media>
         </div>
     </div>
 
@@ -155,10 +149,10 @@ function cta_review_section_box( $post ) {
                                 <input type="text" name="cta_review_section[actions][<?php echo $ai; ?>][link]" value="<?php echo esc_attr( $a['link'] ?? '' ); ?>">
                             </div>
                             <div>
-                                <label>Стиль (gold / ghost)</label>
+                                <label>Оформление</label>
                                 <select name="cta_review_section[actions][<?php echo $ai; ?>][style]">
-                                    <option value="gold" <?php selected( $a['style'] ?? 'gold', 'gold' ); ?>>btn--gold</option>
-                                    <option value="ghost" <?php selected( $a['style'] ?? '', 'ghost' ); ?>>btn--ghost</option>
+                                    <option value="gold" <?php selected( $a['style'] ?? 'gold', 'gold' ); ?>>Акцентная кнопка</option>
+                                    <option value="ghost" <?php selected( $a['style'] ?? '', 'ghost' ); ?>>Контурная кнопка</option>
                                 </select>
                             </div>
                         </div>
@@ -173,21 +167,6 @@ function cta_review_section_box( $post ) {
     <script>
     jQuery(function($){
 
-        /* Загрузка медиа */
-        function uploadImage(btn, inputSel, previewSel){
-            var frame = wp.media({title:'Выберите изображение',multiple:false,library:{type:'image'}});
-            frame.on('select',function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                $(btn).closest('.ctr-upload').find(inputSel).val(url);
-                var img = $(btn).closest('.ctr-upload').find(previewSel);
-                img.attr('src',url).show();
-            });
-            frame.open();
-        }
-
-        $('.ctr-upload-bg').on('click',function(){ uploadImage(this,'input','img.preview'); });
-        $('.ctr-upload-aside').on('click',function(){ uploadImage(this,'input','img.preview'); });
-
         /* Кнопки действий */
         $('#ctr-add-action').on('click',function(){
             var box = $('#ctr-actions');
@@ -197,17 +176,13 @@ function cta_review_section_box( $post ) {
                 '<div class="ctr-row">' +
                 '<div><label>Текст кнопки</label><input type="text" name="cta_review_section[actions]['+i+'][text]"></div>' +
                 '<div><label>Ссылка</label><input type="text" name="cta_review_section[actions]['+i+'][link]"></div>' +
-                '<div><label>Стиль (gold / ghost)</label><select name="cta_review_section[actions]['+i+'][style]"><option value="gold">btn--gold</option><option value="ghost">btn--ghost</option></select></div>' +
+                '<div><label>Оформление</label><select name="cta_review_section[actions]['+i+'][style]"><option value="gold">Акцентная кнопка</option><option value="ghost">Контурная кнопка</option></select></div>' +
                 '</div>' +
                 '<button type="button" class="ctr-btn ctr-btn--del" onclick="this.closest(\'.ctr-item\').remove()">Удалить</button>' +
                 '</div>'
             );
         });
 
-        /* Показ превью при загрузке страницы */
-        $('.ctr-upload img.preview').each(function(){
-            if($(this).attr('src')) $(this).show();
-        });
     });
     </script>
     <?php

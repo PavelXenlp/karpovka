@@ -175,12 +175,20 @@ if (!is_array($d) || (empty($d['title']) && empty($d['desc']))) return;
     }
     showLB();
     lb.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
+    if (window.__lockScroll) {
+      window.__lockScroll();
+    } else {
+      document.body.classList.add('is-modal-open');
+    }
   }
 
   function closeLB() {
     lb.classList.remove('is-open');
-    document.body.style.overflow = '';
+    if (window.__unlockScroll) {
+      window.__unlockScroll();
+    } else {
+      document.body.classList.remove('is-modal-open');
+    }
   }
 
   function goPrev() { cur = (cur - 1 + imgs.length) % imgs.length; showLB(); }

@@ -5,7 +5,7 @@
  */
 
 add_action('add_meta_boxes', function () {
-    add_meta_box('ab_box', 'Тело статьи — блоки', 'ab_box_cb', 'page', 'normal', 'high');
+    add_meta_box('ab_box', 'Тело статьи — блоки', 'ab_box_cb', ['page', 'articles'], 'normal', 'high');
 });
 
 function ab_box_cb($post) {
@@ -43,10 +43,6 @@ function ab_box_cb($post) {
         /* Показ/скрытие полей по типу */
         .ab-bf { display:none; }
         .ab-bf.ab-bf-active { display:block; }
-
-        .ab-img-row { display:flex; gap:10px; align-items:flex-start; }
-        .ab-img-prev { width:100px; height:66px; background:#f0f0f0; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden; }
-        .ab-img-prev img { max-width:100%; max-height:100%; object-fit:cover; }
 
         /* Теги */
         .ab-tag-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
@@ -100,16 +96,7 @@ function ab_box_cb($post) {
 
             <!-- Изображение -->
             <div class="ab-bf ab-bf-image <?php echo $type==='image'?'ab-bf-active':''; ?>">
-                <div class="ab-img-row">
-                    <div class="ab-img-prev">
-                        <?php if (!empty($b['image'])) : ?><img src="<?php echo esc_url($b['image']); ?>" alt=""><?php endif; ?>
-                    </div>
-                    <div style="flex:1">
-                        <input type="text" class="ab-b-image" value="<?php echo esc_attr(!empty($b['image'])?$b['image']:''); ?>" style="width:100%;margin-bottom:6px">
-                        <button type="button" class="button ab-upload-btn">Загрузить</button>
-                        <button type="button" class="button ab-clear-btn" style="margin-left:6px">Очистить</button>
-                    </div>
-                </div>
+                <input type="hidden" class="ab-b-image" value="<?php echo esc_attr(!empty($b['image'])?$b['image']:''); ?>" data-kp-media>
                 <div class="ab-f" style="margin-top:10px">
                     <label>Alt текст</label>
                     <input type="text" class="ab-b-alt" value="<?php echo esc_attr(!empty($b['image_alt'])?$b['image_alt']:''); ?>">
@@ -208,14 +195,7 @@ function ab_box_cb($post) {
                 <div class="ab-f"><textarea class="ab-b-text" rows="4"></textarea><p class="ab-hint">*текст* = золотой. Двойной Enter = новый абзац.</p></div>
             </div>
             <div class="ab-bf ab-bf-image">
-                <div class="ab-img-row">
-                    <div class="ab-img-prev"></div>
-                    <div style="flex:1">
-                        <input type="text" class="ab-b-image" value="" style="width:100%;margin-bottom:6px">
-                        <button type="button" class="button ab-upload-btn">Загрузить</button>
-                        <button type="button" class="button ab-clear-btn" style="margin-left:6px">Очистить</button>
-                    </div>
-                </div>
+                <input type="hidden" class="ab-b-image" value="" data-kp-media>
                 <div class="ab-f" style="margin-top:10px"><label>Alt текст</label><input type="text" class="ab-b-alt" value=""></div>
                 <div class="ab-f"><label><input type="checkbox" class="ab-b-wide"> Широкое</label></div>
             </div>
@@ -257,29 +237,6 @@ function ab_box_cb($post) {
         /* Удалить блок */
         $(document).on('click', '.ab-block-del', function() {
             $(this).closest('.ab-block').remove();
-        });
-
-        /* Медиа-загрузчик */
-        var frame;
-        $(document).on('click', '.ab-upload-btn', function(e) {
-            e.preventDefault();
-            var $block = $(this).closest('.ab-block');
-            var $input = $block.find('.ab-b-image');
-            var $prev = $block.find('.ab-img-prev');
-            if (frame) { frame.open(); return; }
-            frame = wp.media({ title: 'Выбрать изображение', button: { text: 'Использовать' }, multiple: false });
-            frame.on('select', function() {
-                var att = frame.state().get('selection').first().toJSON();
-                $input.val(att.url);
-                $prev.html('<img src="' + att.url + '" alt="">');
-                frame = null;
-            });
-            frame.open();
-        });
-        $(document).on('click', '.ab-clear-btn', function() {
-            var $block = $(this).closest('.ab-block');
-            $block.find('.ab-b-image').val('');
-            $block.find('.ab-img-prev').html('');
         });
 
         /* Теги */

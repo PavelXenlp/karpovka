@@ -37,7 +37,7 @@ if ( empty( $cards ) ) return;
         </div>
 
         <div class="c-spa-programs__grid reveal">
-            <?php foreach ( $cards as $card ) :
+            <?php foreach ( $cards as $card_index => $card ) :
                 $modifier    = $card['modifier'] ?? '';
                 $mod_class   = $modifier ? ' c-spa-program--' . esc_attr( $modifier ) : '';
                 $badge       = $card['badge'] ?? '';
@@ -49,6 +49,7 @@ if ( empty( $cards ) ) return;
                 $price_suf   = $card['price_suffix'] ?? '';
                 $link        = $card['link'] ?? '#';
                 $btn_text    = $card['btn_text'] ?? 'Подробнее';
+                $modal_id    = 'spa-program-modal-' . (int) $card_index;
             ?>
             <div class="c-spa-program<?php echo $mod_class; ?>">
                 <?php if ( $badge ) : ?>
@@ -82,10 +83,51 @@ if ( empty( $cards ) ) return;
                         <?php if ( $price_suf ) : ?><small><?php echo esc_html( $price_suf ); ?></small><?php endif; ?>
                     </div>
                     <?php endif; ?>
-                    <a href="<?php echo esc_url( $link ); ?>" class="btn btn--gold btn--sm"><?php echo esc_html( $btn_text ); ?></a>
+                    <a href="#<?php echo esc_attr( $modal_id ); ?>" class="btn btn--gold btn--sm" data-spa-modal="<?php echo esc_attr( $modal_id ); ?>"><?php echo esc_html( $btn_text ); ?></a>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
     </div>
 </section>
+
+<?php foreach ( $cards as $card_index => $card ) :
+    $modal_id    = 'spa-program-modal-' . (int) $card_index;
+    $modal_image = $card['modal_image'] ?? '';
+    $modal_title = $card['modal_title'] ?? ( $card['name'] ?? '' );
+    $modal_kicker = $card['modal_kicker'] ?? ( $card['badge'] ?? '' );
+    $modal_meta  = $card['modal_meta'] ?? ( $card['duration'] ?? '' );
+    $modal_text  = $card['modal_text'] ?? ( $card['desc'] ?? '' );
+    $modal_text_2 = $card['modal_text_2'] ?? '';
+    $modal_items = is_array( $card['modal_items'] ?? null ) ? $card['modal_items'] : ( $card['items'] ?? [] );
+    $modal_link  = $card['link'] ?? '#cta';
+?>
+<div class="spa-prog-modal" id="<?php echo esc_attr( $modal_id ); ?>" hidden>
+    <div class="spa-prog-modal__overlay" data-spa-modal-close></div>
+    <div class="spa-prog-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="<?php echo esc_attr( $modal_id ); ?>-title">
+        <button class="spa-prog-modal__close" type="button" data-spa-modal-close aria-label="Закрыть"><svg class="icon"><use href="#icon-close"></use></svg></button>
+        <?php if ( $modal_image ) : ?><img class="spa-prog-modal__photo" src="<?php echo esc_url( $modal_image ); ?>" alt="<?php echo esc_attr( $modal_title ); ?>" loading="lazy"><?php endif; ?>
+        <div class="spa-prog-modal__body">
+            <?php if ( $modal_kicker ) : ?><p class="spa-prog-modal__badge"><?php echo esc_html( $modal_kicker ); ?></p><?php endif; ?>
+            <h3 class="spa-prog-modal__title" id="<?php echo esc_attr( $modal_id ); ?>-title"><?php echo esc_html( $modal_title ); ?></h3>
+            <?php if ( $modal_meta ) : ?><p class="spa-prog-modal__meta"><?php echo esc_html( $modal_meta ); ?></p><?php endif; ?>
+            <div class="spa-prog-modal__details">
+                <?php if ( $modal_text ) : ?><p><?php echo esc_html( $modal_text ); ?></p><?php endif; ?>
+                <?php if ( $modal_text_2 ) : ?><p><?php echo esc_html( $modal_text_2 ); ?></p><?php endif; ?>
+                <?php if ( $modal_items ) : ?>
+                <div class="spa-prog-modal__includes">
+                    <h4 class="spa-prog-modal__includes-title">Что входит в стоимость</h4>
+                    <?php foreach ( $modal_items as $modal_item ) : $modal_item_text = is_array( $modal_item ) ? ( $modal_item['text'] ?? '' ) : $modal_item; if ( ! $modal_item_text ) continue; ?>
+                    <div class="spa-prog-modal__incl"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><?php echo esc_html( $modal_item_text ); ?></span></div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="spa-prog-modal__foot">
+                <p class="spa-prog-modal__price offers-modal__price"><?php echo esc_html( $card['price'] ?? '' ); ?><?php if ( ! empty( $card['price_suffix'] ) ) : ?> <small><?php echo esc_html( $card['price_suffix'] ); ?></small><?php endif; ?></p>
+                <a class="btn btn--gold" href="<?php echo esc_url( $modal_link ?: '#cta' ); ?>" data-spa-modal-book>Забронировать</a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endforeach; ?>

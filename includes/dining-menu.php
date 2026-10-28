@@ -1,11 +1,11 @@
 <?php
 /**
- * Template: Dining Menu Section + Modals
+ * Template: Dining Menu Section + Modals + PDF button
  */
  $v     = get_post_meta( get_the_ID(), 'dining_menu', true ) ?: [];
  $cards = $v['cards'] ?? [];
 
-if ( empty( $cards ) && empty( $v['eyebrow'] ?? '' ) && empty( $v['title'] ?? '' ) ) return;
+if ( empty( $cards ) && empty( $v['eyebrow'] ?? '' ) && empty( $v['title'] ?? '' ) && empty( $v['pdf_url'] ?? '' ) ) return;
 
  $check_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 ?>
@@ -40,7 +40,7 @@ if ( empty( $cards ) && empty( $v['eyebrow'] ?? '' ) && empty( $v['title'] ?? ''
           if ( ! $slug ) $slug = 'modal-dining-' . sanitize_title( $c['card_title'] ?? '' );
       ?>
 
-      <article class="c-dining-menu__card" data-dining-modal="<?php echo esc_attr( $slug ); ?>">
+      <article class="c-dining-menu__card" data-dining-modal="<?php echo esc_attr( $slug ); ?>" role="button" tabindex="0">
         <div class="c-dining-menu__card-img">
           <?php if ( ! empty( $c['card_image'] ) ) : ?>
           <img src="<?php echo esc_url( $c['card_image'] ); ?>" alt="<?php echo esc_attr( $c['card_title'] ?? '' ); ?>" loading="lazy">
@@ -61,14 +61,23 @@ if ( empty( $cards ) && empty( $v['eyebrow'] ?? '' ) && empty( $v['title'] ?? ''
             <?php endif; ?>
           </div>
           <?php endif; ?>
-          <a href="#" class="c-dining-menu__card-link">
+          <button type="button" class="c-dining-menu__card-link">
             Подробнее <i class="icon-arrow-right"></i>
-          </a>
+          </button>
         </div>
       </article>
 
       <?php endforeach; ?>
 
+    </div>
+    <?php endif; ?>
+
+    <?php if ( ! empty( $v['pdf_url'] ) ) : ?>
+    <div class="c-dining-menu__pdf-cta" style="text-align:center;margin-top:40px;">
+        <a href="<?php echo esc_url( $v['pdf_url'] ); ?>" class="btn btn--gold" target="_blank" rel="noopener">
+            <?php echo esc_html( $v['pdf_text'] ?? 'Открыть меню PDF' ); ?>
+            <i class="fa-solid fa-file-pdf" style="margin-left:8px;"></i>
+        </a>
     </div>
     <?php endif; ?>
 
@@ -145,3 +154,58 @@ if ( empty( $cards ) && empty( $v['eyebrow'] ?? '' ) && empty( $v['title'] ?? ''
 </div>
 
 <?php endforeach; endif; ?>
+
+
+<script>
+(function () {
+  'use strict';
+
+  function closeDiningModal(modal) {
+    if (!modal || modal.hasAttribute('hidden')) return;
+
+    modal.classList.add('is-closing');
+    modal.setAttribute('hidden', '');
+    if (typeof window.__unlockScroll === 'function') {
+      window.__unlockScroll();
+    }
+  }
+
+  function scrollToHash(hash) {
+    if (!hash || hash === '#' || hash === '#0') return;
+    var target = document.querySelector(hash);
+    if (!target) {
+      console.warn('[dining-modal] Целевой элемент не найден:', hash);
+      return;
+    }
+
+    var navHeight = 0;
+    var nav = document.getElementById('nav') || document.querySelector('header, .site-header');
+    if (nav) navHeight = nav.offsetHeight;
+
+    var top = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+
+    if (history.pushState) {
+      history.pushState(null, '', hash);
+    } else {
+      window.location.hash = hash;
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('.dining-modal a[href^="#"]');
+    if (!link) return;
+
+    var href = link.getAttribute('href');
+    if (!href || href === '#' || href === '#0') return;
+
+    e.preventDefault();
+
+    var modal = link.closest('.dining-modal');
+    closeDiningModal(modal);
+    setTimeout(function () {
+      scrollToHash(href);
+    }, 400);
+  });
+})();
+</script>

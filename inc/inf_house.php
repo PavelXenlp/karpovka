@@ -30,16 +30,14 @@ function house_info_mb($post) {
 <textarea name="house_info[highlight]" rows="3" class="widefat" placeholder="Дом построен в 2023 году из соснового бревна диаметром 28 см. Общая площадь — 85 м² с открытой террасой 20 м²."></textarea></p>
 
     <p><label>Главное изображение (URL):</label><br>
-    <input type="text" name="house_info[image]" value="<?php echo esc_url($d['image'] ?? ''); ?>" class="widefat hi-img-input">
-    <button type="button" class="button hi-upload">Выбрать изображение</button></p>
+    <input type="hidden" name="house_info[image]" value="<?php echo esc_url($d['image'] ?? ''); ?>" class="hi-img-input" data-kp-media></p>
 
     <hr>
     <p><strong>Галерея изображений:</strong></p>
     <div id="hi-gallery-wrap">
     <?php if (!empty($d['gallery']) && is_array($d['gallery'])) : foreach ($d['gallery'] as $gi => $gv) : ?>
         <div class="hi-gallery-item">
-            <input type="text" name="house_info[gallery][<?php echo $gi; ?>]" value="<?php echo esc_url($gv); ?>" class="widefat hi-gallery-input" placeholder="URL изображения">
-            <button type="button" class="button hi-gallery-upload">Выбрать</button>
+            <input type="hidden" name="house_info[gallery][<?php echo $gi; ?>]" value="<?php echo esc_url($gv); ?>" class="hi-gallery-input" data-kp-media>
             <button type="button" class="button hi-gallery-del">−</button>
         </div>
     <?php endforeach; endif; ?>
@@ -81,22 +79,11 @@ function house_info_mb($post) {
     <script>
 (function($){
 
-    /* ─── Главное изображение ─── */
-    $('.hi-upload').on('click', function(){
-        var btn = this;
-        var frame = wp.media({title:'Выбрать изображение', multiple:false, library:{type:'image'}});
-        frame.on('select', function(){
-            $(btn).prev('.hi-img-input').val(frame.state().get('selection').first().toJSON().url);
-        });
-        frame.open();
-    });
-
     /* ─── Галерея ─── */
     var gi = $('#hi-gallery-wrap .hi-gallery-item').length;
     $('#hi-gallery-add').on('click', function(){
         var h = '<div class="hi-gallery-item">'
-            +'<input type="text" name="house_info[gallery]['+gi+']" class="widefat hi-gallery-input" placeholder="URL изображения">'
-            +' <button type="button" class="button hi-gallery-upload">Выбрать</button>'
+            +'<input type="hidden" name="house_info[gallery]['+gi+']" class="hi-gallery-input" data-kp-media>'
             +' <button type="button" class="button hi-gallery-del">\u2212</button></div>';
         $('#hi-gallery-wrap').append(h);
         gi++;
@@ -104,14 +91,6 @@ function house_info_mb($post) {
 
     $(document).on('click', '.hi-gallery-del', function(){ $(this).closest('.hi-gallery-item').remove(); });
 
-    $(document).on('click', '.hi-gallery-upload', function(){
-        var btn = this;
-        var frame = wp.media({title:'Выбрать изображение', multiple:false, library:{type:'image'}});
-        frame.on('select', function(){
-            $(btn).prev('.hi-gallery-input').val(frame.state().get('selection').first().toJSON().url);
-        });
-        frame.open();
-    });
 
     /* ─── Преимущества ─── */
     var ai = $('#hi-adv-wrap .hi-adv-row').length;

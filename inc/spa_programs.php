@@ -38,10 +38,7 @@ function spa_programs_section_cb( $post ) {
 
     <p>
         <label><b>Фоновое изображение</b></label><br>
-        <img class="sp-bg-preview" src="<?php echo esc_url( $bg_img ); ?>" style="max-width:250px;height:auto;display:<?php echo $bg_img ? 'block' : 'none'; ?>;margin:6px 0;border:1px solid #ddd;">
-        <input type="hidden" name="spa_programs[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>" class="sp-bg-input">
-        <button type="button" class="button sp-upload-bg">📁 Загрузить</button>
-        <button type="button" class="button sp-rm-bg" style="<?php echo $bg_img ? '' : 'display:none;'; ?>">✕</button>
+        <input type="hidden" name="spa_programs[bg_img]" value="<?php echo esc_attr( $bg_img ); ?>" class="sp-bg-input" data-kp-media>
     </p>
 
     <hr>
@@ -68,6 +65,17 @@ function spa_programs_section_cb( $post ) {
                         <label><b>Описание</b></label><br>
                         <input type="text" name="spa_programs[cards][<?php echo $i; ?>][desc]" value="<?php echo esc_attr( $card['desc'] ?? '' ); ?>" style="width:100%;">
                     </p>
+
+                    <details style="margin:14px 0;padding:12px;border:1px solid #dcdcde;background:#fff;">
+                        <summary><b>Подробное модальное окно</b></summary>
+                        <p><label><b>Изображение</b></label><br><input type="hidden" name="spa_programs[cards][<?php echo $i; ?>][modal_image]" value="<?php echo esc_attr( $card['modal_image'] ?? '' ); ?>" data-kp-media></p>
+                        <p><label><b>Аннотация</b></label><br><input type="text" name="spa_programs[cards][<?php echo $i; ?>][modal_kicker]" value="<?php echo esc_attr( $card['modal_kicker'] ?? '' ); ?>" style="width:100%;"></p>
+                        <p><label><b>Заголовок</b></label><br><input type="text" name="spa_programs[cards][<?php echo $i; ?>][modal_title]" value="<?php echo esc_attr( $card['modal_title'] ?? '' ); ?>" style="width:100%;"></p>
+                        <p><label><b>Метаданные</b></label><br><input type="text" name="spa_programs[cards][<?php echo $i; ?>][modal_meta]" value="<?php echo esc_attr( $card['modal_meta'] ?? '' ); ?>" style="width:100%;" placeholder="Продолжительность: 3 часа · Для пар"></p>
+                        <p><label><b>Описание, абзац 1</b></label><br><textarea name="spa_programs[cards][<?php echo $i; ?>][modal_text]" rows="4" style="width:100%;"><?php echo esc_textarea( $card['modal_text'] ?? '' ); ?></textarea></p>
+                        <p><label><b>Описание, абзац 2</b></label><br><textarea name="spa_programs[cards][<?php echo $i; ?>][modal_text_2]" rows="4" style="width:100%;"><?php echo esc_textarea( $card['modal_text_2'] ?? '' ); ?></textarea></p>
+                        <p><label><b>Что входит в стоимость</b> — один пункт на строку</label><br><textarea name="spa_programs[cards][<?php echo $i; ?>][modal_items_text]" rows="7" style="width:100%;"><?php echo esc_textarea( implode( "\n", array_map( static function ( $item ) { return is_array( $item ) ? ( $item['text'] ?? '' ) : $item; }, $card['modal_items'] ?? [] ) ) ); ?></textarea></p>
+                    </details>
 
                     <p>
                         <label><b>Состав программы</b> (список)</label><br>
@@ -120,24 +128,6 @@ function spa_programs_section_cb( $post ) {
     (function($){
         var cIdx = $('#sp-cards-wrap .sp-card-block').length;
 
-        // Фоновое изображение
-        $('.sp-upload-bg').on('click', function(){
-            var btn = this;
-            var frame = wp.media({ title: 'Выбрать фоновое изображение', multiple: false, library: { type: 'image' } });
-            frame.on('select', function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                $('.sp-bg-input').val(url);
-                $('.sp-bg-preview').attr('src', url).show();
-                $('.sp-rm-bg').show();
-            });
-            frame.open();
-        });
-        $('.sp-rm-bg').on('click', function(){
-            $('.sp-bg-input').val('');
-            $('.sp-bg-preview').hide().attr('src','');
-            $(this).hide();
-        });
-
         // Добавить карточку
         $('#sp-add-card').on('click', function(){
             var i = cIdx;
@@ -151,6 +141,14 @@ function spa_programs_section_cb( $post ) {
                 + '<input type="text" name="spa_programs[cards][' + i + '][duration]" style="width:200px;"></p>'
                 + '<p><label><b>Описание</b></label><br>'
                 + '<input type="text" name="spa_programs[cards][' + i + '][desc]" style="width:100%;"></p>'
+                + '<details style="margin:14px 0;padding:12px;border:1px solid #dcdcde;background:#fff;"><summary><b>Подробное модальное окно</b></summary>'
+                + '<p><label><b>Изображение</b></label><br><input type="hidden" name="spa_programs[cards][' + i + '][modal_image]" value="" data-kp-media></p>'
+                + '<p><label><b>Аннотация</b></label><br><input type="text" name="spa_programs[cards][' + i + '][modal_kicker]" style="width:100%;"></p>'
+                + '<p><label><b>Заголовок</b></label><br><input type="text" name="spa_programs[cards][' + i + '][modal_title]" style="width:100%;"></p>'
+                + '<p><label><b>Метаданные</b></label><br><input type="text" name="spa_programs[cards][' + i + '][modal_meta]" style="width:100%;"></p>'
+                + '<p><label><b>Описание, абзац 1</b></label><br><textarea name="spa_programs[cards][' + i + '][modal_text]" rows="4" style="width:100%;"></textarea></p>'
+                + '<p><label><b>Описание, абзац 2</b></label><br><textarea name="spa_programs[cards][' + i + '][modal_text_2]" rows="4" style="width:100%;"></textarea></p>'
+                + '<p><label><b>Что входит в стоимость</b> — один пункт на строку</label><br><textarea name="spa_programs[cards][' + i + '][modal_items_text]" rows="7" style="width:100%;"></textarea></p></details>'
                 + '<p><label><b>Состав программы</b></label><br>'
                 + '<div class="sp-items-wrap"></div>'
                 + '<button type="button" class="button sp-add-item" data-ci="' + i + '">+ Пункт</button></p>'
@@ -229,6 +227,16 @@ add_action( 'save_post', function ( $post_id ) {
                 'link'         => esc_url_raw( $card['link'] ?? '' ),
                 'btn_text'     => sanitize_text_field( $card['btn_text'] ?? 'Подробнее' ),
                 'modifier'     => ( $card['modifier'] === 'popular' ) ? 'popular' : '',
+                'modal_image'  => esc_url_raw( $card['modal_image'] ?? '' ),
+                'modal_kicker' => sanitize_text_field( $card['modal_kicker'] ?? '' ),
+                'modal_title'  => sanitize_text_field( $card['modal_title'] ?? '' ),
+                'modal_meta'   => sanitize_text_field( $card['modal_meta'] ?? '' ),
+                'modal_text'   => sanitize_textarea_field( $card['modal_text'] ?? '' ),
+                'modal_text_2' => sanitize_textarea_field( $card['modal_text_2'] ?? '' ),
+                'modal_items'  => array_values( array_filter( array_map( static function ( $line ) {
+                    $line = sanitize_text_field( $line );
+                    return $line === '' ? null : [ 'text' => $line ];
+                }, preg_split( '/\R/u', $card['modal_items_text'] ?? '' ) ?: [] ) ) ),
             ];
         }
     }

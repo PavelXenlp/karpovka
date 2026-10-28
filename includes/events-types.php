@@ -10,7 +10,7 @@
         <a href="#weddings" class="c-bath-types__card c-bath-types__card--wide" data-events-modal="modal-events-wedding">
 
           <div class="c-bath-types__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Свадьба в Карповке" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Свадьба в Карповке" loading="lazy">
           </div>
           <div class="c-bath-types__card-overlay"></div>
           <div class="c-bath-types__card-content">
@@ -23,7 +23,7 @@
 
         <a href="#corporate" class="c-bath-types__card" data-events-modal="modal-events-jubilee">
           <div class="c-bath-types__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Корпоративное мероприятие" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Корпоративное мероприятие" loading="lazy">
           </div>
           <div class="c-bath-types__card-overlay"></div>
           <div class="c-bath-types__card-content">
@@ -36,7 +36,7 @@
 
         <a href="#celebrations" class="c-bath-types__card" data-events-modal="modal-events-corporate">
           <div class="c-bath-types__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Юбилей и торжество" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Юбилей и торжество" loading="lazy">
           </div>
           <div class="c-bath-types__card-overlay"></div>
           <div class="c-bath-types__card-content">
@@ -49,7 +49,7 @@
 
         <a href="#pricing" class="c-bath-types__card c-bath-types__card--wide-alt" data-events-modal="modal-events-family">
           <div class="c-bath-types__card-img">
-            <img src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Программа уикенда" loading="lazy">
+            <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Программа уикенда" loading="lazy">
           </div>
           <div class="c-bath-types__card-overlay"></div>
           <div class="c-bath-types__card-content">
@@ -76,13 +76,13 @@
           <div class="c-bath-detail__gallery" data-bath-gallery="russian">
             <div class="c-bath-detail__gallery-track">
               <div class="c-bath-detail__gallery-slide">
-                <img src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Русская баня — парная" loading="lazy">
+                <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Русская баня — парная" loading="lazy">
               </div>
               <div class="c-bath-detail__gallery-slide">
-                <img src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Русская баня — помещение" loading="lazy">
+                <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Русская баня — помещение" loading="lazy">
               </div>
               <div class="c-bath-detail__gallery-slide">
-                <img src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Русская баня — зона отдыха" loading="lazy">
+                <img src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Русская баня — зона отдыха" loading="lazy">
               </div>
             </div>
             <button class="c-bath-detail__gallery-prev" aria-label="Предыдущее фото"><svg class="icon"><use href="#icon-arrow-left"></use></svg></button>
@@ -121,7 +121,7 @@
   <div class="events-modal__overlay" data-events-modal-close></div>
   <div class="events-modal__dialog">
     <button class="events-modal__close" data-events-modal-close aria-label="Закрыть">✕</button>
-    <img class="events-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Свадьбы" loading="lazy">
+    <img class="events-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/1.jpg_1.jpeg" alt="Свадьбы" loading="lazy">
     <div class="events-modal__body">
       <p class="events-modal__badge">Мероприятия</p>
       <h3 class="events-modal__title">Свадьбы</h3>
@@ -152,7 +152,7 @@
   <div class="events-modal__overlay" data-events-modal-close></div>
   <div class="events-modal__dialog">
     <button class="events-modal__close" data-events-modal-close aria-label="Закрыть">✕</button>
-    <img class="events-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Юбилеи" loading="lazy">
+    <img class="events-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/tempImagelyuBrS.jpg.jpeg" alt="Юбилеи" loading="lazy">
     <div class="events-modal__body">
       <p class="events-modal__badge">Мероприятия</p>
       <h3 class="events-modal__title">Юбилеи и дни рождения</h3>
@@ -182,7 +182,7 @@
   <div class="events-modal__overlay" data-events-modal-close></div>
   <div class="events-modal__dialog">
     <button class="events-modal__close" data-events-modal-close aria-label="Закрыть">✕</button>
-    <img class="events-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Корпоративы" loading="lazy">
+    <img class="events-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/IMG_0119-2.jpg.jpeg" alt="Корпоративы" loading="lazy">
     <div class="events-modal__body">
       <p class="events-modal__badge">Мероприятия</p>
       <h3 class="events-modal__title">Корпоративные мероприятия</h3>
@@ -212,7 +212,7 @@
   <div class="events-modal__overlay" data-events-modal-close></div>
   <div class="events-modal__dialog">
     <button class="events-modal__close" data-events-modal-close aria-label="Закрыть">✕</button>
-    <img class="events-modal__photo" src="/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Семейные праздники" loading="lazy">
+    <img class="events-modal__photo" src="/clients/karpovka/wp-content/themes/theme/assets/img/imgs/matthew-mcbrayer-mO-.jpg.jpeg" alt="Семейные праздники" loading="lazy">
     <div class="events-modal__body">
       <p class="events-modal__badge">Мероприятия</p>
       <h3 class="events-modal__title">Семейные праздники</h3>

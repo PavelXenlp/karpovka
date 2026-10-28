@@ -2,7 +2,7 @@
   <div class="footer__grid grid-4responsive">
     <div>
       <a class="footer__logo" href="index.html" aria-label="Карповка — парк-отель">
-        <img class="footer__logo-img" src="/wp-content/themes/theme/assets/img/logo.png" alt="Парк-отель Карповка" />
+        <img class="footer__logo-img" src="/clients/karpovka/wp-content/themes/theme/assets/img/logo.png" alt="Парк-отель Карповка" />
       </a>
       <div class="footer__phones">
         <a href="tel:+79850200203" class="footer__phone">+7 (985) 020-02-03</a>
@@ -35,7 +35,7 @@
       <a href="/bannyy-kompleks">Банный комплекс</a>
       <a href="/kafe">Кафе и банкет</a>
       <a href="/aktivnyy-otdyh">Активный отдых</a>
-      <a href="/fishing">Рыбалка</a>
+      <a href="https://dev.miram-prod.ru/clients/karpovka/fishing/">Рыбалка</a>
     </div>
     <div class="footer__col">
       <div class="footer__col-title">Гостям</div>
@@ -52,7 +52,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="/wp-content/themes/theme/assets/js/script.js?v=<?php echo time(); ?>"></script>
+<script src="/clients/karpovka/wp-content/themes/theme/assets/js/script.js?v=<?php echo time(); ?>"></script>
 
 </body>
 

@@ -4,7 +4,7 @@ add_action('add_meta_boxes', function() {
     'hero_section_box',
     'Секция: Основной для всех страниц hero',
     'hero_section_render_box',
-    'page',
+    array('page', 'articles'),
     'normal',
     'high'
   );
@@ -28,6 +28,7 @@ function hero_section_render_box($post) {
   $tg        = get_post_meta($post->ID, 'hero_tg', true);
 
   ?>
+  <div class="kp-standalone-controls" data-kp-content-controls>
   <style>
     .hero-field { margin-bottom: 16px; }
     .hero-field label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 13px; color: #1d2327; }
@@ -35,11 +36,6 @@ function hero_section_render_box($post) {
     .hero-field textarea { min-height: 80px; resize: vertical; }
     .hero-field .description { font-size: 12px; color: #646970; margin-top: 4px; }
     .hero-field h4 { margin: 20px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #dcdcde; color: #2271b1; font-size: 14px; }
-    .hero-preview { margin-top: 8px; max-width: 300px; }
-    .hero-preview img { max-width: 100%; height: auto; border: 1px solid #dcdcde; border-radius: 4px; }
-    .hero-img-btn { display: inline-block; margin-top: 6px; }
-    .hero-img-btn button { background: #2271b1; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 13px; cursor: pointer; }
-    .hero-img-btn .hero-remove-img { background: #d63638; margin-left: 6px; }
   </style>
 
   <div class="hero-field">
@@ -63,14 +59,7 @@ function hero_section_render_box($post) {
   <h4>Фотография героя</h4>
   <div class="hero-field">
     <label>Изображение</label>
-    <input type="hidden" name="hero_photo" id="hero_photo_input" value="<?php echo esc_attr($photo); ?>">
-    <div class="hero-img-btn">
-      <button type="button" id="hero-upload-photo-btn">Выбрать</button>
-      <button type="button" class="hero-remove-img" id="hero-remove-photo-btn">Удалить</button>
-    </div>
-    <?php if ($photo) : ?>
-      <div class="hero-preview"><img src="<?php echo esc_url($photo); ?>" alt="preview"></div>
-    <?php endif; ?>
+    <input type="hidden" name="hero_photo" value="<?php echo esc_attr($photo); ?>" data-kp-media>
   </div>
 
   <h4>Кнопки</h4>
@@ -105,29 +94,7 @@ function hero_section_render_box($post) {
     <label>Telegram (ссылка)</label>
     <input type="text" name="hero_tg" value="<?php echo esc_attr($tg); ?>" placeholder="https://t.me/...">
   </div>
-
-  <script>
-  jQuery(document).ready(function($) {
-    var photoFrame;
-    $('#hero-upload-photo-btn').on('click', function(e) {
-      e.preventDefault();
-      if (photoFrame) { photoFrame.open(); return; }
-      photoFrame = wp.media({ title: 'Выбрать фото героя', button: { text: 'Использовать' }, multiple: false });
-      photoFrame.on('select', function() {
-        var a = photoFrame.state().get('selection').first().toJSON();
-        $('#hero_photo_input').val(a.url);
-        $('.hero-preview').remove();
-        $('<div class="hero-preview"><img src="'+a.url+'" alt="preview"></div>').insertAfter('#hero-remove-photo-btn').parent();
-      });
-      photoFrame.open();
-    });
-    $('#hero-remove-photo-btn').on('click', function(e) {
-      e.preventDefault();
-      $('#hero_photo_input').val('');
-      $('.hero-preview').remove();
-    });
-  });
-  </script>
+  </div>
 
   <?php
 }
@@ -136,7 +103,7 @@ add_action('save_post', function($post_id) {
   if (!isset($_POST['hero_section_nonce_field'])) return;
   if (!wp_verify_nonce($_POST['hero_section_nonce_field'], 'hero_section_nonce')) return;
   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-  if (!current_user_can('edit_page', $post_id)) return;
+  if (!current_user_can('edit_post', $post_id)) return;
 
   $fields = array('hero_eyebrow', 'hero_title', 'hero_gold', 'hero_subtitle', 'hero_photo', 'hero_btn1_text', 'hero_btn1_link', 'hero_btn2_text', 'hero_phone', 'hero_email', 'hero_vk', 'hero_tg');
   foreach ($fields as $field) {

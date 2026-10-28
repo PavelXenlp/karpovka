@@ -27,9 +27,16 @@ if ( empty( $v ) || empty( $v['cards'] ) ) return;
                 $link       = esc_url( $c['link'] ?? '#' );
                 $icon       = esc_attr( $c['icon'] ?? '' );
                 $icon_color = esc_attr( $c['icon_color'] ?? '' );
+                $icon_image = esc_url( $c['icon_image'] ?? '' );
             ?>
                 <a href="<?php echo $link; ?>" class="c-platforms__card" target="_blank" rel="noopener">
-                    <?php if ( $icon ) : ?>
+                    <?php if ( $icon_image ) : ?>
+                        <!-- Приоритет: картинка (для Яндекса, 2ГИС, Booking) -->
+                        <div class="c-platforms__icon">
+                            <img src="<?php echo $icon_image; ?>" alt="<?php echo $name; ?>" style="max-width: 32px; max-height: 32px; object-fit: contain;">
+                        </div>
+                    <?php elseif ( $icon ) : ?>
+                        <!-- Иначе: Font Awesome иконка -->
                         <div class="c-platforms__icon">
                             <i class="<?php echo $icon; ?>"<?php if ( $icon_color ) echo ' style="font-size: 26px; color: ' . $icon_color . ';"'; ?>></i>
                         </div>

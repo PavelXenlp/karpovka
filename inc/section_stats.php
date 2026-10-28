@@ -24,11 +24,8 @@ function stories_section_cb( $post ) {
         <div class="story-slide-block" style="border:1px solid #ccc;padding:12px;margin-bottom:12px;background:#fafafa;">
             <p>
                 <label><b>Изображение</b></label><br>
-                <img class="story-img-preview" src="<?php echo esc_url( $slide['img'] ?? '' ); ?>" style="max-width:200px;height:auto;display:<?php echo ( $slide['img'] ?? '' ) ? 'block' : 'none'; ?>;margin:6px 0;border:1px solid #ddd;">
-                <input type="hidden" name="stories[slides][<?php echo $i; ?>][img]" value="<?php echo esc_attr( $slide['img'] ?? '' ); ?>" class="story-img-input">
+                <input type="hidden" name="stories[slides][<?php echo $i; ?>][img]" value="<?php echo esc_attr( $slide['img'] ?? '' ); ?>" data-kp-media>
                 <input type="text" name="stories[slides][<?php echo $i; ?>][img_alt]" value="<?php echo esc_attr( $slide['img_alt'] ?? '' ); ?>" placeholder="Alt текст" style="width:400px;margin-left:8px;">
-                <button type="button" class="button story-upload-img">📁</button>
-                <button type="button" class="button story-rm-img" style="<?php echo ( $slide['img'] ?? '' ) ? '' : 'display:none;'; ?>">✕</button>
             </p>
             <p>
                 <label><b>Название</b></label><br>
@@ -56,11 +53,9 @@ function stories_section_cb( $post ) {
         $('#story-add-slide').on('click', function(){
             var h = '<div class="story-slide-block" style="border:1px solid #ccc;padding:12px;margin-bottom:12px;background:#fafafa;">'
                 + '<p><label><b>Изображение</b></label><br>'
-                + '<img class="story-img-preview" src="" style="max-width:200px;height:auto;display:none;margin:6px 0;border:1px solid #ddd;">'
-                + '<input type="hidden" name="stories[slides][' + idx + '][img]" value="" class="story-img-input">'
+                + '<input type="hidden" name="stories[slides][' + idx + '][img]" value="" data-kp-media>'
                 + '<input type="text" name="stories[slides][' + idx + '][img_alt]" placeholder="Alt текст" style="width:400px;margin-left:8px;">'
-                + '<button type="button" class="button story-upload-img">📁</button> '
-                + '<button type="button" class="button story-rm-img" style="display:none;">✕</button></p>'
+                + '</p>'
                 + '<p><label><b>Название</b></label><br>'
                 + '<input type="text" name="stories[slides][' + idx + '][title]" style="width:100%;max-width:400px;"></p>'
                 + '<p><label><b>Ссылка на карточке</b></label><br>'
@@ -78,25 +73,6 @@ function stories_section_cb( $post ) {
             if( confirm('Удалить слайд?') ) $(this).closest('.story-slide-block').remove();
         });
 
-        $(document).on('click', '.story-upload-img', function(){
-            var btn = this;
-            var block = $(btn).closest('.story-slide-block');
-            var frame = wp.media({ title: 'Выбрать изображение слайда', multiple: false, library: { type: 'image' } });
-            frame.on('select', function(){
-                var url = frame.state().get('selection').first().toJSON().url;
-                block.find('.story-img-input').val(url);
-                block.find('.story-img-preview').attr('src', url).show();
-                block.find('.story-rm-img').show();
-            });
-            frame.open();
-        });
-
-        $(document).on('click', '.story-rm-img', function(){
-            var block = $(this).closest('.story-slide-block');
-            block.find('.story-img-input').val('');
-            block.find('.story-img-preview').hide().attr('src','');
-            $(this).hide();
-        });
     })(jQuery);
     </script>
     <?php

@@ -155,3 +155,42 @@ add_action( 'save_post', function ( $post_id ) {
 
     update_post_meta( $post_id, 'contacts_section', $clean );
 } );
+
+function karpovka_initialize_home_contacts( $post_id ) {
+    if ( 'index.php' !== get_page_template_slug( $post_id ) ) return false;
+    if ( get_post_meta( $post_id, '_karpovka_home_contacts_20260824', true ) ) return false;
+
+    $contacts = get_post_meta( $post_id, 'contacts_section', true );
+    $has_content = is_array( $contacts ) && (
+        ! empty( $contacts['eyebrow'] ) ||
+        ! empty( $contacts['title'] ) ||
+        ! empty( $contacts['address'] )
+    );
+
+    if ( ! $has_content ) {
+        update_post_meta( $post_id, 'contacts_section', [
+            'eyebrow'    => 'Свяжитесь с нами',
+            'title'      => 'Контакты',
+            'section_id' => 'contacts',
+            'address'    => 'Пермский край, Карагайский район, деревня Карповка',
+            'phones'     => [
+                [ 'label' => '+7 (985) 020-02-03', 'href' => 'tel:+79850200203' ],
+                [ 'label' => '+7 (912) 781-39-33', 'href' => 'tel:+79127813933' ],
+            ],
+            'email'      => 'karpovka59@yandex.ru',
+            'form_title' => 'Остались вопросы?',
+            'form_sub'   => 'Оставьте контакты — перезвоним и поможем с бронированием.',
+            'form_btn'   => 'Перезвоните мне',
+        ] );
+    }
+
+    update_post_meta( $post_id, '_karpovka_home_contacts_20260824', '1' );
+    return true;
+}
+
+add_action( 'admin_init', function () {
+    if ( ! isset( $_GET['post'] ) ) return;
+    $post_id = absint( $_GET['post'] );
+    if ( ! $post_id || ! current_user_can( 'edit_page', $post_id ) ) return;
+    karpovka_initialize_home_contacts( $post_id );
+} );

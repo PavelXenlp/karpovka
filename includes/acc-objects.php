@@ -6,7 +6,26 @@ if ( empty( $v ) ) return;
  $eyebrow = $v['eyebrow'] ?? '';
  $title   = $v['title'] ?? '';
  $filters = $v['filters'] ?? [];
- $cards   = $v['cards'] ?? [];
+ $mode    = 'selected' === ( $v['selection_mode'] ?? '' ) ? 'selected' : 'all';
+ $query   = [
+    'post_type'      => 'karpovka_house',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => [ 'menu_order' => 'ASC', 'title' => 'ASC' ],
+ ];
+ if ( 'selected' === $mode ) {
+    $query['post__in'] = array_values( array_filter( array_map( 'intval', (array) ( $v['house_ids'] ?? [] ) ) ) );
+    $query['orderby'] = 'post__in';
+ }
+ $house_posts = 'selected' === $mode && empty( $query['post__in'] ) ? [] : get_posts( $query );
+ $cards = array_map( static function ( $house ) {
+    return karpovka_get_house_card( $house->ID );
+ }, $house_posts );
+
+ // До первого открытия редактора сохраняем вывод старых карточек, затем миграция удалит их из страницы.
+ if ( empty( $cards ) && ! empty( $v['cards'] ) && is_array( $v['cards'] ) ) {
+    $cards = $v['cards'];
+ }
 if ( empty( $cards ) ) return;
 ?>
 
@@ -97,7 +116,11 @@ if ( empty( $cards ) ) return;
                     </p>
                     <?php endif; ?>
                     <div class="acc-card__actions">
+                        <?php if ( $more_link ) : ?>
                         <a class="btn btn--ghost" href="<?php echo esc_url( $more_link ); ?>"><?php echo esc_html( $more_text ); ?></a>
+                        <?php else : ?>
+                        <button class="btn btn--ghost acc-card__toggle" type="button" data-acc-more><?php echo esc_html( $more_text ); ?></button>
+                        <?php endif; ?>
                         <a class="btn btn--gold" href="<?php echo esc_url( $book_link ); ?>"><?php echo esc_html( $book_text ); ?></a>
                     </div>
                 </div>
@@ -130,3 +153,21 @@ if ( empty( $cards ) ) return;
 
     <p class="acc-grid__empty" data-acc-empty hidden>По этому сочетанию фильтров вариантов нет — сбросьте один из них.</p>
 </section>
+
+<div class="acc-modal" data-acc-modal hidden>
+    <div class="acc-modal__overlay" data-acc-modal-close></div>
+    <div class="acc-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="accModalTitle" tabindex="-1">
+        <button class="acc-modal__close" type="button" data-acc-modal-close aria-label="Закрыть">×</button>
+        <img class="acc-modal__photo" data-acc-modal-photo src="" alt="">
+        <div class="acc-modal__body">
+            <p class="acc-modal__badge" data-acc-modal-badge></p>
+            <h2 class="acc-modal__title" id="accModalTitle" data-acc-modal-title></h2>
+            <p class="acc-modal__meta" data-acc-modal-meta></p>
+            <div class="acc-modal__details" data-acc-modal-details></div>
+            <div class="acc-modal__foot">
+                <p class="acc-modal__price" data-acc-modal-price></p>
+                <a class="btn btn--gold" href="#booking" data-acc-modal-book>Забронировать</a>
+            </div>
+        </div>
+    </div>
+</div>

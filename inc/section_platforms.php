@@ -24,6 +24,8 @@ function platforms_section_box( $post ) {
         .pl-item .pl-row label{margin-bottom:2px}
         .pl-btn{padding:4px 12px;cursor:pointer;margin:3px 2px}
         .pl-btn--del{color:#a00;border-color:#a00}
+        .pl-hint{font-size:11px;color:#666;margin-top:3px;line-height:1.5}
+        .pl-hint code{background:#f0f0f1;padding:1px 4px;border-radius:2px}
     </style>
 
     <div class="pl-field">
@@ -40,6 +42,9 @@ function platforms_section_box( $post ) {
     </div>
 
     <h3>Карточки площадок</h3>
+    <p class="pl-hint">
+        Для иконки можно использовать <strong>ИЛИ</strong> FA-класс (например, <code>fab fa-vk</code> для ВКонтакте, <code>fab fa-google</code> для Google, <code>fab fa-tripadvisor</code>), <strong>ИЛИ</strong> загрузить картинку (для Яндекса, 2ГИС, Booking — у них нет FA-иконок).
+    </p>
     <div id="pl-cards">
         <?php if ( ! empty( $cards ) ) : ?>
             <?php foreach ( $cards as $ci => $c ) : ?>
@@ -64,13 +69,24 @@ function platforms_section_box( $post ) {
                             <input type="text" name="platforms_section[cards][<?php echo $ci; ?>][link]" value="<?php echo esc_attr( $c['link'] ?? '' ); ?>">
                         </div>
                     </div>
+
+                    <!-- НОВОЕ: поле загрузки картинки-иконки (для Яндекса и др.) -->
                     <div class="pl-row">
                         <div>
-                            <label>Иконка — FA класс (например: fab fa-yandex)</label>
-                            <input type="text" name="platforms_section[cards][<?php echo $ci; ?>][icon]" value="<?php echo esc_attr( $c['icon'] ?? '' ); ?>">
+                            <label>Картинка-иконка (PNG/SVG) — для Яндекса, 2ГИС, Booking</label>
+                            <input type="hidden" name="platforms_section[cards][<?php echo $ci; ?>][icon_image]" class="pl-icon-image" value="<?php echo esc_attr( $c['icon_image'] ?? '' ); ?>" data-kp-media>
+                            <p class="pl-hint">Кликните на поле, чтобы выбрать изображение из медиабиблиотеки. Если задано — приоритет у картинки.</p>
+                        </div>
+                    </div>
+
+                    <!-- ИЗМЕНЕНО: FA-класс теперь опциональный (используется если нет картинки) -->
+                    <div class="pl-row">
+                        <div>
+                            <label>FA-класс иконки (опционально, напр.: fab fa-vk, fab fa-google, fab fa-tripadvisor)</label>
+                            <input type="text" name="platforms_section[cards][<?php echo $ci; ?>][icon]" value="<?php echo esc_attr( $c['icon'] ?? '' ); ?>" placeholder="fab fa-vk">
                         </div>
                         <div>
-                            <label>Цвет иконки (например: #FC3F1D)</label>
+                            <label>Цвет FA-иконки (напр.: #FC3F1D)</label>
                             <input type="text" name="platforms_section[cards][<?php echo $ci; ?>][icon_color]" value="<?php echo esc_attr( $c['icon_color'] ?? '' ); ?>">
                         </div>
                     </div>
@@ -97,8 +113,11 @@ function platforms_section_box( $post ) {
                 '<div><label>Ссылка</label><input type="text" name="platforms_section[cards]['+i+'][link]"></div>' +
                 '</div>' +
                 '<div class="pl-row">' +
-                '<div><label>Иконка — FA класс (например: fab fa-yandex)</label><input type="text" name="platforms_section[cards]['+i+'][icon]"></div>' +
-                '<div><label>Цвет иконки (например: #FC3F1D)</label><input type="text" name="platforms_section[cards]['+i+'][icon_color]"></div>' +
+                '<div><label>Картинка-иконка (PNG/SVG)</label><input type="hidden" name="platforms_section[cards]['+i+'][icon_image]" class="pl-icon-image" value="" data-kp-media></div>' +
+                '</div>' +
+                '<div class="pl-row">' +
+                '<div><label>FA-класс иконки (опционально)</label><input type="text" name="platforms_section[cards]['+i+'][icon]" placeholder="fab fa-vk"></div>' +
+                '<div><label>Цвет FA-иконки</label><input type="text" name="platforms_section[cards]['+i+'][icon_color]"></div>' +
                 '</div>' +
                 '<button type="button" class="pl-btn pl-btn--del" onclick="this.closest(\'.pl-item\').remove()">Удалить</button>' +
                 '</div>'
@@ -130,6 +149,7 @@ add_action( 'save_post', function ( $post_id ) {
                     'link'       => $link,
                     'icon'       => sanitize_text_field( $c['icon'] ?? '' ),
                     'icon_color' => sanitize_text_field( $c['icon_color'] ?? '' ),
+                    'icon_image' => esc_url_raw( $c['icon_image'] ?? '' ),  /* НОВОЕ */
                 ];
             }
         }
