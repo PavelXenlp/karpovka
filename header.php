@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <?php wp_head(); ?>
+    <script src="https://cdn.hotbot.ai/w/hb.js"></script>
+    <script>HotBot.init({ appId: '68a46df03177b0b0a071ab4c' });</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
